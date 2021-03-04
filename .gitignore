@@ -5,6 +5,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/assets/fontawesome-5.15.1
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
