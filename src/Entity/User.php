@@ -2,15 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"email"}, message="cet email est déjà utilisé")
  */
 class User implements UserInterface
 {
@@ -23,6 +28,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *  @Assert\Email(
+     *     message = "Entrez un email valide"
+     * )
      */
     private $email;
 
@@ -34,16 +42,37 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message = "Entrez un mot de passe")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 255,
+     *      minMessage = "Le mot de passe doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Le mot de passe ne doit pas dépasser {{ limit }} caractères"
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message = "Entrez votre nom")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 100,
+     *      minMessage = "Le nom doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Le nom ne doit pas dépasser {{ limit }} caractères"
+     * )
      */
     private $lName;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message = "Entrez votre prénom")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 100,
+     *      minMessage = "Le prénom doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Le prénom ne doit pas dépasser {{ limit }} caractères"
+     * )
      */
     private $fName;
 
@@ -51,6 +80,30 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @Assert\NotBlank(message = "Confirmer votre mot de passe")
+     * @Assert\IdenticalTo(
+     *      propertyPath="password",
+     *      message="Le mot de passe ne correspond pas"
+     * )
+     */
+    public $passwordConfirmation;
+
+    /**
+     * Permet d'initialiser la date d'inscription
+     *
+     * @ORM\PrePersist
+     * 
+     * @return void
+     */
+    public function initializeCreatedAt()
+    {
+        if(empty($this->getCreatedAt()))
+        {
+            $this->setCreatedAt(new DateTime());
+        }
+    }
 
     public function getId(): ?int
     {

@@ -1,0 +1,21 @@
+body{
+    background-color: #f5f5f5;
+}
+
+.white-card{
+    background-color: white;
+    border-radius: 1%;
+    padding: 15px;
+}
+
+.img-cart-product {
+    max-width: 100px;
+    height: auto;
+    width: 75px;
+    margin-right: 10px;
+
+}
+
+.dropdown-item-btn:hover{
+    background-color: transparent;
+} 
