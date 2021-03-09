@@ -1,0 +1,56 @@
+/*******************
+********************
+   slide Nav
+********************
+*******************/
+
+.slideNav {
+    background-image: linear-gradient(to right, #243bda, #365de3, #537be8, #7498e9, #98b3e7);
+}
+
+.settings {
+	display: block;
+}
+
+.navigationSettings {
+    line-height: 40px;
+}
+
+.navigation-list--slideNav {
+    list-style: none;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 25px;
+}
+
+.navigation-item--slideNav {
+    display: inline-block;
+    text-decoration: none;
+}
+
+ul.navigation-list--slideNav li a {
+	/*background: none;
+	outline: none;*/
+	font-size: 18px;
+	font-family: 'Livvic', sans-serif;
+	font-weight: 600;
+    line-height: 1.42857143;
+    border: none;
+    border-bottom: 4px solid transparent;
+    border-radius: 0;
+    color: #edf0f5;
+    transition: border .5s ease;
+    padding: 0;
+    margin: 8px;
+    text-decoration: none;
+}
+
+ul.navigation-list--slideNav li a.active, ul.navigation-list--slideNav li a:hover {
+	border-bottom: 4px solid #eddfe0;
+}
+
+/*******************
+********************
+   End slide Nav
+********************
+*******************/

@@ -1,0 +1,16 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+<div class="container mt-4">
+    {{form_start(form)}}
+    <div class="row">
+        <div class="col-12 col-md-9 form-group">
+            {{form_row(form.name)}}
+        </div>
+        <div class="col-12 col-md-3 form-group">
+            <input type="submit" class="btn btn-primary" value="Créer la catégorie">
+        </div>
+    </div>
+    {{form_end(form)}}
+</div>
+{% endblock %}

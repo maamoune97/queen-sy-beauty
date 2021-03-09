@@ -1,0 +1,32 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+    <div class="container my-4">
+        <a href="#"><button class="btn btn-primary float-right mb-2">Editer la categorie</button></a>
+        <h1 class="h2">{{subCategory.name}}</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam illo minima similique in distinctio voluptatibus ab, obcaecati animi rerum possimus a impedit, eaque tenetur aperiam quibusdam delectus alias corporis sunt?</p>
+        <h2 class="h2" >Les Articles</h2>
+        <a href="{{path('admin_product_create', {'subCategory' : subCategory.id})}}" id="addPart">
+            <i class="fas fa-plus mr-2"></i>Ajouter un article
+        </a>
+        <div class="row mt-2">    
+        {% for product in subCategory.products %}    
+            <div class="col-sm-6 col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{asset(product.coverImage)}}" class="card-img-top" alt="{{product.name}}" style="max-height: 300px; width:auto;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text text-right h4">{{product.price}} Fc</span></p>
+                        <p class="card-text">Visible: Non </p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col">
+                <p>Aucun article disponible</p>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>{% block title %}{% endblock %}Queen s'y beauty</title>
+        <link rel="stylesheet" href="/assets/css/bootstrap_flaty.min.css">
+        <link rel="stylesheet" href="/assets/css/app_admin.css">
+        <link rel="stylesheet" href="/assets/fontawesome-5.15.1/css/all.css">
+
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        {% block styles %}
+            {#{{ encore_entry_link_tags('app') }}#}
+        {% endblock %}
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/popper.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            {% include "admin/partials/header.html.twig" %}
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+
+        </footer>
+    </body>
+</html>

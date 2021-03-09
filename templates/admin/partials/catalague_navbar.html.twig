@@ -1,0 +1,24 @@
+{% set route = app.request.attributes.get('_route') %}
+<div class="slideNav text-center">
+    <div class="row justify-content-center">
+      <div class="navigationSettings text-center col-12">
+        <ul class="navigation-list--slideNav p-0">
+          <li class="navigation-item--slideNav pr-3">
+            <a href="{{path('admin_sub_category_index')}}" class="slidebtn {{route == 'user_settings_email' ? 'active'}}
+            ">Catégories</a>
+          </li>
+          <li class="navigation-item--slideNav pr-3">
+            <a href="{{path('admin_product_index')}}" class="slidebtn {{route == 'user_settings_security' ? 'active'}}">Articles</a>
+          </li>
+          {# <li class="navigation-item--slideNav pr-3">
+            <a href="{{path('user_settings_notifications')}}" class="slidebtn {{route == 'user_settings_notifications' ? 'active'}}">Parametre de notifications</a>
+          </li>
+          <li class="navigation-item--slideNav pr-3">
+            <a href="{{path('user_settings_account_delete')}}" class="slidebtn {{route == 'user_settings_account_delete' ? 'active'}}">Suppression de compte</a>
+          </li> #}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {# {% include "partials/messageFlash.html.twig" %} #}
