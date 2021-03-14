@@ -3,32 +3,39 @@
 {% block title %}Les Articles |{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <h2 class="h2" >Les Articles</h2>
-    <a href="{{path('admin_product_create')}}" id="addPart">
-        <i class="fas fa-plus mr-2"></i>Ajouter un article
-    </a>
-    <div class="row mt-2">    
-    {% for product in products %}    
-        <div class="col-sm-6 col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img src="{{asset(product.coverImage)}}" class="card-img-top" alt="{{product.name}}" style="max-height: 300px; width:auto;">
-                <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h5>
-                    <p class="card-text text-right h4">{{product.price}} Fc</span></p>
-                        {% for subCategory in product.subCategories %}
-                            <a class="card-text" href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}">
-                                <span class="badge badge-danger">{{subCategory.name}}</span> 
-                            </a>
-                        {% endfor %}
-                    <a href="{{path('admin_product_show', {'id': product.id} )}}"><button class="btn btn-primary btn-block mt-2">Voir le produit</button></a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-3">
+            {% include "admin/partials/catalog_sidebar.html.twig" %}
+        </div>
+        <div class="col">   
+        <h2 class="h2" >Les Articles</h2>
+        <a href="{{path('admin_product_create')}}" id="addPart">
+            <i class="fas fa-plus mr-2"></i>Ajouter un article
+        </a>
+        <div class="row mt-2">    
+            {% for product in products %}    
+                <div class="col-sm-6 col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{asset(product.coverImage)}}" class="card-img-top" alt="{{product.name}}" style="max-height: 300px; width:auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text text-right h4">{{product.price}} Fc</span></p>
+                                {% for subCategory in product.subCategories %}
+                                    <a class="card-text" href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}">
+                                        <span class="badge badge-danger">{{subCategory.name}}</span> 
+                                    </a>
+                                {% endfor %}
+                            <a href="{{path('admin_product_show', {'id': product.id} )}}"><button class="btn btn-primary btn-block mt-2">Voir le produit</button></a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="col">
+                    <p>Aucun article disponible</p>
+                </div>
+            {% endfor %}
         </div>
-    {% else %}
-        <div class="col">
-            <p>Aucun article disponible</p>
-        </div>
-    {% endfor %}
+    </div>
 </div>
 {% endblock %}

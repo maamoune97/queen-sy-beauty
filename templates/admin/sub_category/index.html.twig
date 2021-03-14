@@ -1,28 +1,34 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Admin categorie{% endblock %}
+{% block title %}Admin sous-categorie{% endblock %}
 
 {% block body %}
-<div class="container my-4">
-    <h1>Les catégories</h1>
-    <a href="{{path('admin_sub_category_create')}}" class="btn btn-primary float-right"><i class="fas fa-plus fa-lg"></i> Ajouter une categorie</a>
-    <div class="row mt-5">    
-        {% for subCategory in subCategories %}    
-            <div class="col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{subCategory.name}}</h5>
-                        <p class="card-text">Articles: <span class="badge badge-info">{{subCategory.products | length}}</span></p>
-                        <p class="card-text">Visible: Non </p>
-                        <a href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}" class="btn btn-primary">Parcourir</a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-3">
+            {% include "admin/partials/catalog_sidebar.html.twig" %}
+        </div>
+        <div class="col">    
+        <h1>Les sous-catégories</h1>
+        <a href="{{path('admin_sub_category_create')}}" class="btn btn-primary float-right"><i class="fas fa-plus fa-lg"></i> Ajouter une sous-categorie</a>
+        <div class="row mt-5">    
+            {% for subCategory in subCategories %}    
+                <div class="col-sm-6 col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{subCategory.name}} ({{subCategory.category.name}})</h5>
+                            <p class="card-text">Articles: <span class="badge badge-info">{{subCategory.products | length}}</span></p>
+                            <p class="card-text">Visible: Non </p>
+                            <a href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}" class="btn btn-primary">Parcourir</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% else %}
-            <div class="col">
-                <p>Aucune catégorie disponible</p>
-            </div>
-        {% endfor %}
+            {% else %}
+                <div class="col">
+                    <p>Aucune sous-catégorie disponible</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

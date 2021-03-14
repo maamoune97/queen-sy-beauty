@@ -29,16 +29,6 @@ class AdminProductController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id}", name="show")
-     */
-    public function show(Product $product): Response
-    {
-        return $this->render('admin/product/show.html.twig', [
-            'product' => $product
-        ]);
-    }
-
-    /**
      * @Route("/create/{subCategory}", name="create")
      */
     public function create(?SubCategory $subCategory = null, EntityManagerInterface $manager, Request $request, FileUploader $fileUploader): Response
@@ -70,6 +60,16 @@ class AdminProductController extends AbstractController
 
         return $this->render('admin/product/create.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="show")
+     */
+    public function show(Product $product): Response
+    {
+        return $this->render('admin/product/show.html.twig', [
+            'product' => $product
         ]);
     }
 }

@@ -1,0 +1,31 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+    <div class="container my-4">
+        <a href="#"><button class="btn btn-primary float-right mb-2">Editer la categorie</button></a>
+        <h1 class="h2">{{category.name}}</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam illo minima similique in distinctio voluptatibus ab, obcaecati animi rerum possimus a impedit, eaque tenetur aperiam quibusdam delectus alias corporis sunt?</p>
+        <h2 class="h2" >Les sous-categories</h2>
+        <a href="{{path('admin_sub_category_create', {'category' : category.id})}}" id="addPart">
+            <i class="fas fa-plus mr-2"></i>Ajouter une sous-categorie
+        </a>
+        <div class="row mt-2">    
+        {% for subCategory in category.subCategories %}    
+            <div class="col-sm-6 col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{subCategory.name}}</h5>
+                        <p class="card-text">Articles: <span class="badge badge-info">{{subCategory.products | length}}</span></p>
+                        <p class="card-text">Visible: Non </p>
+                        <a href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}" class="btn btn-primary">Parcourir</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col">
+                <p>Aucun Sous-categorie disponible</p>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

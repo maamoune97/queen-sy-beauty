@@ -27,16 +27,6 @@ class AdminSubCategoryController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id}", name="show")
-     */
-    public function show(SubCategory $subCategory): Response
-    {
-        return $this->render('admin/sub_category/show.html.twig', [
-            'subCategory' => $subCategory,
-        ]);
-    }
-
-    /**
      * @Route("/create", name="create")
      */
     public function create(Request $request, EntityManagerInterface $manager): Response
@@ -56,6 +46,16 @@ class AdminSubCategoryController extends AbstractController
 
         return $this->render('admin/sub_category/create.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="show")
+     */
+    public function show(SubCategory $subCategory): Response
+    {
+        return $this->render('admin/sub_category/show.html.twig', [
+            'subCategory' => $subCategory,
         ]);
     }
 }

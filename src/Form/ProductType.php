@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\SubCategory;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -17,6 +18,13 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ProductType extends AbstractType
 {
+    private $categories;
+    
+    public function __construct(CategoryRepository $cr)
+    {
+        $this->categories = $cr->findAll();
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -66,6 +74,15 @@ class ProductType extends AbstractType
                 'class' => SubCategory::class,
                 'choice_label' => 'name',
                 'multiple' => true,
+                'group_by' => function($choice) {
+                    foreach ($this->categories as $category) {
+
+                        if ($choice->getCategory() == $category) {
+                            return $category->getName();
+                        }
+                
+                    }
+                },
                 'placeholder' => 'Selectionnez le(s) categorie(s)',
                 'attr' => [
                     'class' => 'js-example-basic-multiple',
