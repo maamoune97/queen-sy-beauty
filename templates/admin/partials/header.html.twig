@@ -1,7 +1,7 @@
 {% set controller = app.request.attributes.get('_controller') %}
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
-        <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Queen S'y Beauty</a>
+        <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Queen S'y Beauty Admin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
             aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,8 +21,8 @@
                 {# <li class="nav-item ">
                     <a class="nav-link" href="{{path('admin_product_index')}}">Articles</a>
                 </li> #}
-                <li class="nav-item ">
-                    <a class="nav-link" href="#">Commandes</a>
+                <li class="nav-item {{active_by_route('admin_order_index')}}">
+                    <a class="nav-link" href="{{path('admin_order_index')}}">Commandes</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">

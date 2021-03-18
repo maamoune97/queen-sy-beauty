@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -17,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(fields={"email"}, message="cet email est déjà utilisé")
  */
-class User implements UserInterface
+class User implements UserInterface, CustomerInterface
 {
     /**
      * @ORM\Id
@@ -89,6 +91,21 @@ class User implements UserInterface
      * )
      */
     public $passwordConfirmation;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $phoneNumber;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="registeredCustomer")
+     */
+    private $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     /**
      * Permet d'initialiser la date d'inscription
@@ -220,5 +237,52 @@ class User implements UserInterface
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setRegisteredCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getRegisteredCustomer() === $this) {
+                $order->setRegisteredCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fName.' '.$this->lName;
     }
 }

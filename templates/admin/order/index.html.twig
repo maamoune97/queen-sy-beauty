@@ -1,0 +1,185 @@
+{% extends 'admin/base.html.twig' %}
+{% form_theme searchForm _self %}
+
+{% block title %}Les commandes |
+{% endblock %}
+
+{% block body %}
+	{# Rechercher, filter, et trier les commandes #}
+	<div class="container mb-3">
+		{{form_start(searchForm)}}
+		<div class="row">
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="checkbox" name="" id="" checked value="checkedValue"> En attente
+				                </label>
+				            </div> #}
+				{{form_row(searchForm.waitingStatus)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="checkbox" name="" id="" value="checkedValue"> Paiement confirmé
+				                </label>
+				            </div> #}
+				{{form_row(searchForm.paidStatus)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="checkbox" name="" id="" value="checkedValue"> Livrée
+				                </label>
+				            </div> #}
+				{{form_row(searchForm.receivedStatus)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="checkbox" name="" id="" value="checkedValue"> Tous
+				                </label>
+				            </div> #}
+				{{form_row(searchForm.allStatus)}}
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue" checked> Date décroissant
+				                </label>
+				            </div> #}
+				{{form_widget(searchForm.sort.children.0)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue"> Prix décroissant
+				                </label>
+				            </div> #}
+				{{form_widget(searchForm.sort.children.1)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue"> Date croissant
+				                </label>
+				            </div> #}
+				{{form_widget(searchForm.sort.children.2)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <div class="form-check form-check-inline">
+				                <label class="form-check-label">
+				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue"> Prix croissant
+				                </label>
+				            </div> #}
+				{{form_widget(searchForm.sort.children.3)}}
+			</div>
+			{# {{dump(searchForm.sort)}} #}
+		{# {{form_row(searchForm.sort.children.0, {'attr': {'class' : 'radio-inline'}})}}
+		        {{form_widget(searchForm.sort.children.1)}}
+		        {{form_widget(searchForm.sort.children.2)}}
+		        {{form_widget(searchForm.sort.children.3)}} #}
+			{# {{form_widget(searchForm.sort)}} #}
+		</div>
+		<div class="row">
+			<div
+				class="col-12 col-md-3">
+				{# <label for="client">Client</label>
+				            <input type="text" name="" id="client" class="form-control" placeholder="nom, prénom"> #}
+				{{form_row(searchForm.client)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <label for="date_min">Date Minimum</label>
+				            <input type="date" name="" id="date_min" class="form-control"> #}
+				{{form_row(searchForm.dateMin)}}
+			</div>
+			<div
+				class="col-12 col-md-3">
+				{# <label for="date_max">Date Maximum</label>
+				            <input type="date" name="date_max" id="" class="form-control"> #}
+				{{form_row(searchForm.dateMax)}}
+			</div>
+			<div class="col-12 col-md-3 align-items-end d-flex">
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">Rechercher</button>
+				</div>
+			</div>
+		</div>
+		{{form_end(searchForm)}}
+	</div>
+
+	{# Afficher les commandes #}
+	<div class="container-fluid">
+		<h1 class="h3">{{orders | length}} commande{{orders | length > 1 ? 's' : ''}}</h1>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>#Num Com</th>
+					<th>Client</th>
+					<th>Statut</th>
+					<th>Prix TTC</th>
+					<th>Date</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for order in orders %}
+					<tr>
+						<td>#{{order.id}}</td>
+						<td>{{order.customer.fullName}} ({{order.customer.phoneNumber}})</td>
+						<td>{{order.statusText}}</td>
+						<td>{{order.price | number_format(0, ',', ' ', ' ') }} Fc</td>
+						<td>{{order.createdAt | date('d-m-Y H:i')}}</td>
+						<td>
+							<a href="#" class="btn btn-primary btn-block">ouvrir</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
+
+{# {% block javascripts %}
+    <script>
+        $('.date').datepicker({ 
+            showOn: 'button', 
+            buttonImageOnly: true, 
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-mm-yy',
+            yearRange: "-0:+1"  
+        });
+    </script>
+{% endblock javascripts %} #}
+
+{# form theme #}
+{% block date_widget %}
+	<input type="date" name="{{full_name}}" id="{{id}}" class="form-control" value="{{value}}">
+{% endblock date_widget %}
+
+{% block text_widget %}
+	<input type="text" name="{{full_name}}" id="{{id}}" class="form-control" value="{{value}}" placeholder="{{form.vars.attr.placeholder}}">
+{% endblock text_widget %}
+
+{% block date_label %}
+	<label for="{{id}}">{{label}}</label>
+{% endblock date_label %}
+
+{% block form_row %}
+	<div class="form-group">
+		{{form_label(form)}}
+		{{form_widget(form)}}
+		{{form_errors(form)}}
+	</div>
+{% endblock form_row %}
