@@ -1,11 +1,11 @@
 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
 	<div class="card mb-3">
-		<a href="{{path('product_show', {'id': product.id})}} ">
+		<a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}">
 			<img src="{{product.coverImage}}" class="card-img-top" alt="{{product.name}}">
 		</a>
 		<div class="card-footer">
 			<p class="card-title h5">{{product.name}}</p>
-			<h5 class="card-text h4">{{product.price | number_format(0, ',', ' ', ' ') }} Fc</h5>
+			<h5 class="card-text h4">{{product.price | price}}</h5>
 		</div>
 	</div>
 </div>

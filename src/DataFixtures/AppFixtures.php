@@ -2,7 +2,11 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use App\Entity\Order;
+use App\Entity\Product;
+use App\Entity\ProductImage;
+use App\Entity\SubCategory;
 use App\Entity\UnregisteredCustomer;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -86,6 +90,44 @@ class AppFixtures extends Fixture
             }
 
             $manager->persist($order);
+        }
+
+        for ($c = 0; $c < mt_rand(4, 7); $c++) {
+            $category = new Category();
+            $category->setName($faker->words(mt_rand(1, 4), true));
+
+            $manager->persist($category);
+
+            for ($s = 0; $s < mt_rand(4, 7); $s++) { 
+                $subCategory = new SubCategory();
+                $subCategory->setName($faker->words(mt_rand(1, 4), true))
+                            ->setCategory($category)
+                            ;
+
+                $manager->persist($subCategory);
+                for ($p = 0; $p < mt_rand(3, 9); $p++)
+                {
+                    $description = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
+                    
+                    $product = new Product();
+                    $product->setName($faker->words(mt_rand(1, 4), true))
+                        ->setPrice($faker->randomElement($prices))
+                        ->setCoverImage('https://picsum.photos/640/480')
+                        ->addSubCategory($subCategory)
+                        ->setVisible($faker->boolean)
+                        ->setDescription($description)
+                        ;
+                    $manager->persist($product);
+                    //$faker->imageUrl(640, 480, 'technics')
+                    for ($i = 0; $i < mt_rand(3, 7); $i++) {
+                        $image = new ProductImage();
+                        $image->setUrl('https://picsum.photos/640/480')
+                            ->setCaption($faker->words(mt_rand(1, 4), true))
+                            ->setProduct($product);
+                        $manager->persist($image);
+                    }
+                }
+            }
         }
         
         $manager->flush();

@@ -15,12 +15,6 @@
         {% block styles %}
             {#{{ encore_entry_link_tags('app') }}#}
         {% endblock %}
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/js/popper.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
     </head>
     <body>
         <header>
@@ -32,5 +26,11 @@
         <footer>
 
         </footer>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/popper.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+        {% endblock %}
     </body>
 </html>

@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
 use App\Entity\OrderSearch;
 use App\Form\OrderSearchType;
 use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,15 +33,9 @@ class AdminOrderController extends AbstractController
         if ($form->isSubmitted()) 
         {
             $orders = $or->findbyCriteria($orderSearch);
-            //dd($orderSearch);
-            dump($orderSearch);
         }
         else
-        {   
-            // $form->get('waitingStatus')->setAttributes(['attr' => ['checked', 'checked']]);
-            
-            // $form->get('waitingStatus')->config->options['attr'] = ['checked' => 'checked'];
-            
+        {               
             $form->remove('waitingStatus');
             $form->add('waitingStatus', 
                         CheckboxType::class,
@@ -53,12 +49,39 @@ class AdminOrderController extends AbstractController
                     );
             $orders = $or->findBy(['status' => 0], ['createdAt' => 'ASC']);
         }
-
-        dump($orders);
         
         return $this->render('admin/order/index.html.twig', [
             'searchForm' => $form->createView(),
             'orders' => $orders
         ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="show")
+     *
+     * @param Order $order
+     * @return Response
+     */
+    public function show(Order $order): Response
+    {
+        return $this->render("admin/order/show.html.twig", [
+            'order' => $order
+        ]);
+    }
+
+    /**
+     * @Route("/confirm-payment/{id}", name="confirm_payment")
+     *
+     * @param Order $order
+     * @return Response
+     */
+    public function ConfirmPayment(Order $order, EntityManagerInterface $manager): Response
+    {
+        $order->setStatus(1);
+
+        $manager->persist($order);
+        $manager->flush();
+
+        return $this->redirectToRoute("admin_order_index");
     }
 }

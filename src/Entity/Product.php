@@ -63,6 +63,11 @@ class Product
     private $slug;
 
     /**
+     * @ORM\OneToMany(targetEntity=ProductPack::class, mappedBy="product")
+     */
+    private $productPacks;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      *
@@ -82,6 +87,7 @@ class Product
     {
         $this->subCategories = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->productPacks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -211,6 +217,36 @@ class Product
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPack[]
+     */
+    public function getProductPacks(): Collection
+    {
+        return $this->productPacks;
+    }
+
+    public function addProductPack(ProductPack $productPack): self
+    {
+        if (!$this->productPacks->contains($productPack)) {
+            $this->productPacks[] = $productPack;
+            $productPack->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPack(ProductPack $productPack): self
+    {
+        if ($this->productPacks->removeElement($productPack)) {
+            // set the owning side to null (unless already changed)
+            if ($productPack->getProduct() === $this) {
+                $productPack->setProduct(null);
+            }
+        }
 
         return $this;
     }

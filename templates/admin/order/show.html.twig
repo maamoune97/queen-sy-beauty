@@ -1,0 +1,54 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}{{order.customer.fullName}} | {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h3 text-center">Commande #{{order.id}}</h1>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <p class="h5">De: <span class="font-weight-bold">{{order.customer.fullName}}</span></p>
+                <p class="h5">Téléphone: <span class="font-weight-bold">{{order.customer.phoneNumber}}</span></p>
+                <p class="h5">Email: <span class="font-weight-bold">{{order.customer.email}}</span></p>
+            </div>
+            <div class="col-12 col-md-6">
+                <p class="h5">
+                    Adresse de livraion: <span class="font-weight-bold">{{order.deliveryAddress ? order.deliveryAddress : 'Non spécifié'}}</span>
+                </p>
+                <p class="h5">
+                    Status: <span class="font-weight-bold">{{order.statusText}}</span>
+                </p>
+                <p class="h5">
+                    Commande passée le : <span class="font-weight-bold">{{order.createdAt | date('d-m-Y h:i')}}</span>
+                </p>
+            </div>
+        </div>
+        <div class="mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th>Options</th>
+                        <th class="text-center">Qté</th>
+                        <th class="text-center">Prix Unitaire</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in 1..5 %}
+                        <tr>
+                            <td>Sac à main Louis-Viton</td>
+                            <td>couleur: marron</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">{{'15000' | price}}</td>
+                            <td class="text-center">{{'15000' | price}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p class="h3 text-right">Total TTC: <span class="font-weight-bold text-danger">{{order.price | price}}</span></p>
+            <p class="h5">Consigne de livraison: <span class="font-italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, totam debitis! Optio, natus cum nemo autem ducimus quasi odit laudantium.</span></p>
+            <a name="" id="" class="btn btn-primary float-right" href="{{path('admin_order_confirm_payment', {'id': order.id} )}}" role="button">Confirmer le payement</a>
+        </div>
+    </div>
+{% endblock body %}

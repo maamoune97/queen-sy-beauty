@@ -1,11 +1,10 @@
 {% extends 'admin/base.html.twig' %}
 {% form_theme searchForm _self %}
 
-{% block title %}Les commandes |
-{% endblock %}
+{% block title %}Les commandes |{% endblock %}
 
 {% block body %}
-	{# Rechercher, filter, et trier les commandes #}
+	{#formulaire pour Rechercher, filter, et trier les commandes #}
 	<div class="container mb-3">
 		{{form_start(searchForm)}}
 		<div class="row">
@@ -47,66 +46,27 @@
 			</div>
 		</div>
 		<div class="row mb-3">
-			<div
-				class="col-12 col-md-3">
-				{# <div class="form-check form-check-inline">
-				                <label class="form-check-label">
-				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue" checked> Date décroissant
-				                </label>
-				            </div> #}
+			<div class="col-12 col-md-3">
 				{{form_widget(searchForm.sort.children.0)}}
 			</div>
-			<div
-				class="col-12 col-md-3">
-				{# <div class="form-check form-check-inline">
-				                <label class="form-check-label">
-				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue"> Prix décroissant
-				                </label>
-				            </div> #}
+			<div class="col-12 col-md-3">
 				{{form_widget(searchForm.sort.children.1)}}
 			</div>
-			<div
-				class="col-12 col-md-3">
-				{# <div class="form-check form-check-inline">
-				                <label class="form-check-label">
-				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue"> Date croissant
-				                </label>
-				            </div> #}
+			<div class="col-12 col-md-3">
 				{{form_widget(searchForm.sort.children.2)}}
 			</div>
-			<div
-				class="col-12 col-md-3">
-				{# <div class="form-check form-check-inline">
-				                <label class="form-check-label">
-				                    <input class="form-check-input" type="radio" name="orderedBy" id="" value="checkedValue"> Prix croissant
-				                </label>
-				            </div> #}
+			<div class="col-12 col-md-3">
 				{{form_widget(searchForm.sort.children.3)}}
 			</div>
-			{# {{dump(searchForm.sort)}} #}
-		{# {{form_row(searchForm.sort.children.0, {'attr': {'class' : 'radio-inline'}})}}
-		        {{form_widget(searchForm.sort.children.1)}}
-		        {{form_widget(searchForm.sort.children.2)}}
-		        {{form_widget(searchForm.sort.children.3)}} #}
-			{# {{form_widget(searchForm.sort)}} #}
 		</div>
 		<div class="row">
-			<div
-				class="col-12 col-md-3">
-				{# <label for="client">Client</label>
-				            <input type="text" name="" id="client" class="form-control" placeholder="nom, prénom"> #}
+			<div class="col-12 col-md-3">
 				{{form_row(searchForm.client)}}
 			</div>
-			<div
-				class="col-12 col-md-3">
-				{# <label for="date_min">Date Minimum</label>
-				            <input type="date" name="" id="date_min" class="form-control"> #}
+			<div class="col-12 col-md-3">
 				{{form_row(searchForm.dateMin)}}
 			</div>
-			<div
-				class="col-12 col-md-3">
-				{# <label for="date_max">Date Maximum</label>
-				            <input type="date" name="date_max" id="" class="form-control"> #}
+			<div class="col-12 col-md-3">
 				{{form_row(searchForm.dateMax)}}
 			</div>
 			<div class="col-12 col-md-3 align-items-end d-flex">
@@ -138,10 +98,10 @@
 						<td>#{{order.id}}</td>
 						<td>{{order.customer.fullName}} ({{order.customer.phoneNumber}})</td>
 						<td>{{order.statusText}}</td>
-						<td>{{order.price | number_format(0, ',', ' ', ' ') }} Fc</td>
+						<td>{{order.price | price}}</td>
 						<td>{{order.createdAt | date('d-m-Y H:i')}}</td>
 						<td>
-							<a href="#" class="btn btn-primary btn-block">ouvrir</a>
+							<a href="{{path('admin_order_show', {'id' : order.id} )}} " class="btn btn-primary btn-block">ouvrir</a>
 						</td>
 					</tr>
 				{% endfor %}
@@ -149,19 +109,6 @@
 		</table>
 	</div>
 {% endblock %}
-
-{# {% block javascripts %}
-    <script>
-        $('.date').datepicker({ 
-            showOn: 'button', 
-            buttonImageOnly: true, 
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'dd-mm-yy',
-            yearRange: "-0:+1"  
-        });
-    </script>
-{% endblock javascripts %} #}
 
 {# form theme #}
 {% block date_widget %}

@@ -26,7 +26,7 @@ class AppExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
-            //new TwigFilter('filter_name', [$this, 'doSomething']),
+            new TwigFilter('price', [$this, 'price']),
         ];
     }
 
@@ -57,5 +57,18 @@ class AppExtension extends AbstractExtension
         
         return in_array($controller, $controllers) ? 'active' : '';
         
+    }
+
+    /**
+     * filtre pour formater les prix
+     *
+     * @param float $price
+     * @param string|null $currency
+     * @param integer|null $decimals
+     * @return string
+     */
+    public function price(float $price, ?string $currency = 'Fc', ?int $decimals = 0): string
+    {
+        return number_format($price, $decimals, ',', ' '). ' '.$currency;
     }
 }

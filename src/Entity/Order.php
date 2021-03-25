@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -56,6 +58,21 @@ class Order
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductPack::class, mappedBy="command", orphanRemoval=true)
+     */
+    private $productPacks;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $deliveryAddress;
+
+    public function __construct()
+    {
+        $this->productPacks = new ArrayCollection();
+    }
 
     
     /**
@@ -179,6 +196,48 @@ class Order
         {
             $this->setUnregisteredCustomer($customer);
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPack[]
+     */
+    public function getProductPacks(): Collection
+    {
+        return $this->productPacks;
+    }
+
+    public function addProductPack(ProductPack $productPack): self
+    {
+        if (!$this->productPacks->contains($productPack)) {
+            $this->productPacks[] = $productPack;
+            $productPack->setCommand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPack(ProductPack $productPack): self
+    {
+        if ($this->productPacks->removeElement($productPack)) {
+            // set the owning side to null (unless already changed)
+            if ($productPack->getCommand() === $this) {
+                $productPack->setCommand(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDeliveryAddress(): ?string
+    {
+        return $this->deliveryAddress;
+    }
+
+    public function setDeliveryAddress(?string $deliveryAddress): self
+    {
+        $this->deliveryAddress = $deliveryAddress;
+
         return $this;
     }
 }
