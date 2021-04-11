@@ -1,0 +1,57 @@
+    <!-- footer Section -->
+    <footer class="ft-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="ft-left ft-widget">
+                        <h5>Service Client</h5>
+                        <ul>
+                            <li>Addresse: Hombo, Mutsamudu Anjouan</li>
+                            <li>Téléphone: +269 323 47 49</li>
+                            <li>Email: youssoufsiham@gmail.com</li>
+                        </ul>
+                        <div class="ft-social">
+                            <a href="https://www.facebook.com/Bwenisiham"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 offset-lg-1 offset-md-1" style="margin: 0;">
+                    <div class="ft-widget">
+                        <h5>Information</h5>
+                        <ul>
+                            <li><a href="{{path('information_about_us')}}">Aprops de nous</a></li>
+                            <li><a href="#">Commande</a></li>
+                            <li><a href="{{path('information_contact')}}">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="ft-widget">
+                        <h5>Mon Compte</h5>
+                        <ul>
+                            <li><a href="#">Mon Compte</a></li>
+                            <li><a href="#">Mes commandes</a></li>
+                            <li><a href="{{path('cart_show')}}">Panier</a></li>
+                            <li><a href="{{path('shop_index')}}">Boutique</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{path('admin_dashboard')}}">Admin</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="copy-and-creator row">
+                    <div class="copyright-Text col-lg-5 col-md-5">
+                        &copy; 2022 Queen S'Y Beauty | Tout Droit Reservé
+                    </div>
+                    <div class="creator-container col-lg-4 col-md-4">
+                        Designed By <a href="" class="">@AMCreator</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>

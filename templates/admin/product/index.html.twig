@@ -21,11 +21,9 @@
                         <div class="card-body">
                             <h5 class="card-title">{{product.name}}</h5>
                             <p class="card-text text-right h4">{{product.price | price}}</span></p>
-                                {% for subCategory in product.subCategories %}
-                                    <a class="card-text" href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}">
-                                        <span class="badge badge-danger">{{subCategory.name}}</span> 
-                                    </a>
-                                {% endfor %}
+                                <a class="card-text" href="{{path('admin_sub_category_show', {'id': product.subCategory.id} )}}">
+                                    <span class="badge badge-danger">{{product.subCategory.name}}</span> 
+                                </a>
                             <a href="{{path('admin_product_show', {'id': product.id} )}}"><button class="btn btn-primary btn-block mt-2">Voir le produit</button></a>
                         </div>
                     </div>

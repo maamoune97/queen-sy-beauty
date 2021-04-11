@@ -43,11 +43,6 @@ class Product
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity=SubCategory::class, inversedBy="products")
-     */
-    private $subCategories;
-
-    /**
      * @ORM\OneToMany(targetEntity=ProductImage::class, mappedBy="product", orphanRemoval=true)
      */
     private $images;
@@ -68,6 +63,12 @@ class Product
     private $productPacks;
 
     /**
+     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $subCategory;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      *
@@ -85,7 +86,6 @@ class Product
 
     public function __construct()
     {
-        $this->subCategories = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->productPacks = new ArrayCollection();
     }
@@ -139,30 +139,6 @@ class Product
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|SubCategory[]
-     */
-    public function getSubCategories(): Collection
-    {
-        return $this->subCategories;
-    }
-
-    public function addSubCategory(SubCategory $subCategory): self
-    {
-        if (!$this->subCategories->contains($subCategory)) {
-            $this->subCategories[] = $subCategory;
-        }
-
-        return $this;
-    }
-
-    public function removeSubCategory(SubCategory $subCategory): self
-    {
-        $this->subCategories->removeElement($subCategory);
 
         return $this;
     }
@@ -247,6 +223,18 @@ class Product
                 $productPack->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubCategory(): ?SubCategory
+    {
+        return $this->subCategory;
+    }
+
+    public function setSubCategory(?SubCategory $subCategory): self
+    {
+        $this->subCategory = $subCategory;
 
         return $this;
     }

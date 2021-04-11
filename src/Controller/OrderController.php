@@ -21,22 +21,20 @@ class OrderController extends AbstractController
     {
 
         return $this->render('order/new.html.twig', [
-            'products' => $cart->getData(),
-            'subtotalPrice' => $cart->getSubtotalPrice(),
+            
         ]);
     }
 
     /**
-     * @Route("/order/finalize", name="order_finalize")
+     * @Route("/commande/finaliser", name="order_finalize")
      *
      * @return void
      */
-    public function finalize(Request $request, SessionInterface $session) : Response
+    public function finalize(CartService $cart) : Response
     {
-        $order = new Order();
-
         return $this->render('order/finalize.html.twig', [
-
+            'products' => $cart->getData(),
+            'subTotalPrice' => $cart->getSubtotalPrice(),
         ]);
     }
 }

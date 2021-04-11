@@ -30,6 +30,7 @@ class User implements UserInterface, CustomerInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message = "Entrez votre adresse email")
      *  @Assert\Email(
      *     message = "Entrez un email valide"
      * )
@@ -94,6 +95,7 @@ class User implements UserInterface, CustomerInterface
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\NotBlank(message = "Entrez votre numéro de téléphone")
      */
     private $phoneNumber;
 

@@ -1,0 +1,22 @@
+<div class="col-lg-4 col-sm-4 col-6 mb-4">
+	<div class="box">
+		<div class="slide-img">
+			<img src="{{asset(product.coverImage)}}" alt="{{product.name}}">
+			<div class="overlay">
+				<a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}" class="buy-btn">
+					Acheter Maintenant
+				</a>
+			</div>
+		</div>
+
+		<div class="detail-box">
+			<div class="type">
+				<span class="article-name" href={{path('product_show', {'slug': product.slug, 'id': product.id})}}"">{{product.name}}</span>
+			</div>
+			<span class="price">{{product.price | price}}</span>
+			<div class="marketing-price">
+				<span class="line-trought-price">7500 KMF</span>
+				<span class="percentage-promo">-15%</span></div>
+		</div>
+	</div>
+</div>

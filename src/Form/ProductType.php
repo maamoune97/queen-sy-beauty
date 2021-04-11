@@ -69,11 +69,10 @@ class ProductType extends AbstractType
                     'placeholder' => 'ex: 2500'
                 ]
             ])
-            ->add('subCategories', EntityType::class, [
-                'label' => 'Categories',
+            ->add('subCategory', EntityType::class, [
+                'label' => 'Sous-categorie',
                 'class' => SubCategory::class,
                 'choice_label' => 'name',
-                'multiple' => true,
                 'group_by' => function($choice) {
                     foreach ($this->categories as $category) {
 
@@ -83,9 +82,9 @@ class ProductType extends AbstractType
                 
                     }
                 },
-                'placeholder' => 'Selectionnez le(s) categorie(s)',
+                'placeholder' => 'Selectionnez la sous-categorie',
                 'attr' => [
-                    'class' => 'js-example-basic-multiple',
+                    'class' => 'js-example-basic-single',
                 ]
             ])
         ;

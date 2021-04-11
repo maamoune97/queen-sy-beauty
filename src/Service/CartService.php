@@ -129,4 +129,20 @@ class CartService
         return $done;
     }
 
+
+    /**
+     * get number of items in shopping-cart
+     *
+     * @return integer
+     */
+    public function getProductCount(): int
+    {
+        $cart = $this->session->get('cart', []);
+        $count = 0;
+        foreach ($cart as $productId => $quantity) {
+            $count += $quantity;
+        }
+        return $count;
+    }
+
 }

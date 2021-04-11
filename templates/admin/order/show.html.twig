@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container">
-        <h1 class="h3 text-center">Commande #{{order.id}}</h1>
+        <h1 class="h3 text-center">Commande #{{order.orderNumber}}</h1>
         <div class="row">
             <div class="col-12 col-md-6">
                 <p class="h5">De: <span class="font-weight-bold">{{order.customer.fullName}}</span></p>
@@ -13,7 +13,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <p class="h5">
-                    Adresse de livraion: <span class="font-weight-bold">{{order.deliveryAddress ? order.deliveryAddress : 'Non spécifié'}}</span>
+                    Adresse de livraion: <span class="font-weight-bold">{{order.deliveryAddress ? order.deliveryAddress : 'Non spécifiée'}}</span>
                 </p>
                 <p class="h5">
                     Status: <span class="font-weight-bold">{{order.statusText}}</span>
@@ -23,7 +23,7 @@
                 </p>
             </div>
         </div>
-        <div class="mt-4">
+        <div class="my-4">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -48,7 +48,7 @@
             </table>
             <p class="h3 text-right">Total TTC: <span class="font-weight-bold text-danger">{{order.price | price}}</span></p>
             <p class="h5">Consigne de livraison: <span class="font-italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore, totam debitis! Optio, natus cum nemo autem ducimus quasi odit laudantium.</span></p>
-            <a name="" id="" class="btn btn-primary float-right" href="{{path('admin_order_confirm_payment', {'id': order.id} )}}" role="button">Confirmer le payement</a>
+            <a class="btn btn-primary float-right" href="{{path('admin_order_confirm_payment', {'id': order.id} )}}">Confirmer le payement</a>
         </div>
     </div>
 {% endblock body %}

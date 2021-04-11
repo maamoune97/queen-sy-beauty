@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Entity\SubCategory;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
-use App\Service\FileUploader;
+use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +31,13 @@ class AdminProductController extends AbstractController
     /**
      * @Route("/create/{subCategory}", name="create")
      */
-    public function create(?SubCategory $subCategory = null, EntityManagerInterface $manager, Request $request, FileUploader $fileUploader): Response
+    public function create(?SubCategory $subCategory = null, EntityManagerInterface $manager, Request $request, FileUploaderService $FileUploaderService): Response
     {
         $product = new Product();
         
         if ($subCategory)
         {
-            $product->addSubCategory($subCategory);
+            $product->setSubCategory($subCategory);
         }
 
         $form = $this->createForm(ProductType::class, $product);
@@ -45,7 +45,7 @@ class AdminProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $coverImageUrl = $fileUploader->upload($form->get('coverImage')->getData(), 'products');
+            $coverImageUrl = $FileUploaderService->upload($form->get('coverImage')->getData(), 'products');
             $product->setCoverImage($coverImageUrl);
 
             $manager->persist($product);

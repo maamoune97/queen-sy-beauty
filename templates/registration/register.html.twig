@@ -1,9 +1,55 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form 'partials/_register_form_theme.html.twig' %}
 {% block title %}Inscription | {% endblock %}
 
 {% block body %}
-<div class="container mt-5 white-card">
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{path('home')}}"><i class="fa fa-home"></i> Acceuil</a>
+                        <span>Inscription</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="register-form">
+                        <h2>Inscription</h2>
+                        {{form_start(form)}}
+                        <div class="row">
+                            <div class="col">{{form_row(form.lName)}}</div>
+                            <div class="col">{{form_row(form.fName)}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">{{form_row(form.phoneNumber)}}</div>
+                            <div class="col">{{form_row(form.email)}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">{{form_row(form.password)}}</div>
+                            <div class="col">{{form_row(form.passwordConfirmation)}}</div>
+                        </div>
+                        <button type="submit" class="site-btn register-btn">Inscription</button>
+                        {{form_end(form)}}
+                        <div class="switch-login">
+                            <a href="{{path('app_login')}}" class="or-login">ou se connecter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{# <div class="container mt-5 white-card">
     
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
@@ -54,6 +100,8 @@
         </div>
     </div>
     {{form_end(form)}}
-</div>
+</div> #}
 {% endblock %}
+
+{% block name %}{% endblock %}
 

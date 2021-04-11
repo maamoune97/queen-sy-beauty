@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
@@ -27,15 +27,21 @@ class Category
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category")
-     */
-    private $subCategories;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category", orphanRemoval=true)
+     */
+    private $subCategories;
+
+    public function __construct()
+    {
+        $this->subCategories = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist
@@ -54,11 +60,6 @@ class Category
         }
     }
 
-    public function __construct()
-    {
-        $this->subCategories = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -72,6 +73,18 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -102,18 +115,6 @@ class Category
                 $subCategory->setCategory(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }

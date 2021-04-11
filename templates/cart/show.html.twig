@@ -1,113 +1,109 @@
 {% extends 'base.html.twig' %}
-{% block title %}mon panier |{% endblock %}
-{% block styles %}
-	<style>
-		.products {
-			display: flex;
-			flex-direction: row;
-        }
-        .product-name p{
-            font-weight: bold;
-            color: black;
-        }
-        .product-name:hover{
-            text-decoration: none;
-        }
-	</style>
-{% endblock styles %}
+{% block title %}Panier |{% endblock %}
 {% block body %}
-	
-	
-	{% if globalRender.getCartProductCount > 0 %}
-		<div class="container mt-4 white-card pb-4">
-			<h1 class="display-5"><i class="fas fa-shopping-basket"></i> Panier (<span id="numberArticles">{{globalRender.getCartProductCount}}</span>
-				article{{products | length > 1 ? 's'}})</h1>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Article</th>
-						<th>Quantité</th>
-						<th class="text-center">Prix Unitaire</th>
-						<th class="text-center">Sous Total</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in products %}
-						<tr>
-							<td class="products">
-								<a href="{{path('product_show', {'slug': item.product.name, 'id': item.product.id})}} ">
-									<img src="{{item.product.coverImage}}" alt="image {{item.product.name}}" class="img-cart-product">
-								</a>
-								<div>
-									<a href="{{path('product_show', {'slug': item.product.name, 'id': item.product.id})}} " class="product-name">
-										<p class="h5 mr-auto">{{item.product.name}}</p>
-									</a>
-									<a href="{{path('cart_remove', {'id' : item.product.id})}} "><button class="btn btn-sm btn-outline-primary"><i class="fas fa-trash mr-1"></i>Supprimer</button></a>
-								</div>
-							</td>
-							<td>
-								<select name="quantity" data-product="{{item.product.id}}" class="form-control quantitySelect" style="width: auto;">
-									{% for i in 1..9 %}
-										<option value="{{i}}" {{i == item.quantity ? 'Selected'}} >{{i}}</option>
-									{% endfor %}
-								</select>
-							</td>
-							<td class="text-center" valign="middle">
-								<p class="h5">{{item.product.price | number_format(2, ',', ' ', ' ') }}
-									KMF</p>
-							</td>
-							<td class="text-center" valign="middle">
-								<p class="h5 text-primary">{{(item.product.price * item.quantity) | number_format(2, ',', ' ', ' ') }}
-									KMF</p>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			<div class="text-right">
-				<p class="h4">Total TTC:
-					<span class="text-primary ml-4">{{subtotalPrice | number_format(2, ',', ' ', ' ') }} KMF</span>
-				</p>
-				<p class="mb-4 text-muted">Frais d'expédition non inclus pour le moment </p>
-				<a href="{{path('home')}}">
-					<button class="btn btn-outline-secondary btn-lg mr-3">POURSUIVRE MES ACHATS</button>
-				</a>
-				<a href="{{path('order_new')}}">
-					<button class="btn btn-primary btn-lg">FINALISER MA COMMANDE</button>
-				</a>
-			</div>
-		</div>
-	{% else %}
-		<div class="container mt-5 bg-light jumbotron ">
-			<h1 class="display-5"><i class="fas fa-shopping-basket"></i> Panier</h1>
-			<div class="d-flex align-items-center justify-content-center flex-column">
-				<div class="w-auto p-3 text-center">
-					<span class="h2 d-block">Votre panier est vide pour l'instant</span>
-					<p>Explorez nos catégories et découvrez nos meilleures offres!</p>
-					<a href="{{path('home')}}" class="btn btn-primary btn-block">Commencer mes achats</a>
-				</div>
-			</div>
-		</div>
-	{% endif %}
+	    <!-- Breadcrumb Section Begin -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text product-more">
+                        <a href="{{path('home')}}"><i class="fa fa-home"></i> Acceuil</a>
+                        <a href="{{path('shop_index')}}">Boutique</a>
+                        <span>Panier</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section Begin -->
+
+    {% if cart | length > 0%}
+        <!-- Shopping Cart Section Begin -->
+        <section class="shopping-cart-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="sh-cart-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th class="product-name">Article</th>
+                                        <th>Prix</th>
+                                        <th>Quantité</th>
+                                        <th>Total</th>
+                                        <th><i class="ti-close"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart %}
+                                        <tr>
+                                            <td class="cr-image ligne-one">
+                                                <a href="{{path('product_show', {'slug': item.product.name, 'id': item.product.id})}}">
+                                                    <img class="img-shopping-cart" src="{{item.product.coverImage}}" alt="{{item.product.name}}">
+                                                </a>
+                                            </td>
+                                            <td class="cr-title ligne-one">
+                                                <a href="{{path('product_show', {'slug': item.product.name, 'id': item.product.id})}}">
+                                                    <h5>{{item.product.name}}</h5>
+                                                </a>
+                                            </td>
+                                            <td class="pr-price ligne-one">{{item.product.price | price}}</td>
+                                            <td class="qtty-col ligne-one">
+                                                <div class="quantity">
+                                                    <div class="pro-qty">
+                                                        <input type="text" value="{{item.quantity}}" data-product="{{item.product.id}}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="total-price ligne-one">{{(item.product.price * item.quantity) | price}}</td>
+                                            <td class="close-td ligne-one"><a href="{{path('cart_remove', {'id' : item.product.id})}}"><i class="ti-close"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" style="justify-content: center">
+                            <div class="col-lg-6">
+                                <div class="chk-section">
+                                    <ul>
+                                        <li class="subtotal">Sous-total <span>{{subtotalPrice | price}}</span></li>
+                                        <li class="subtotal">Frais de service<span>{{0 | price}}</span></li>
+                                        <li class="total-basket">Total <span>{{subtotalPrice | price}}</span></li>
+                                    </ul>
+                                    <a href="{{path('order_finalize')}}" class="checkout-btn">FINALISER LA COMMANDE</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Shopping Cart Section End -->
+    {% else %}
+        <section class="banner-empty-card">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 row-center">
+                        <div class="empty-card-imgcontainer">
+                            <img src="{{asset('media/images/static/empty-card.png')}}" alt="" class="empty-card-img">
+                        </div>
+                        <div class="text-empty-card">
+                            <span>Votre Panier est vide</span>
+                        </div>
+                        <div class="btn-empty-card">
+                            <a href="{{path('shop_index')}}" class="redirect-to-shop">
+                                <span>Commencez vos achats</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>        
+    {% endif %}
+    
 {% endblock %}
 
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
-    <script>
-        $('.quantitySelect').change( (element) => {
-            const quantity = $(element.currentTarget).children("option:selected").val();
-            const idProduct = element.currentTarget.dataset.product;
-            console.log(idProduct, quantity);
-
-            const url = `/cart/update/${idProduct}/quantity/${quantity}`;
-            axios.post(url)
-            .then(function (response) {
-                window.location.reload()
-            })
-            .catch(function (error) {
-                console.log('error: '+ error);
-            });
-            //axios.post('/cart/update/{idProduct}/quantity/{number}')
-        })
-    </script>
 {% endblock javascripts %}

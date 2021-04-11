@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,19 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product", name="product")
-     */
-    public function index(): Response
-    {
-        return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
-        ]);
-    }
-
-    /**
      * @Route("/show/{slug}/{id}", name="product_show")
      */
-    public function show(Product $product, $slug): Response
+    public function show(Product $product, $slug, ProductRepository $productRepository): Response
     {
         if ($product->getSlug() !== $slug)
         {
@@ -31,8 +22,22 @@ class ProductController extends AbstractController
                 'id' => $product->getId()
             ], 301);
         }
+
+        $sameProducts = $productRepository->findBySubCategory($product->getSubCategory());
+
+        foreach ($sameProducts as $key => $sameProduct)
+        {
+            if ($sameProduct->getId() === $product->getId())
+            {
+                unset($sameProducts[$key]);
+                break;
+            }
+        }
+        shuffle($sameProducts);
+        $sameProducts = array_slice($sameProducts,0,4);
         return $this->render('product/show.html.twig', [
             'product' => $product,
+            'sameProducts' => $sameProducts,
         ]);
     }
 }

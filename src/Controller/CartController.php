@@ -22,7 +22,7 @@ class CartController extends AbstractController
     public function show(): Response
     {
         return $this->render('cart/show.html.twig', [
-            'products' => $this->cartService->getData(),
+            'cart' => $this->cartService->getData(),
             'subtotalPrice' => $this->cartService->getSubtotalPrice(),
         ]);
     }

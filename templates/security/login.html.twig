@@ -1,8 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion | {% endblock %}
 
 {% block body %}
+
+    <!-- Breadcrumb Section Begin -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="{{path('home')}}"><i class="fa fa-home"></i> Acceuil</a>
+                        <span>Connexion</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
+
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="login-form">
+                        <h2>Connexion</h2>
+
+                            <div class="col">
+                                {% if error %}
+                                    <div class="alert alert-danger text-center">Adresse email et/ou mot de passe incorrect</div>
+                                {% endif %}
+                            </div>
+                            
+                        <form action="{{ path('app_login') }}" method="post">
+                            <div class="group-input">
+                                <label for="inputEmail">Adresse email</label>
+                                <input type="email" id="inputEmail" value="{{last_username}}" name="email" required autofocus>
+                            </div>
+                            <div class="group-input">
+                                <label for="inputPassword">Mot de passe</label>
+                                <input type="password" name="password" id="inputPassword" required>
+                            </div>
+                            {# <div class="group-input gi-check">
+                                <div class="gi-more">
+                                    <label for="save-pass">
+                                        Save Password
+                                        <input type="checkbox" id="save-pass">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <a href="#" class="forget-pass">Forget your Password</a>
+                                </div>
+                            </div> #}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <input type="hidden" name="_target_path" value="{{app.request.headers.get('referer')}}"/>
+                            <button type="submit" class="site-btn login-btn">Connexion</button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="{{path('app_register')}}" class="or-login">Ou s'inscrire</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Register Form Section End -->
+{# 
 <div class="container mt-5 white-card">
     <form method="post">
         {% if app.user %}
@@ -38,7 +102,7 @@
 
         <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
-        >
+        > #}
 
         {#
             Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
@@ -51,7 +115,7 @@
             </div>
         #}
 
-        <div class="row">
+        {# <div class="row">
             <div class="col-12 offset-md-4 col-md-4">
                 <div class="form-group">
                     <input type="submit" value="CONNEXION" class="btn btn-primary btn-block" />
@@ -59,5 +123,5 @@
             </div>
         </div>
     </form>
-</div>
+</div> #}
 {% endblock %}

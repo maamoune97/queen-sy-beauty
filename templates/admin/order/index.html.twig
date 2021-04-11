@@ -1,7 +1,7 @@
 {% extends 'admin/base.html.twig' %}
 {% form_theme searchForm _self %}
 
-{% block title %}Les commandes |{% endblock %}
+{% block title %}Les commandes | {% endblock %}
 
 {% block body %}
 	{#formulaire pour Rechercher, filter, et trier les commandes #}
@@ -95,7 +95,7 @@
 			<tbody>
 				{% for order in orders %}
 					<tr>
-						<td>#{{order.id}}</td>
+						<td>{{order.orderNumber}}</td>
 						<td>{{order.customer.fullName}} ({{order.customer.phoneNumber}})</td>
 						<td>{{order.statusText}}</td>
 						<td>{{order.price | price}}</td>

@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SubCategoryRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
@@ -28,9 +28,9 @@ class SubCategory
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="subCategories")
+     * @ORM\Column(type="string", length=255)
      */
-    private $products;
+    private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
@@ -39,9 +39,14 @@ class SubCategory
     private $category;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="subCategory", orphanRemoval=true)
      */
-    private $slug;
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
 
     /**
@@ -58,11 +63,6 @@ class SubCategory
         {
             $this->setSlug($slug);
         }
-    }
-
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,29 +82,14 @@ class SubCategory
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
+    public function getSlug(): ?string
     {
-        return $this->products;
+        return $this->slug;
     }
 
-    public function addProduct(Product $product): self
+    public function setSlug(string $slug): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->addSubCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            $product->removeSubCategory($this);
-        }
+        $this->slug = $slug;
 
         return $this;
     }
@@ -121,14 +106,32 @@ class SubCategory
         return $this;
     }
 
-    public function getSlug(): ?string
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
     {
-        return $this->slug;
+        return $this->products;
     }
 
-    public function setSlug(string $slug): self
+    public function addProduct(Product $product): self
     {
-        $this->slug = $slug;
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setSubCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getSubCategory() === $this) {
+                $product->setSubCategory(null);
+            }
+        }
 
         return $this;
     }

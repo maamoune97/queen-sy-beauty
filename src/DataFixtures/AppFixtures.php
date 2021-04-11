@@ -9,6 +9,7 @@ use App\Entity\ProductImage;
 use App\Entity\SubCategory;
 use App\Entity\UnregisteredCustomer;
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -70,7 +71,9 @@ class AppFixtures extends Fixture
             $order->setPrice($faker->randomElement($prices))
                   ->setStatus($faker->randomElement([0,1,2]))
                   ->setCreatedAt($faker->dateTimeBetween('-8 days'))
+                  ->setOrderNumber(uniqid('qsb-'));
                   ;
+
             
             if ($faker->boolean)
             {
@@ -88,7 +91,6 @@ class AppFixtures extends Fixture
                 $manager->persist($unregesiterd);
                 $order->setCustomer($unregesiterd);
             }
-
             $manager->persist($order);
         }
 
@@ -113,7 +115,7 @@ class AppFixtures extends Fixture
                     $product->setName($faker->words(mt_rand(1, 4), true))
                         ->setPrice($faker->randomElement($prices))
                         ->setCoverImage('https://picsum.photos/640/480')
-                        ->addSubCategory($subCategory)
+                        ->setSubCategory($subCategory)
                         ->setVisible($faker->boolean)
                         ->setDescription($description)
                         ;

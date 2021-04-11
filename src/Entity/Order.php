@@ -3,16 +3,18 @@
 namespace App\Entity;
 
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"orderNumber"}, message="numéro de commande déjà utilisé")
  */
 class Order
 {
@@ -69,6 +71,11 @@ class Order
      */
     private $deliveryAddress;
 
+    /**
+     * @ORM\Column(type="string", length=20, unique=true)
+     */
+    private $orderNumber;
+
     public function __construct()
     {
         $this->productPacks = new ArrayCollection();
@@ -87,6 +94,33 @@ class Order
         if(empty($this->getCreatedAt()))
         {
             $this->setCreatedAt(new DateTime());
+        }
+    }
+
+    /**
+     * Permet d'initialiser la date de la commande
+     *
+     * @ORM\PreUpdate
+     * 
+     * @return void
+     */
+    public function updateUpdatedAt()
+    {
+        $this->setUpdatedAt(new DateTime());
+    }
+
+    /**
+     * Permet d'initialiser le numéro de commande
+     *
+     * @ORM\PrePersist
+     * 
+     * @return void
+     */
+    public function initializeOrderNumber()
+    {
+        if(empty($this->getOrderNumber()))
+        {
+            $this->setOrderNumber(date_timestamp_get(new DateTime()));
         }
     }
 
@@ -237,6 +271,18 @@ class Order
     public function setDeliveryAddress(?string $deliveryAddress): self
     {
         $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?string
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(string $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }

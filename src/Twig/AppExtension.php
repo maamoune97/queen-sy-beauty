@@ -67,7 +67,7 @@ class AppExtension extends AbstractExtension
      * @param integer|null $decimals
      * @return string
      */
-    public function price(float $price, ?string $currency = 'Fc', ?int $decimals = 0): string
+    public function price(float $price, ?string $currency = 'KMF', ?int $decimals = 0): string
     {
         return number_format($price, $decimals, ',', ' '). ' '.$currency;
     }

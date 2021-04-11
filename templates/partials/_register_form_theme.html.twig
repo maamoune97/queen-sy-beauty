@@ -1,0 +1,35 @@
+{% block form_row %}
+    <div class="group-input">
+        {{form_label(form)}}
+        {{form_widget(form)}}
+        {{form_errors(form)}}
+    </div>
+{% endblock form_row %}
+
+{% block text_widget %}
+    <input type="text" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{ required ? "required='required'" : "" }} >
+{% endblock text_widget %}
+
+{% block email_widget %}
+    <input type="email" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{ required ? "required='required'" : "" }}>
+{% endblock email_widget %}
+
+{% block password_widget %}
+    <input type="password" name="{{full_name}}" id="{{id}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{ required ? "required='required'" : "" }}>
+{% endblock password_widget %}
+
+{% block tel_widget %}
+    <input type="tel" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{attr.placeholder}}" {{ required ? "required='required'" : "" }}>
+{% endblock tel_widget %}
+
+{% block form_errors %}
+    {% for error in errors.form.errors %}
+        {% if loop.last %}
+            <span class="text-danger">{{error.message}}</span>
+        {% endif %}
+    {% endfor %}
+{% endblock form_errors %}
+
+{% block form_label %}
+    <label for="{{id}}">{{label}}</label>
+{% endblock form_label %}

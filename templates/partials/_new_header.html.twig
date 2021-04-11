@@ -1,0 +1,400 @@
+<header class="header-section">
+
+        <!-- Header Top -->
+        <div class="header-top">
+            <div class="container">
+                <div class="i_container">
+                    <div class="phone-info">
+                        <span class="fa fa-headphones"></span> +2693234749
+                    </div>
+                    <div class="mail-info">
+                        <span class="fa fa-envelope"></span> youssoufSiham@gmail.com
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo et Search bar header -->
+        <div class="header-bar">
+            <div class="container">
+                <div class="header-row-container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <div class="logo">
+                                <a href="{{path('home')}}">
+                                    <img src="{{asset('media/images/static/logoQueen.png')}}" alt="logo Queen S'y BEAUTY">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6" style="margin-left: 10;">
+                            <div class="search-container">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Rechercher un produit, une marque ou une categorie">
+                                    <button type="button"><i class="ti-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 text-right col-md-3">
+                            <ul class="header-right">
+                                <li class="user-icon">
+                                    <a href="{{path('app_login')}}">
+                                        <i class="ti-user"></i>
+                                    </a>
+                                    
+                                    <div class="user-hover">
+                                        {% if not app.user %}
+                                            <div class="login-register">
+                                                <div class="login">
+                                                    <a href="{{path('app_login')}}">
+                                                        <span>Connexion</span>
+                                                    </a>
+                                                </div>
+                                                |
+                                                <div class="register">
+                                                    <a href="{{path('app_register')}}">
+                                                        <span>Inscription</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            
+                                            <!-- Connected user -->
+                                            <div class="connected-user">
+                                                <div class="connected-user-content">
+                                                    <span>{{app.user.fullname}}</span>
+                                                    <span><i>{{app.user.email}}</i></span>
+                                                </div>
+                                            </div>
+
+                                            <ul>
+                                                <li>
+                                                    <a href="">
+                                                        <i class="ti-user"></i>
+                                                        <span>Mon Compte</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="">
+                                                        <i class="ti-package"></i>
+                                                        <span>Mes Commandes</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="">
+                                                        <i class="ti-settings"></i>
+                                                        <span>Parametre</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{path('app_logout')}}">
+                                                        <i class="fa fa-sign-out" style="font-size: 18px"></i>
+                                                        <span>Deconnexion</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        {% endif %}
+
+                                    </div>
+                                </li>
+                                <li class="cart-icon">
+                                    <a href="{{path('cart_show')}}">
+                                        <i class="icon_bag_alt"></i>
+                                        <span>{{globalRender.getCartProductCount}}</span>
+                                    </a>
+                                    <div class="cart-hover">
+                                        <div class="cart-hover-container">
+                                            <div class="select-items">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="si-pic"><img src="{{asset('media/images/static/select-product-1.jpg')}}" alt="">
+                                                            </td>
+                                                            <td class="si-text">
+                                                                <div class="product-selected">
+                                                                    <p>$60.00 x 1</p>
+                                                                    <h6>Kabino Bedside Table</h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="si-close">
+                                                                <i class="ti-close"></i>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="si-pic"><img src="{{asset('media/images/static/select-product-2.jpg')}}" alt="">
+                                                            </td>
+                                                            <td class="si-text">
+                                                                <div class="product-selected">
+                                                                    <p>$60.00 x 1</p>
+                                                                    <h6>Kabino Bedside Table</h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="si-close">
+                                                                <i class="ti-close"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="select-total">
+                                                <span>total:</span>
+                                                <h5>{{globalRender.getCartSubTotalPrice | price}}</h5>
+                                            </div>
+                                            <div class="select-button">
+                                                <a href="{{path('cart_show')}}" class="primary-btn view-card">Panier</a>
+                                                <a href="{{path('order_finalize')}}" class="primary-btn checkout-btn">Commander</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="cart-price">{{globalRender.getCartSubTotalPrice | price}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navbar Navigation et categories -->
+        <div class="navbar-item">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <ul class="menu-btn">
+                            <li style="border: 0;">
+                                <a class="btn-cat">
+                                    <div class="drop-btn">
+                                        <i class="fa fa-bars" style="margin-right: 8px; font-size: 18px;"></i> Toutes les categories
+                                        <i class="ti-angle-down" style="margin-left: 20px;"></i>
+                                    </div>
+                                </a>
+                                <ul class="submenu-l-one">
+                                    {% for category in globalRender.findAllCategories %}
+                                        <li>
+                                            <a href="{{path('shop_category', {'slug': category.slug})}}">
+                                                <div class="drop-btn-li">
+                                                    <span>{{category.name}}</span>
+                                                    <i class="ti-angle-right" style="margin-left: 20px;"></i>
+                                                </div>
+                                            </a>
+                                            <ul class="submenu-l-two">
+                                            {% for subCategory in category.subCategories %}
+                                                <li>
+                                                    <a href="{{path('shop_sub_category', {'category_slug': category.slug, 'slug': subCategory.slug})}}">
+                                                        <div class="drop-btn-li">
+                                                            <span>{{subCategory.name}}</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                        <div class="nav-menu">
+                            <ul>
+                                <li>
+                                    <a class="btn-2" href="{{path('home')}}">Acceuil</a>
+                                </li>
+                                <li><a class="btn-2" href="{{path('shop_index')}}">Boutique</a></li>
+                                <li><a class="btn-2" href="#">Nouveauté</a></li>
+                                <li><a class="btn-2" href="{{path('information_contact')}}">Contactez-nous</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-mobile">
+            <div class="container">
+                <div class="mobile-menu header-row-container">
+                    <div class="mobile-logo-container">
+                        <div class="menu-btn-container">
+                            <a class="btn-cat" id="ham">
+                                <div class="drop-btn-mobile">
+                                    <i class="fa fa-bars" style="font-size: 20px;"></i>
+                                </div>
+                            </a>
+                            <nav class="nav-drill">
+                                <ul class="nav-items nav-level-1">
+                                    <li class="nav-item nav-expand">
+                                        <a class="nav-link nav-expand-link" href="#">
+                                            Menu
+                                        </a>
+                                        <ul class="nav-items nav-expand-content">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">
+                                                    Level 2
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">
+                                                    Level 2 Directory
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">
+                                                    Level 2 Contact
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">
+                                                    Level 2 Quick links
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">
+                                                    Level 2 Launchpad
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            Directory
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            Contact
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            Quick links
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            Launchpad
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="logo">
+                            <a href="./index.html">
+                                <img src="{{asset('media/images/static/logoQueen.png')}}" alt="logo Queen S'y BEAUTY">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="right-nav-container">
+                        <ul class="header-right">
+                            <li class="user-icon">
+                                <a href="#">
+                                    <i class="ti-user"></i>
+                                </a>
+                                <div class="user-hover">
+                                    <div class="login-register">
+                                        <div class="login">
+                                            <a href="">
+                                                <span>Connexion</span>
+                                            </a>
+                                        </div>
+                                        |
+                                        <div class="register">
+                                            <a href="#">
+                                                <span>Inscription</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Connected user -->
+
+                                    <div class="connected-user">
+                                        <div class="connected-user-content">
+                                            <span>Assou Ekotto Mbia</span>
+                                            <span><i>mbiwaakotto@bovin.com</i></span>
+                                        </div>
+                                    </div>
+
+                                    <ul>
+                                        <li>
+                                            <a href="">
+                                                <i class="ti-user"></i>
+                                                <span>Mon Compte</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <i class="ti-package"></i>
+                                                <span>Mes Commandes</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <i class="ti-settings"></i>
+                                                <span>Parametre</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="">
+                                                <i class="fa fa-sign-out" style="font-size: 18px"></i>
+                                                <span>Deconnexion</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="cart-icon">
+                                <a href="#">
+                                    <i class="icon_bag_alt"></i>
+                                    <span>{{globalRender.getCartProductCount}}</span>
+                                </a>
+                                <div class="cart-hover">
+                                    <div class="cart-hover-container">
+                                        <div class="select-items">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="si-pic"><img src="{{asset('media/images/static/select-product-1.jpg')}}" alt="">
+                                                        </td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>$60.00 x 1</p>
+                                                                <h6>Kabino Bedside Table</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="si-pic"><img src="{{asset('media/images/static/select-product-2.jpg')}}" alt="">
+                                                        </td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>$60.00 x 1</p>
+                                                                <h6>Kabino Bedside Table</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="select-total">
+                                            <span>total:</span>
+                                            <h5>$120.00</h5>
+                                        </div>
+                                        <div class="select-button">
+                                            <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                                            <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </header>

@@ -41,12 +41,10 @@
                 </div>
                 <div class="col">
                     <h1 class="display-6">{{product.name}}</h1>
-                    <p class="h1 font-weight-bold">{{product.price | number_format(2, ',', ' ', ' ')}}KMF</p>
-                    {% for subCategory in product.subCategories %}
-                        <a class="card-text" href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}">
-                            <span class="badge badge-danger">{{subCategory.name}}</span> 
+                    <p class="h1 font-weight-bold">{{product.price | price}}</p>
+                        <a class="card-text" href="{{path('admin_sub_category_show', {'id': product.subCategory.id} )}}">
+                            <span class="badge badge-danger">{{product.subCategory.name}}</span> 
                         </a>
-                    {% endfor %}
                     <h2 class="h4">{{product.visible ? 'En ligne' : "N'est pas en ligne"}}</h2>
                     <a href="#" class="btn btn-primary">Editer</a>
                     <a href="#" class="btn btn-secondary">Mettre hors ligne</a>
@@ -62,7 +60,7 @@
                 </div>
                 <div class="col-12 col-md-5">
                     <h1 class="h2">{{product.name}}</h1>
-                    <p class="h3 font-weight-bold">{{product.price | number_format(0, ',', ' ', ' ')}} Fc</p>
+                    <p class="h3 font-weight-bold">{{product.price | price}}</p>
                     {% for subCategory in product.subCategories %}
                         <a class="card-text" href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}">
                             <span class="badge badge-danger">{{subCategory.name}}</span> 

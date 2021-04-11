@@ -2,17 +2,16 @@
 namespace App\Service;
 
 use App\Repository\CategoryRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GlobalRenderService
 {
     private $categoryRepository;
-    private $session;
+    private $cartService;
 
-    public function __construct(CategoryRepository $categoryRepository, SessionInterface $session)
+    public function __construct(CategoryRepository $categoryRepository, CartService $cartService)
     {
         $this->categoryRepository = $categoryRepository;
-        $this->session = $session;
+        $this->cartService = $cartService;
     }
 
     public function findAllCategories()
@@ -22,11 +21,16 @@ class GlobalRenderService
 
     public function getCartProductCount()
     {
-        $cart = $this->session->get('cart', []);
-        $count = 0;
-        foreach ($cart as $productId => $quantity) {
-            $count += $quantity;
-        }
-        return $count;
+        return $this->cartService->getProductCount();
+    }
+
+    public function getCartSubTotalPrice()
+    {
+        return $this->cartService->getSubtotalPrice();
+    }
+
+    public function getCartData()
+    {
+        return $this->cartService->getData();
     }
 }

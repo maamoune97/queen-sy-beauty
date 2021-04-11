@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+ <g fill="#fff" stroke="#999">
+  <g stroke-width="3">
+   <ellipse cx="330" cy="241" rx="252" ry="252"/>
+   <ellipse cx="330" cy="242" rx="230" ry="230"/>
+  </g>
+  <rect x="290" y="278" width="92" height="104" stroke-width="0"/>
+ </g>
+ <g transform="matrix(8.421 0 0 8.421 211 187)">
+  <rect x="-.00032" y="-.000123" width="19" height="13" fill-opacity="0"/>
+ </g>
+ <g fill="#bfbfbf">
+  <rect x="200" y="168" width="1" height="0"/>
+  <rect x="191" y="179" width="0" height="1"/>
+  <rect x="196" y="172" width="0" height="1"/>
+ </g>
+ <rect x="134" y="257" width="1" height="0" fill="#7f7f7f" stroke-width="3"/>
+ <g stroke-width="0">
+  <g fill="#7f7f7f">
+   <rect x="-118" y="197" width="0" height="2"/>
+   <rect x="336" y="258" width="0" height="1" stroke="#000"/>
+  </g>
+  <g fill="#b2b2b2" stroke="#999">
+   <rect x="-192" y="251" width="2" height="0"/>
+   <ellipse cx="410.43" cy="355.98" rx="18.726" ry="21.819"/>
+   <rect x="236.12" y="192.75" width="222.88" height="27.615"/>
+   <rect x="236.57" y="246.83" width="215.58" height="27.615"/>
+   <rect x="254.84" y="299.76" width="188.17" height="27.615"/>
+   <ellipse cx="282.8" cy="358.14" rx="18.726" ry="21.819"/>
+   <rect transform="matrix(.33293 1.0715 -.85063 .41938 393.9 -46.044)" x="90.158" y="236.48" width="156.05" height="24.607"/>
+   <rect x="174" y="149.03" width="48.413" height="21.862"/>
+  </g>
+ </g>
+</svg>
