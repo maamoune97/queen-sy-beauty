@@ -20,18 +20,6 @@
                         </div>
                     {% endif %}
 
-                    {# {% if subCategory is defined %}
-                        <div class="filter-block">
-                            <h4 class="title-ftblock">Categories</h4>
-                            <h5 class="" style="font-size=16px;">{{subCategory.name}}</h5>
-                            <ul class="categories-ft">
-                                {% for subCategory in category.subCategories %}
-                                    <li><a href="{{(path('shop_sub_category', {'category_slug': category.slug, 'slug': subCategory.slug}))}}">{{subCategory.name}}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %} #}
-
                     <form method="get">
                         <div class="filter-block">
                             <h4 class="title-ftblock">Taille</h4>
@@ -73,27 +61,6 @@
                                 </div>
                             </div>
                         </div>
-                        {# <div class="filter-block">
-                            <h4 class="title-ftblock">Taille</h4>
-                            <div class="fw-size">
-                                <div class="size-item-container">
-                                    <input type="checkbox" id="s-size">
-                                    <label for="s-size">s</label>
-                                </div>
-                                <div class="size-item-container">
-                                    <input type="checkbox" id="m-size">
-                                    <label for="m-size">m</label>
-                                </div>
-                                <div class="size-item-container">
-                                    <input type="checkbox" id="l-size">
-                                    <label for="l-size">l</label>
-                                </div>
-                                <div class="size-item-container">
-                                    <input type="checkbox" id="xs-size">
-                                    <label for="xs-size">xs</label>
-                                </div>
-                            </div>
-                        </div> #}
                         <div class="filter-block">
                             <h4 class="title-ftblock">Prix</h4>
                             <div class="filter-range-wrap">
@@ -111,35 +78,6 @@
                             </div>
                             {# <a href="#" class="filter-btn">Filter</a> #}
                         </div>
-                        {# <div class="filter-block">
-                            <h4 class="title-ftblock">Couleur</h4>
-                            <div class="fw-color">
-                                <div class="color-item-container">
-                                    <input type="radio" id="cs-black">
-                                    <label class="cs-black" for="cs-black">Black</label>
-                                </div>
-                                <div class="color-item-container">
-                                    <input type="radio" id="cs-violet">
-                                    <label class="cs-violet" for="cs-violet">Violet</label>
-                                </div>
-                                <div class="color-item-container">
-                                    <input type="radio" id="cs-blue">
-                                    <label class="cs-blue" for="cs-blue">Blue</label>
-                                </div>
-                                <div class="color-item-container">
-                                    <input type="radio" id="cs-yellow">
-                                    <label class="cs-yellow" for="cs-yellow">Yellow</label>
-                                </div>
-                                <div class="color-item-container">
-                                    <input type="radio" id="cs-red">
-                                    <label class="cs-red" for="cs-red">Red</label>
-                                </div>
-                                <div class="color-item-container">
-                                    <input type="radio" id="cs-green">
-                                    <label class="cs-green" for="cs-green">Green</label>
-                                </div>
-                            </div>
-                        </div> #}
                         <div class="filter-block">
                             <h4 class="title-ftblock">Couleur</h4>
                             <div class="fw-mark">

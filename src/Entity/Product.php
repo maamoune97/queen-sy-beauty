@@ -69,6 +69,11 @@ class Product
     private $subCategory;
 
     /**
+     * @ORM\OneToMany(targetEntity=ProductOption::class, mappedBy="product")
+     */
+    private $options;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      *
@@ -88,6 +93,7 @@ class Product
     {
         $this->images = new ArrayCollection();
         $this->productPacks = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,6 +241,36 @@ class Product
     public function setSubCategory(?SubCategory $subCategory): self
     {
         $this->subCategory = $subCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductOption[]
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(ProductOption $option): self
+    {
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+            $option->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(ProductOption $option): self
+    {
+        if ($this->options->removeElement($option)) {
+            // set the owning side to null (unless already changed)
+            if ($option->getProduct() === $this) {
+                $option->setProduct(null);
+            }
+        }
 
         return $this;
     }

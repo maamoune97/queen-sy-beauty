@@ -1,4 +1,5 @@
 {% extends "base.html.twig" %}
+{% form_theme form 'partials/_default_form_them.html.twig'  %}
 
 {% block body %}
     <!-- Breadcrumb Section Begin -->
@@ -18,45 +19,59 @@
     </div>
     <!-- Breadcrumb Section Begin -->
 
+    {# {{form_start(form)}}
+    <div class="row">
+        <div class="col-lg-6">
+            {{form_row(form.lName) }}
+        </div>
+    </div>
+    {{form_end(form)}} #}
+
     <!-- Shopping Cart Section Begin -->
     <section class="checkout-section">
         <div class="container">
-            <div class="checkout-ctnt">
-                <a href="{{path('app_login')}}" class="content-btn">Se connecter</a>
-            </div>
-            <form action="#" class="checkout-form" method="post">
+            {% if not app.user %}
+                <div class="checkout-ctnt">
+                    <a href="{{path('app_login')}}" class="content-btn">Se connecter</a>
+                </div>
+            {% endif %}
+
+            {{form_start(form, {'attr': {'class' :'checkout-form' }})}}
                 <div class="row">
                     <div class="col-lg-6">
                         <h4>Information personnelle</h4>
                         <div class="row">
                             <div class="col-lg-6">
-                                <label for="fir">Nom<span>*</span></label>
-                                <input type="text" id="fir">
+                                {{form_row(form.lName) }}
                             </div>
                             <div class="col-lg-6">
-                                <label for="last">Prénom<span>*</span></label>
-                                <input type="text" id="last">
+                                {{form_row(form.fName) }}
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                {{form_row(form.email) }}
                             </div>
                             <div class="col-lg-6">
-                                <label for="email">Adresse Email<span>*</span></label>
-                                <input type="text" id="email">
+                                {{form_row(form.phone) }}
                             </div>
-                            <div class="col-lg-6">
-                                <label for="phone">Téléphone<span>*</span></label>
-                                <input type="text" id="phone">
-                            </div>
+                        </div>
+                        <div class="row mt-3">
                             <div class="col-lg-12">
-                                <label for="street">Adresse<span>*</span></label>
-                                <input type="text" id="street" class="street-first">
+                                {{form_row(form.deliveryAddress) }}
                             </div>
+                        </div>
+                        <div class="row mt-3">
                             <div class="col-lg-12">
-                                <div class="create-account-container">
-                                    <label for="account-create-radio">
-                                        Créer un compte
-                                        <input type="checkbox" id="account-create-radio">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
+                                {{form_widget(form.createAccount) }}
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6 passwordArea">
+                                {{form_row(form.password) }}
+                            </div>
+                            <div class="col-lg-6 passwordArea">
+                                {{form_row(form.passwordConfirm) }}
                             </div>
                         </div>
                     </div>
@@ -67,27 +82,16 @@
                                 <ul class="order-table">
                                     <li>Article <span>Total</span></li>
                                     {% for item in products %}
-                                        <li class="fw-normal">{{item.product.name}} x {{item.quantity}} <span>{{(item.product.price * item.quantity) | price}}</span></li>
+                                        <li class="fw-normal">
+                                        {{item.product.name}} {{ item.options | length > 0 ? "(" ~ item.options | obj_array_to_str('name') ~ ")" }} x {{item.quantity}} <span>{{(item.product.price * item.quantity) | price}}</span>
+                                        </li>
                                     {% endfor %}
                                     <li class="fw-normal">Sous-total <span>{{subTotalPrice | price}}</span></li>
                                     <li class="fw-normal">Frais de service<span>{{0 | price}}</span></li>
                                     <li class="total-price">Total <span>{{subTotalPrice | price}}</span></li>
                                 </ul>
                                 <div class="payment-check">
-                                    <div class="pc-item">
-                                        <label for="pc-check">
-                                            Paiement par mvoula
-                                            <input type="checkbox" id="pc-check">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="pc-item">
-                                        <label for="pc-paypal">
-                                            Paiement lors de la recupération
-                                            <input type="checkbox" id="pc-paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
+                                    {{form_row(form.paymentMode) }}
                                 </div>
                                 <div class="order-btn">
                                     <button type="submit" class="site-btn place-btn">Place Order</button>
@@ -96,8 +100,39 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            {{form_end(form)}}
         </div>
     </section>
     <!-- Shopping Cart Section End -->
 {% endblock body %}
+
+{% block javascripts %}
+    <script>
+        $(function()
+        {
+            const checkBox = document.getElementById("place_order_createAccount");
+
+            if (checkBox.checked == false )
+            {
+                $('.passwordArea').addClass('d-none');
+            }
+
+            $(checkBox).click(function(e){
+                if (checkBox.checked == true )
+                {
+                    $('.passwordArea').removeClass('d-none');
+                    $('#place_order_password').attr('required', true);
+                    $('#place_order_passwordConfirm').attr('required', true);
+                }
+                else
+                {
+                    $('.passwordArea').addClass('d-none');
+                    $('#place_order_password').attr('required', false);
+                    $('#place_order_passwordConfirm').attr('required', false);
+                    $('#place_order_password').val('');
+                    $('#place_order_passwordConfirm').val('');
+                }
+            })
+        });
+    </script>
+{% endblock %}

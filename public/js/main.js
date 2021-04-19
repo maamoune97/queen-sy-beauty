@@ -1,15 +1,16 @@
 'use strict';
 
-(function($) {
+(function ($) {
 
     $(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
     });
+
     /*------------------
       Change Background
     --------------------*/
-    $('.caroussel-baground').each(function() {
+    $('.caroussel-baground').each(function () {
         var bg = $(this).data('bgcaroussel');
         $(this).css('background-image', 'url(' + bg + ')');
     });
@@ -38,12 +39,12 @@
         loop: true,
         margin: 30,
         nav: true,
-        autoWidth: true,
+        //autoWidth: true,
         items: 4,
         dots: true,
         navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
         smartSpeed: 1200,
-        autoHeight: false,
+        autoHeight: true,
         autoplay: true,
         responsive: {
             0: {
@@ -62,25 +63,31 @@
     });
 
     /*------------------
-       logo Carousel
+        Product Slider
     --------------------*/
-    $(".logo-carousel").owlCarousel({
-        loop: false,
+    $(".related-pr-slider").owlCarousel({
+        loop: true,
         margin: 30,
-        nav: false,
-        items: 5,
-        dots: false,
+        nav: true,
+        //autoWidth: true,
+        items: 4,
+        dots: true,
         navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
         smartSpeed: 1200,
-        autoHeight: false,
-        mouseDrag: false,
+        autoHeight: true,
         autoplay: true,
         responsive: {
             0: {
-                items: 3,
+                items: 1,
             },
-            768: {
-                items: 5,
+            576: {
+                items: 2,
+            },
+            992: {
+                items: 2,
+            },
+            1200: {
+                items: 3,
             }
         }
     });
@@ -100,68 +107,9 @@
         autoplay: true,
     });
 
-    /*------------------
-        CountDown
-    --------------------*/
-    // For demo preview
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (mm == 12) {
-        mm = '01';
-        yyyy = yyyy + 1;
-    } else {
-        mm = parseInt(mm) + 1;
-        mm = String(mm).padStart(2, '0');
-    }
-    var timerdate = mm + '/' + dd + '/' + yyyy;
-    // For demo preview end
-
-    console.log(timerdate);
-
-
-    // Use this for real timer date
-    /* var timerdate = "2020/01/01"; */
-
-    $("#countdown").countdown(timerdate, function(event) {
-        $(this).html(event.strftime("<div class='cd-item'><span>%D</span> <p>Days</p> </div>" + "<div class='cd-item'><span>%H</span> <p>Hrs</p> </div>" + "<div class='cd-item'><span>%M</span> <p>Mins</p> </div>" + "<div class='cd-item'><span>%S</span> <p>Secs</p> </div>"));
-    });
-
-
-    /*----------------------------------------------------
-     Language Flag js 
-    ----------------------------------------------------*/
-    $(document).ready(function(e) {
-        //no use
-        try {
-            var pages = $("#pages").msDropdown({
-                on: {
-                    change: function(data, ui) {
-                        var val = data.value;
-                        if (val != "")
-                            window.location = val;
-                    }
-                }
-            }).data("dd");
-
-            var pagename = document.location.pathname.toString();
-            pagename = pagename.split("/");
-            pages.setIndexByValue(pagename[pagename.length - 1]);
-            $("#ver").html(msBeautify.version.msDropdown);
-        } catch (e) {
-            // console.log(e);
-        }
-        $("#ver").html(msBeautify.version.msDropdown);
-
-        //convert
-        $(".language_drop").msDropdown({ roundedBorder: false });
-        $("#tech").data("dd");
-    });
     /*-------------------
-		Range Slider
-	--------------------- */
+        Range Slider
+    --------------------- */
     var rangeSlider = $(".filter-price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -172,7 +120,7 @@
         min: minPrice,
         max: maxPrice,
         values: [minPrice, maxPrice],
-        slide: function(event, ui) {
+        slide: function (event, ui) {
             minamount.val('$' + ui.values[0]);
             maxamount.val('$' + ui.values[1]);
         }
@@ -181,22 +129,43 @@
     maxamount.val('$' + rangeSlider.slider("values", 1));
 
     /*-------------------
-		Radio Btn
-	--------------------- */
-    $(".fw-size .size-item-container label, .pd-size-choose .size-item-container label, .pd-color .pd-color-choose .color-item-container label").on('click', function() {
+        Range Slider Mobile
+    --------------------- */
+    var rangeSlider = $(".filter-price-range"),
+        minamountmobile = $("#minamountmobile"),
+        maxamountmobile = $("#maxamountmobile"),
+        minPricemobile = rangeSlider.data('min'),
+        maxPricemobile = rangeSlider.data('max');
+    rangeSlider.slider({
+        range: true,
+        min: minPricemobile,
+        max: maxPricemobile,
+        values: [minPricemobile, maxPricemobile],
+        slide: function (event, ui) {
+            minamountmobile.val('$' + ui.values[0]);
+            maxamountmobile.val('$' + ui.values[1]);
+        }
+    });
+    minamountmobile.val('$' + rangeSlider.slider("values", 0));
+    maxamountmobile.val('$' + rangeSlider.slider("values", 1));
+
+    /*-------------------
+        Radio Btn
+    --------------------- */
+    $(".fw-size .size-item-container label, .pd-size-choose .size-item-container label, .pd-color .pd-color-choose .color-item-container label").on('click', function () {
         $(".fw-size .size-item-container label, .pd-color .pd-color-choose .color-item-container label, .pd-size-choose .size-item-container label").removeClass('active');
         $(this).addClass('active');
     });
 
     /*-------------------
-		Nice Select
+        Nice Select
     --------------------- */
     $('.sorting, .p-show').niceSelect();
 
     /*------------------
-		Single Product
-	--------------------*/
-    $('.pr-img-caroussel .pt').on('click', function() {
+        Single Product
+    --------------------*/
+    $('.pr-img-caroussel .pt').on('click', function () {
         $('.pr-img-caroussel .pt').removeClass('active');
         $(this).addClass('active');
         var imgurl = $(this).data('pr-img-bg');
@@ -207,11 +176,74 @@
         }
     });
 
-    $('.product-pic-zoom').zoom();
-
     /*-------------------
-		Quantity change
-	--------------------- */
-    // in handle-cart js
+        Quantity change
+    --------------------- */
+    // handle-cart.js
+
+    var body = $("body");
+    var wrap = $("#showSticky");
+
+    body.on("scroll", function (e) {
+
+        if (this.scrollTop > 250) {
+            wrap.addClass("sticky");
+        } else {
+            wrap.removeClass("sticky");
+        }
+
+    });
+
+    /********************************
+     *      Fermer Filtre
+    ********************************/
+
+    $(".btn-close-filter").on('click', function () {
+        $("body").removeClass('toggle-filter');
+    });
+
+
+    /********************************
+     *      Fermer Menu Burger
+    ********************************/
+
+    $("#btn-close-burger").on('click', function () {
+        $("body").removeClass('nav-is-toggled');
+    });
+
+    /********************************
+     *      Afficher Searchbar Mobile
+    ********************************/
+
+    /* $("#btnSearchMobile").on('click', function () {
+        $("#displaySearchMobile").addClass('display-search-mobile')
+    });
+
+    $(window).on('click',function(event){
+        if(!$(event.target).is('.nav-mobile')){
+          $("#displaySearchMobile").removeClass("display-search-mobile");
+        }
+     }); 
+
+     $(document).on({
+        click: function(){
+           $("body").removeClass("display-search-mobile")
+        }
+     },":not(#displaySearchMobile)"); */
+
+    const $menu = $('#displaySearchMobile');
+
+    $(document).mouseup(e => {
+        if (!$menu.is(e.target) // if the target of the click isn't the container...
+            && $menu.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+            $menu.removeClass('display-search-mobile');
+        }
+    });
+
+    $('#btnSearchMobile').on('click', () => {
+        $menu.toggleClass('display-search-mobile');
+    });
+
 
 })(jQuery);

@@ -215,89 +215,72 @@
                                 </div>
                             </a>
                             <nav class="nav-drill">
-                                <ul class="nav-items nav-level-1">
-                                    <li class="nav-item nav-expand">
-                                        <a class="nav-link nav-expand-link" href="#">
-                                            Menu
-                                        </a>
-                                        <ul class="nav-items nav-expand-content">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">
-                                                    Level 2
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">
-                                                    Level 2 Directory
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">
-                                                    Level 2 Contact
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">
-                                                    Level 2 Quick links
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">
-                                                    Level 2 Launchpad
-                                                </a>
-                                            </li>
+                                <div class="nav-drill-container">
+                                    <div class="nav-drill-list">
+                                        <div class="logo">
+                                            <a href="{{path('home')}}">
+                                                <img src="{{asset('media/images/static/logoQueen.png')}}" alt="Logo Queen S'y BEAUTY">
+                                            </a>
+                                        </div>
+                                        <ul class="nav-items nav-level-1">
+                                            {% for category in globalRender.findAllCategories %}
+                                                <li class="nav-item nav-expand">
+                                                    <span class="nav-link nav-expand-link">
+                                                        {{category.name}}
+                                                    </span>
+                                                    <ul class="nav-items nav-expand-content">
+                                                        {% for subCategory in category.subCategories %}
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" href="{{path('shop_sub_category', {'category_slug': category.slug, 'slug': subCategory.slug})}}">
+                                                                    {{subCategory.name}}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            {% endfor %}
                                         </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            Directory
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            Contact
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            Quick links
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">
-                                            Launchpad
-                                        </a>
-                                    </li>
-                                </ul>
+                                    </div>
+                                    <button class="btn-close-burger" id="btn-close-burger">
+                                        <i class="ti-close"></i>
+                                    </button>
+                                </div>
                             </nav>
                         </div>
                         <div class="logo">
-                            <a href="./index.html">
-                                <img src="{{asset('media/images/static/logoQueen.png')}}" alt="logo Queen S'y BEAUTY">
+                            <a href="{{path('home')}}">
+                                <img src="{{asset('media/images/static/logoQueen.png')}}" alt="Logo Queen S'y BEAUTY">
                             </a>
                         </div>
                     </div>
                     <div class="right-nav-container">
                         <ul class="header-right">
+                            <li class="search-icon">
+                                <a id="btnSearchMobile">
+                                    <i class="ti-search"></i>
+                                </a>
+                            </li>
                             <li class="user-icon">
                                 <a href="#">
                                     <i class="ti-user"></i>
                                 </a>
                                 <div class="user-hover">
-                                    <div class="login-register">
-                                        <div class="login">
-                                            <a href="">
-                                                <span>Connexion</span>
-                                            </a>
+                                    {% if not app.user %}
+                                        <div class="login-register">
+                                            <div class="login">
+                                                <a href="{{path('app_login')}}">
+                                                    <span>Connexion</span>
+                                                </a>
+                                            </div>
+                                            |
+                                            <div class="register">
+                                                <a href="{{path('app_register')}}">
+                                                    <span>Inscription</span>
+                                                </a>
+                                            </div>
                                         </div>
-                                        |
-                                        <div class="register">
-                                            <a href="#">
-                                                <span>Inscription</span>
-                                            </a>
-                                        </div>
-                                    </div>
-
+                                    {% endif %}
+                                    
                                     <!-- Connected user -->
 
                                     <div class="connected-user">
@@ -309,37 +292,38 @@
 
                                     <ul>
                                         <li>
-                                            <a href="">
+                                            <a href="#">
                                                 <i class="ti-user"></i>
                                                 <span>Mon Compte</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="">
+                                            <a href="#">
                                                 <i class="ti-package"></i>
                                                 <span>Mes Commandes</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="">
+                                            <a href="#">
                                                 <i class="ti-settings"></i>
                                                 <span>Parametre</span>
                                             </a>
                                         </li>
-
+                                        {% if app.user %}
                                         <li>
-                                            <a href="">
+                                            <a href="{{path('app_logout')}}">
                                                 <i class="fa fa-sign-out" style="font-size: 18px"></i>
                                                 <span>Deconnexion</span>
                                             </a>
                                         </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </li>
                             <li class="cart-icon">
                                 <a href="#">
                                     <i class="icon_bag_alt"></i>
-                                    <span>{{globalRender.getCartProductCount}}</span>
+                                    <span>3</span>
                                 </a>
                                 <div class="cart-hover">
                                     <div class="cart-hover-container">
@@ -347,7 +331,7 @@
                                             <table>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="si-pic"><img src="{{asset('media/images/static/select-product-1.jpg')}}" alt="">
+                                                        <td class="si-pic"><img src="img/select-product-1.jpg" alt="">
                                                         </td>
                                                         <td class="si-text">
                                                             <div class="product-selected">
@@ -360,7 +344,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="si-pic"><img src="{{asset('media/images/static/select-product-2.jpg')}}" alt="">
+                                                        <td class="si-pic"><img src="img/select-product-2.jpg" alt="">
                                                         </td>
                                                         <td class="si-text">
                                                             <div class="product-selected">
@@ -387,6 +371,14 @@
                                 </div>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="search-mobile" id="displaySearchMobile">
+                <div class="container">
+                    <div class="input-group mobile-input-search">
+                        <input type="text" placeholder="Rechercher un produit, une marque ou une categorie">
+                        <button type="button"><i class="ti-search"></i></button>
                     </div>
                 </div>
             </div>

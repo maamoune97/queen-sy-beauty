@@ -1,0 +1,53 @@
+{% block form_row %}
+        {{form_label(form)}}
+        {{form_widget(form)}}
+        {{form_errors(form)}}
+{% endblock form_row %}
+
+{% block text_widget %}
+    <input type="text" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }} >
+{% endblock text_widget %}
+
+{% block email_widget %}
+    <input type="email" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }}>
+{% endblock email_widget %}
+
+{% block password_widget %}
+    <input type="password" name="{{full_name}}" id="{{id}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }}>
+{% endblock password_widget %}
+
+{% block tel_widget %}
+    <input type="tel" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{attr.placeholder is defined ? attr.placeholder : ''}}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }}>
+{% endblock tel_widget %}
+
+{% block form_errors %}
+    {% for error in errors.form.errors %}
+        {% if loop.last %}
+            <small class="text-danger errors">{{error.message}}</small>
+        {% endif %}
+    {% endfor %}
+{% endblock form_errors %}
+
+{% block form_label %}
+    <label for="{{id}}">{{label}} {{required ? "<span>*</span>"}} </label>
+{% endblock form_label %}
+
+{% block checkbox_widget %}
+    <div class="create-account-container">
+        <label for="{{id}}">
+            {{label | trim}}
+            <input type="checkbox" id="{{id}}" value="{{value}}" name="{{full_name}}" {{checked ? 'checked'}}>
+            <span class="checkmark"></span>
+        </label>
+    </div>
+{% endblock checkbox_widget %}
+
+{% block radio_widget %}
+    <div class="pc-item">
+        <label for="{{id}}">
+            {{label}}
+            <input type="radio" id="{{id}}" name="{{full_name}}" value="{{value}}" {{checked ? 'checked'}} >
+            <span class="checkmark"></span>
+        </label>
+    </div>
+{% endblock radio_widget %}

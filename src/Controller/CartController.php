@@ -2,18 +2,21 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductOptionFieldRepository;
+use App\Repository\ProductRepository;
 use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    private $cartService;
+    private $cart;
 
-    public function __construct(CartService $cartService)
+    public function __construct(CartService $cart)
     {
-        $this->cartService = $cartService;
+        $this->cart = $cart;
     }
 
     /**
@@ -22,18 +25,46 @@ class CartController extends AbstractController
     public function show(): Response
     {
         return $this->render('cart/show.html.twig', [
-            'cart' => $this->cartService->getData(),
-            'subtotalPrice' => $this->cartService->getSubtotalPrice(),
+            'cart' => $this->cart->getData(),
+            'subtotalPrice' => $this->cart->getSubtotalPrice(),
         ]);
     }
 
     /**
-     * @Route("/cart/add/{id}", name="cart_add")
+     * @Route("/cart/add", name="cart_add", methods={"POST"})
      */
-    public function add($id): Response
+    public function add(Request $request, ProductRepository $productRepository, ProductOptionFieldRepository $productOptionFieldRepository): Response
     {
-        $this->cartService->addProduct($id);
+        $productId = $request->get("product") ?? null;
+        $quantity = $request->get("quantity") ?? null;
+        if ($productId && $quantity)
+        {
+            try
+            {
+                $product = $productRepository->find($productId);
+                $options = [];
+                foreach ($product->getOptions() as $option)
+                {
+                    if ( $request->get( $option->getName() ) )
+                    {
+                        $name = $request->get( $option->getName() );
 
+                        $optionField = $productOptionFieldRepository->findOneBy(['name' => $name, 'productOption' => $option->getId()]);
+                        if ($optionField)
+                        {
+                            $options[] = $optionField;
+                        }
+                        // $options[$option->getName()] = $request->get( $option->getName() );
+                    }
+                }
+                $this->cart->addProduct($productId, $quantity, $options);
+            }
+            catch (\Throwable $th)
+            {
+                throw $this->createNotFoundException();
+                //insert a flash error message to say it failed
+            }
+        }
         return $this->redirectToRoute('cart_show');
     }
 
@@ -42,7 +73,7 @@ class CartController extends AbstractController
      */
     public function remove($id): Response
     {
-        $this->cartService->removeProduct($id);
+        $this->cart->removeProduct($id);
 
         return $this->redirectToRoute('cart_show');
     }
@@ -52,7 +83,7 @@ class CartController extends AbstractController
      */
     public function updateQuantity($idProduct, $number): Response
     {
-        $this->cartService->updateQuantity($idProduct, $number);
+        $this->cart->updateQuantity($idProduct, $number);
 
         return $this->redirectToRoute('cart_show');
     }

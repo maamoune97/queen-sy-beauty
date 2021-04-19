@@ -15,11 +15,15 @@ navExpand.forEach(item => {
 
 
 const ham = document.getElementById('ham')
-var root = document.getElementsByTagName( 'html' )
- ham.addEventListener('click', function() {
+var root = document.getElementsByTagName('html')
+ham.addEventListener('click', function () {
     document.body.classList.toggle('nav-is-toggled')
 })
 
-/*$("#ham").click(function(){
-    $("html, body").toggleClass("nav-is-toggled");
-  }); */
+
+const filter = document.getElementById('showFilter')
+var root = document.getElementsByTagName('html')
+
+filter.addEventListener('click', function () {
+    document.body.classList.toggle('toggle-filter')
+})

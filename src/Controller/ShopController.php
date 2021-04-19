@@ -22,11 +22,6 @@ class ShopController extends AbstractController
      */
     public function index(ProductRepository $pr): Response
     {
-        // for ($i=0; $i < 10; $i++) { 
-            // dump(date("Ymdhis"));
-            dump(date_timestamp_get(new DateTime()));
-        // }
-        dump(uniqid("qsb-"));
         return $this->render('shop/index.html.twig', [
             'products' => $pr->findAll(),
         ]);

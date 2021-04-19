@@ -8,15 +8,17 @@
 				</a>
 			</div>
 		</div>
-
 		<div class="detail-box">
-			<div class="type">
-				<span class="article-name" href={{path('product_show', {'slug': product.slug, 'id': product.id})}}"">{{product.name}}</span>
-			</div>
-			<span class="price">{{product.price | price}}</span>
-			<div class="marketing-price">
-				<span class="line-trought-price">7500 KMF</span>
-				<span class="percentage-promo">-15%</span></div>
+			<a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}">
+				<div class="type">
+					<span class="article-name">{{product.name | trunc_it(28, '...')}}</span>
+				</div>
+				<div class="price">{{product.price | price}}</div>
+				<div class="marketing-price">
+					<span class="line-trought-price">7500 KMF</span>
+					<span class="percentage-promo">-15%</span>
+				</div>
+			</a>
 		</div>
 	</div>
 </div>

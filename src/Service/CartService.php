@@ -26,10 +26,11 @@ class CartService
         $products = $this->session->get('cart', []);
         $dataProducts = [];
 
-        foreach ($products as $idProduct => $quantity) {
+        foreach ($products as $idProduct => $value) {
             $dataProducts[] = [
                 'product' => $this->pr->find($idProduct),
-                'quantity' => $quantity
+                'quantity' => $value['quantity'],
+                'options' => $value['options']
             ];
         }
 
@@ -53,27 +54,28 @@ class CartService
     }
 
     /**
-     * Add product in cart
+     * add product in cart
      *
      * @param integer $id
+     * @param array|null $options
      * @return boolean
      */
-    public function addProduct(int $id): bool
+    public function addProduct(int $id, int $quantity, ?array $options = []): bool
     {
         $done = false;
         $cart = $this->session->get('cart', []);
 
         if (empty($cart[$id]))
         {
-            $cart[$id] = 1;
+            $cart[$id] = ['quantity' => $quantity, 'options' => $options];
             $done = true;
         }
         else
         {
             //Max quantity of one product is 9
-            if ($cart[$id] < 9)
+            if ($cart[$id]['quantity'] < 9)
             {
-                $cart[$id]++;
+                $cart[$id]['quantity'] += $quantity;
                 $done = true;
             }
         }
@@ -95,7 +97,7 @@ class CartService
         $cart = $this->session->get('cart', []);
 
         if (isset($cart[$id])) {
-            $cart[$id] = 1;
+            $cart[$id]['quantity'] = 1;
             unset($cart[$id]);
             $done = true;
         }
@@ -120,7 +122,7 @@ class CartService
 
         if (!empty($cart[$idProduct]))
         {
-            $cart[$idProduct] = $quantity;
+            $cart[$idProduct]['quantity'] = $quantity;
             $done = true;
         }
 
@@ -139,10 +141,21 @@ class CartService
     {
         $cart = $this->session->get('cart', []);
         $count = 0;
-        foreach ($cart as $productId => $quantity) {
-            $count += $quantity;
+        // dd($cart);
+        foreach ($cart as $productId => $value) {
+            $count += $value['quantity'];
         }
         return $count;
+    }
+
+    /**
+     * empty the shopping cart
+     *
+     * @return void
+     */
+    public function empty(): void
+    {
+        $this->session->set('cart', []);
     }
 
 }

@@ -1,0 +1,15 @@
+{% extends "admin/base.html.twig" %}
+{% form_theme form 'admin/product_option/_formThemeCollectionType.html.twig' %}
+
+{% block title %}créer une option{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier l'option</h1>
+        {% include "admin/product_option/_form.html.twig" with {'submitBtnLabel' : 'mettre à jour l\'option'} %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('js/handle-product-option.js')}}"></script>
+{% endblock %}

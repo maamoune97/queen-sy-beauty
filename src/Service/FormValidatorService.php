@@ -13,7 +13,7 @@ class FormValidatorService
     function phoneNumberValidate(string $tel = null):bool {
         if(!is_null($tel)){
 
-            if (preg_match("#^\+?[0-9]{0,3}( ?[0-9]{2}){5}$|^\+?[0-9]{0,3}(-?[0-9]{2}){5}$#",$tel)) {
+            if (preg_match("#^\+?[0-9]{0,3}( ?[0-9]{2}){5}$|^\+?[0-9]{0,3}(-?[0-9]{2}){5}$|^\+?[0-9]{1}(-?[0-9]{2}){3}$#",$tel)) {
                 // Valide
                 return true;
             }

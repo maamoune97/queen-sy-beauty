@@ -15,6 +15,7 @@ class ProductController extends AbstractController
      */
     public function show(Product $product, $slug, ProductRepository $productRepository): Response
     {
+        // redirect to best url if necessary
         if ($product->getSlug() !== $slug)
         {
             return $this->redirectToRoute('product_show', [
@@ -22,7 +23,8 @@ class ProductController extends AbstractController
                 'id' => $product->getId()
             ], 301);
         }
-
+        
+        // find similar products
         $sameProducts = $productRepository->findBySubCategory($product->getSubCategory());
 
         foreach ($sameProducts as $key => $sameProduct)
@@ -35,6 +37,8 @@ class ProductController extends AbstractController
         }
         shuffle($sameProducts);
         $sameProducts = array_slice($sameProducts,0,4);
+        // end find similar products
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'sameProducts' => $sameProducts,

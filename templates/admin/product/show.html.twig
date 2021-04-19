@@ -1,8 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}|
-	{{product.name}}
-{% endblock %}
+{% block title %}{{product.name}} | {% endblock %}
 
 {% block body %}
 	<div class="container mt-3">
@@ -92,5 +90,47 @@
                 {{product.description | raw }}
             </div>
         </div> #}
+        <section class="mt-3">
+            <h1 class="h3">Options</h1>
+            <div class="row">
+                {% for option in product.options %}
+                    <div class="col-12 col-md-4 mb-2">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-header">
+                                {{option.name}} ({{option.frenchType}})
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% for optionField in option.productOptionFields %}
+                                    <li class="list-group-item">{{optionField.name}} <span class="float-right" >{{optionField.addedPrice | price}}</span> </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="card-footer">
+                                <a href="{{path('admin_product_option_edit', {'id': option.id})}}" class="btn btn-primary btn-sm">Editer</a>
+                                <a href="#" class="btn btn-danger float-right btn-sm">Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12">
+                        <p>Aucune option disponible pour cet article</p>
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col">
+                        <a href="{{path('admin_product_option_create', {'product' : product.id})}}" class="">
+                            <i class="fas fa-plus mr-2"></i>Ajouter une option
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h1 class="h3">Descrption</h1>
+            <div class="row">
+                <div class="col">{{product.description | raw}}</div>
+            </div>
+        </section>
+
 	</div>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductPackRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +35,16 @@ class ProductPack
      * @ORM\JoinColumn(nullable=false)
      */
     private $command;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=ProductOptionField::class, inversedBy="productPacks")
+     */
+    private $optionFields;
+
+    public function __construct()
+    {
+        $this->optionFields = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -71,6 +83,30 @@ class ProductPack
     public function setCommand(?Order $command): self
     {
         $this->command = $command;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductOptionFIeld[]
+     */
+    public function getOptionFields(): Collection
+    {
+        return $this->optionFields;
+    }
+
+    public function addOptionField(ProductOptionFIeld $optionField): self
+    {
+        if (!$this->optionFields->contains($optionField)) {
+            $this->optionFields[] = $optionField;
+        }
+
+        return $this;
+    }
+
+    public function removeOptionField(ProductOptionFIeld $optionField): self
+    {
+        $this->optionFields->removeElement($optionField);
 
         return $this;
     }

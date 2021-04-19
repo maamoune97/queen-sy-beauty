@@ -1,6 +1,4 @@
 /*----------------------------------------*/
-
-
 /* Basic CSS
 /*----------------------------------------*/
 
@@ -9,7 +7,6 @@ body {
     height: 100%;
     font-family: "Muli", sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
     overflow-x: hidden;
 }
 
@@ -82,10 +79,78 @@ ol {
     margin: 0;
 }
 
-
+/*----------------------------------------*/
+/* Preloader
 /*----------------------------------------*/
 
+#preloder {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    background: #000;
+}
 
+.loader {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -13px;
+    margin-left: -13px;
+    border-radius: 60px;
+    animation: loader 0.8s linear infinite;
+    -webkit-animation: loader 0.8s linear infinite;
+}
+
+@keyframes loader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+
+    50% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+        border: 4px solid #673ab7;
+        border-left-color: transparent;
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+}
+
+@-webkit-keyframes loader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+
+    50% {
+        -webkit-transform: rotate(180deg);
+        border: 4px solid #673ab7;
+        border-left-color: transparent;
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        border: 4px solid #f44336;
+        border-left-color: transparent;
+    }
+}
+
+
+/*----------------------------------------*/
 /* Header Top
 /*----------------------------------------*/
 
@@ -274,6 +339,8 @@ ol {
 
 .header-row-container .header-right li.cart-icon .cart-hover .select-items table tr td.si-pic img {
     border: 1px solid #ebebeb;
+    max-width: 70px;
+    max-height: 70px;
 }
 
 .header-row-container .header-right li.cart-icon .cart-hover .select-items table tr td.si-text {
@@ -599,8 +666,6 @@ ul.menu-btn li {
 
 
 /*----------------------------------------*/
-
-
 /* Carrousel banner
 /*----------------------------------------*/
 
@@ -690,6 +755,7 @@ ul.menu-btn li {
     text-transform: uppercase;
     margin-top: 6px;
 }
+
 
 .caroussel-items .owl-item.active .single-caroussel-items span,
 .caroussel-items .owl-item.active .single-caroussel-items h1,
@@ -950,6 +1016,10 @@ Banner Section
     transition: all 0.3s;
 }
 
+.product-slider.owl-carousel .owl-item {
+    padding: 0 10px
+}
+
 .product-slider .owl-dots button:last-child {
     margin-right: 0;
 }
@@ -965,7 +1035,7 @@ Banner Section
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 3px;
     overflow: hidden;
-    margin: 10px;
+    margin: 10px 0;
 }
 
 .box a {
@@ -978,7 +1048,7 @@ Banner Section
 
 .slide-img img {
     width: 290px;
-    height: 354px;
+    height: 300px;
     object-fit: cover;
     box-sizing: border-box;
     position: relative;
@@ -988,11 +1058,15 @@ Banner Section
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 10px;
     box-sizing: border-box;
 }
 
+.detail-box div {
+    padding: 0 10px
+}
+
 .type {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
 }
@@ -1014,6 +1088,10 @@ Banner Section
     font-size: 1.1rem;
     font-family: 'Muli', sans-serif;
     letter-spacing: 0.5px;
+}
+
+.marketing-price {
+    margin-bottom: 10px;
 }
 
 .marketing-price .line-trought-price {
@@ -1240,7 +1318,8 @@ Banner Section
 -----------------------*/
 
 .nav-mobile {
-    display: none
+    display: none;
+    position: relative;
 }
 
 .mobile-menu.header-row-container {
@@ -1260,6 +1339,10 @@ Banner Section
 
 .mobile-logo-container .logo a img {
     height: 44px !important;
+}
+
+.btn-cat:hover {
+    cursor: pointer;
 }
 
 .menu-btn-container a .drop-btn-mobile {
@@ -1290,17 +1373,6 @@ Banner Section
 Burger Mobile Menu
 *************************/
 
-.nav-drill {
-    margin-top: 50px;
-    transform: translateX(-100%);
-}
-
-.nav-is-toggled {
-    overflow-y: hidden !important;
-    /* position: fixed; */
-    max-height: 100vh;
-}
-
 .nav-is-toggled .nav-drill {
     transform: translateX(0);
 }
@@ -1312,17 +1384,52 @@ Burger Mobile Menu
 
 .nav-drill {
     display: flex;
-    position: absolute;
+    position: fixed;
     z-index: 100;
-    top: 20px;
+    top: 0;
     left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #fff;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.562);
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    transition: 0.45s;
+    transition: 0.05s;
+    transform: translateX(-100%);
+}
+
+.nav-drill-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.nav-drill-container .btn-close-burger {
+    position: absolute;
+    font-size: 20px;
+    color: #fff;
+    top: 20px;
+    right: 20px;
+    z-index: 160;
+    outline: none;
+    background: none;
+    border: 0;
+}
+
+.nav-drill-list {
+    width: 60%;
+    height: 100vh;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+.nav-drill-list .logo {
+    border-bottom: 1px solid #daf9f4;
+    padding: 0.875em 1em;
+}
+
+.nav-drill .logo a img {
+    height: 52px !important;
 }
 
 .nav-items {
@@ -1343,17 +1450,19 @@ Burger Mobile Menu
     font-weight: 500;
 }
 
-.nav-link:hover, .nav-link:focus {
+.nav-link:hover,
+.nav-link:focus {
     color: #ff5736
 }
 
 .nav-expand-content {
-    position: absolute;
+    position: fixed;
+    overflow-y: auto;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 60%;
     height: 100%;
-    transform: translateX(100%);
+    transform: translateX(-100%);
     background-color: #fff;
     transition: 0.3s;
     visibility: hidden;
@@ -1361,6 +1470,7 @@ Burger Mobile Menu
 
 .nav-drill ul {
     list-style: none;
+    height: 100%
 }
 
 .nav-expand-content .nav-item:not(:last-child) {
@@ -1602,8 +1712,8 @@ Burger Mobile Menu
 -----------------------*/
 
 .product-shop {
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding-top: 50px;
+    padding-bottom: 55px;
 }
 
 .filter-block {
@@ -2310,16 +2420,16 @@ Burger Mobile Menu
 .pr-details-container .pd-color .pd-color-choose .color-item-container label.active {
     height: 24px;
     width: 24px;
-    border:1px solid #252525;
+    border: 1px solid #252525;
     border-radius: 50%;
 }
 
 .pr-details-container .pd-color .pd-color-choose .color-item-container label.active.choose-violet {
-    border:1px solid #8230E3;
+    border: 1px solid #8230E3;
 }
 
 .pr-details-container .pd-color .pd-color-choose .color-item-container label.choose-yellow {
-    border:1px solid #EEEE21;
+    border: 1px solid #EEEE21;
 }
 
 .pr-details-container .pd-size-choose {
@@ -2718,7 +2828,7 @@ Burger Mobile Menu
 }
 
 .related-pr .container .row .box {
-    margin: 0  !important;
+    margin: 0 !important;
 }
 
 /*---------------------
@@ -2951,6 +3061,11 @@ Burger Mobile Menu
     text-align: center;
 }
 
+.cr-image img {
+    width: 170px;
+    height: auto;
+}
+
 /*---------------------
   Check Out
 -----------------------*/
@@ -2999,7 +3114,7 @@ Burger Mobile Menu
     width: 100%;
     height: 46px;
     border: 2px solid #ebebeb;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     padding-left: 15px;
 }
 
@@ -3173,8 +3288,7 @@ Burger Mobile Menu
 
 .banner-empty-card .empty-card-imgcontainer,
 .banner-empty-card .text-empty-card,
-.banner-empty-card .btn-empty-card
-{
+.banner-empty-card .btn-empty-card {
     justify-content: center;
     align-items: center;
     display: flex
@@ -3219,7 +3333,179 @@ Burger Mobile Menu
 }
 
 
+/***************************
+    Filter Mobile
+***************************/
 
+.mobile-filter-container {
+    display: none;
+}
+
+.affichage-number {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 35px;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 30px;
+    background-color: #282828;
+    margin-bottom: 50px
+}
+
+.filter-header .select-option .sorting {
+    margin-right: 0;
+    padding-right: 40px !important;
+}
+
+.filter-header .select-option .nice-select {
+    background-color: #282828 !important;
+    border: 0;
+    font-weight: 400;
+    line-height: 40px;
+    margin-bottom: 0 !important;
+}
+
+.filter-header .select-option .nice-select span {
+    color: #cacaca;
+    font-size: 15px;
+    letter-spacing: 0.8px
+}
+
+.filter-header .select-option .nice-select:after {
+    border-bottom: 2px solid #cacaca;
+    border-right: 2px solid #cacaca;
+    right: 0;
+}
+
+.filter-header .filter-btn-container a {
+    text-decoration: none;
+    font-size: 15px;
+    color: #fff;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 100;
+}
+
+.filter-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 150;
+    background: rgba(0, 0, 0, 0.562);
+    height: 100vh;
+    display: none;
+    -webkit-overflow-scrolling: touch;
+    transition: 0.45s;
+}
+
+.filter-content-container {
+    background-color: #fff;
+    width: 60%;
+    padding: 25px 35px;
+    overflow-y: scroll;
+    float: right;
+    height: 100vh;
+}
+
+.filter-content-div {
+    position: relative;
+}
+
+.btn-close-filter {
+    position: absolute;
+    font-size: 20px;
+    color: #fff;
+    top: 20px;
+    left: 20px;
+    z-index: 160;
+    outline: none;
+    background: none;
+    border: 0;
+}
+
+.toggle-filter .filter-content {
+    display: block !important; 
+}
+
+/*************************
+Responsive Search Bar
+*************************/
+
+.search-icon:hover {
+    cursor: pointer;
+}
+
+.search-mobile {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.display-search-mobile {
+    transform: translateY(0)  !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.search-mobile .container {
+    height: 100%;
+}
+
+.search-mobile .input-group {
+    width: 100%;
+    height: 100%;
+    padding: 17px 0;
+}
+
+.search-mobile .input-group input {
+    width: 100%;
+    height: 36px;
+    border: none;
+    font-size: 16px;
+    color: #191919;
+    padding-left: 20px;
+    border-radius: 3px;
+    border: 1px solid #cacaca;
+    border-radius: 3px;
+}
+
+.search-mobile .input-group button {
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    background: none;
+    border: 0;
+    right: 0px;
+    top: 17px;
+    cursor: pointer;
+    background-color: #ff5736;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    display: flex;
+    height: 36px;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+}
 
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
@@ -3242,86 +3528,128 @@ Burger Mobile Menu
     .container {
         max-width: 1020px !important;
     }
+
     .caroussel-items .owl-nav button[type=button] {
         left: 5px;
     }
+
     .caroussel-items .owl-nav button[type=button].owl-next {
         right: 5px;
     }
+
     .pr-details-container .quantity .primary-btn.pd-cart {
         padding: 14px 30px 10px;
     }
+
     .pr-sp-tab-item ul li a {
         padding: 18px 39px;
     }
+
     .header-bar .search-container.input-group button {
         right: -7px;
     }
+
     .product-shop .product-item .pi-pic ul li a {
         padding: 16px 12px 12px 11px;
     }
+
     .related-pr .product-item .pi-pic ul li a {
         padding: 16px 12px 12px 11px;
+    }
+
+    .single-caroussel-items .container .row .col-lg-8,
+    .single-caroussel-items .container .row .col-lg-5 {
+        padding: 0 45px !important;
     }
 }
 
 @media only screen and (max-width: 991px) {
+
     .header-bar,
     .navbar-item,
     .header-top {
         display: none;
     }
+
     .nav-mobile {
         display: block
     }
+
     .categories-section {
         padding: 35px 0 50px;
         padding-bottom: 0;
     }
+
     .categories-image-container {
         margin-bottom: 30px;
     }
+
     .women-categories {
         padding-right: 0;
         padding-left: 0;
     }
+
     .women-categories-product {
         margin-left: 0;
         margin-right: 0;
     }
+
     .product-slider .owl-nav button[type=button] {
         display: none;
     }
+
     .man-categories {
         padding-right: 0;
         padding-left: 0;
         padding-top: 0;
     }
+
     .categories-control {
         text-align: center;
         margin-bottom: 45px;
         padding-top: 32px;
     }
+
     .place-order {
         padding-top: 30px;
     }
+
     .contact-form-container {
         padding-top: 40px;
     }
+
     .product-large.m-large {
         margin-top: 40px;
     }
+
     .caroussel-items .owl-nav button[type=button] {
         left: 5px;
     }
+
     .caroussel-items .owl-nav button[type=button].owl-next {
         right: 5px;
     }
+
     .product-shop.page-details .pr-details-container {
         padding-top: 30px;
     }
+
     .header-bar .search-container.input-group button {
         right: -8px;
+    }
+
+    .single-caroussel-items .container .row .col-lg-8,
+    .single-caroussel-items .container .row .col-lg-5 {
+        padding: 0 45px !important;
+    }
+    .filter-large-device, .produts-sidebar-filter {
+        display: none;
+    }
+    .mobile-filter-container {
+        display: block
+    }
+    .contact-info {
+        margin-top: 50px;
     }
 }
 
@@ -3332,33 +3660,48 @@ Burger Mobile Menu
     .container {
         max-width: 950px;
     }
+
     .product-list .box .slide-img img {
         height: 250px
     }
+
     .ft-widget {
         display: block !important;
     }
+
     .header-right li.cart-price {
         display: none
     }
+
     .media-diminution {
         padding: 0 !important;
     }
+
     .drop-btn {
         max-width: 240px
     }
+
     .single-caroussel-items .container .row {
         justify-content: center
     }
+
+    .single-caroussel-items .container .row .col-lg-8,
+    .single-caroussel-items .container .row .col-lg-5 {
+        padding: 0 45px !important;
+    }
+
     .pr-sp-tab-item ul li a {
         padding: 18px 39px;
     }
+
     .caroussel-items .off-card {
         left: 62%;
     }
+
     .produts-sidebar-filter {
         padding-top: 50px;
     }
+
     .checkout-ctnt input {
         margin-top: 50px;
     }
@@ -3367,181 +3710,326 @@ Burger Mobile Menu
 
 /* Large Device: 480px */
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 768px) {
+
+    .container,
+    .container-sm {
+        max-width: 710px !important;
+    }
+
     .categories-control ul li {
         font-size: 17px !important;
     }
+
+    .product-list .box .slide-img img {
+        width: 100%;
+        height: 235px;
+    }
+
     .women-categories-product.caroussel-baground.m-large {
         margin-top: 35px;
     }
+
     .ft-widget {
         display: block !important;
     }
+
     .single-avantage-container {
         margin-bottom: 25px
     }
+
     .instagram-photo .insta-item {
         width: 50%;
         height: 300px;
     }
+
     .copyright-reserved .copyright-text {
         float: none;
         margin-bottom: 10px;
         text-align: center;
     }
+
     .copyright-reserved .payment-pic {
         float: none;
         text-align: center;
     }
+
     .header-top .ht-left,
     .header-top .top-social {
         display: none;
     }
+
     .header-top .ht-right .login-panel {
         padding-top: 9px;
         padding-bottom: 7px;
     }
+
     .header-top .ht-right .lan-selector {
         margin-top: 5px;
         margin-bottom: 5px;
     }
+
     .inner-header .advanced-search .category-btn {
         display: none;
     }
+
     .inner-header .advanced-search .input-group {
         max-width: 100%;
     }
+
     .inner-header {
         padding: 0;
     }
+
     .inner-header .logo {
         text-align: center;
     }
+
     .inner-header .nav-right {
         text-align: left;
     }
+
     .inner-header .nav-right li:first-child {
         margin-left: 0;
     }
+
     .navbar-item .nav-depart .depart-btn {
         padding: 14px 50px 14px 18px;
     }
+
     .navbar-item {
         background: transparent;
     }
+
     .navbar-item .nav-menu {
         display: none;
     }
+
     .inner-header .nav-right li.cart-icon .cart-hover {
         left: -50px;
     }
+
     .product-show-option p {
         text-align: left;
     }
+
     .pr-sp-tab-item ul li a {
-        padding: 18px 51px;
+        padding: 18px 30px;
         margin-bottom: 10px;
     }
+
     .sh-cart-table {
         overflow: auto;
     }
+
     .sh-cart-table table tr th {
         font-size: 12px;
     }
+
     .caroussel-items .single-caroussel-items {
         padding: 110px 25px 80px;
         height: auto;
         background: left center;
     }
+
     .caroussel-items.caroussel-baground {
         background-repeat: no-repeat;
         background-size: auto;
         background-position: right right;
     }
+
     .caroussel-items .single-caroussel-items h1 {
         font-size: 40px;
     }
-    .hero-items .off-card {
+
+    .caroussel-items .off-card {
         display: none;
     }
+
     .ps-slider .owl-nav button[type=button] {
         left: 0;
     }
+
     .ps-slider .owl-nav button[type=button].owl-next {
         right: 0;
     }
+
     .produts-sidebar-filter {
         padding-top: 50px;
     }
+
     .checkout-ctnt input {
         margin-top: 50px;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    .container, .container-sm {
+
+    .container,
+    .container-sm {
         max-width: 710px !important;
     }
+
     .product-list .box .slide-img img {
         height: 240px;
-    }  
+    }
+
+    .pr-sp-tab-item ul li a {
+        padding: 12px 15px;
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-width: 281px) {
+
+    .col-6,
+    .container {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .product-list .box .slide-img img {
+        height: 130px !important;
+    }
+
+    .product-list .box .detail-box .price {
+        font-size: 13px !important
+    }
+
+    .line-trought-price {
+        font-size: 11px !important;
+    }
+
+    .percentage-promo {
+        font-size: 10px !important;
+    }
+
+    .drop-btn-mobile i {
+        font-size: 15px !important;
+    }
+
+    .mobile-logo-container .logo a img {
+        height: 35px !important;
+    }
+
+    .header-row-container .header-right li {
+        font-size: 15px;
+    }
+
+    .user-hover {
+        width: 180px;
+    }
+
+    .user-hover .login-register {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .user-hover ul {
+        padding: 12px 12px;
+    }
+
+    .user-hover ul li {
+        font-size: 13px !important;
+    }
+
+    .user-hover .connected-user {
+        padding: 12px
+    }
+
+    .user-hover .connected-user span {
+        font-size: 13px !important;
+    }
+
+    .user-hover .connected-user span i {
+        font-size: 10px !important;
+    }
 }
 
 /* Small Device: 320px */
 
 @media only screen and (max-width: 479px) {
+    .overlay .buy-btn {
+        font-size: 13px;
+        padding: 0 12px;
+        height: 36px;
+    }
     .menu-btn-container a .drop-btn-mobile {
         margin-right: 10px !important;
     }
+
     .product-list .box .slide-img img {
         height: 180px
     }
+
     .product-list .box .detail-box .type .article-name {
         font-size: 13px;
     }
+
     .product-list .box .detail-box .price {
         font-size: 15px !important;
     }
+
     .header-bar .search-container .input-group {
         max-width: 100%;
     }
+
     .inner-header .nav-right li.cart-icon .cart-hover {
         width: 270px;
         padding: 20px;
     }
+
     .countdown-timer .cd-item {
         margin-right: 5px;
         padding: 10px 6px;
     }
+
     .product-show-option .select-option {
         display: inline-block;
     }
+
     .product-show-option .select-option .sorting.nice-select {
         margin-bottom: 10px;
     }
+
     .pr-details-container .quantity .primary-btn.pd-cart {
         padding: 14px 20px 10px;
     }
+
     .pr-sp-tab-item ul li a {
-        padding: 18px 30px;
+        padding: 12px 10px;
         margin-bottom: 10px;
+        font-size: 12px;
     }
+
     .specification-table table tr td.pr-catdegory {
         width: 160px;
     }
+
     .checkout-form .place-order .order-total {
         padding-left: 20px;
         padding-right: 20px;
     }
+
     .contact-info-detail .contact-info-detail-item .contact-info-icon {
         float: none;
         margin-bottom: 5px;
     }
+
     .contact-info-detail .contact-info-detail-item .contact-info-text {
         padding-left: 0;
     }
+
     .benefit-items .single-benefit {
         padding-left: 15px;
         padding-right: 15px;
     }
 }
+
+.errors {
+    font-size: 14px;
+    line-height: 2px;
+    /* margin-bottom: 10px; */
+}
+
+/** Fin Css */

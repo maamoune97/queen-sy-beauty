@@ -76,6 +76,11 @@ class Order
      */
     private $orderNumber;
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $paymentMode;
+
     public function __construct()
     {
         $this->productPacks = new ArrayCollection();
@@ -283,6 +288,18 @@ class Order
     public function setOrderNumber(string $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    public function getPaymentMode(): ?int
+    {
+        return $this->paymentMode;
+    }
+
+    public function setPaymentMode(int $paymentMode): self
+    {
+        $this->paymentMode = $paymentMode;
 
         return $this;
     }
