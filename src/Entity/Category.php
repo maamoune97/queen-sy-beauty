@@ -38,6 +38,11 @@ class Category
      */
     private $subCategories;
 
+    /**
+     * @ORM\OneToOne(targetEntity=HomePageCollectionPreview::class, mappedBy="category", cascade={"persist", "remove"})
+     */
+    private $homePageCollectionPreview;
+
     public function __construct()
     {
         $this->subCategories = new ArrayCollection();
@@ -115,6 +120,23 @@ class Category
                 $subCategory->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHomePageCollectionPreview(): ?HomePageCollectionPreview
+    {
+        return $this->homePageCollectionPreview;
+    }
+
+    public function setHomePageCollectionPreview(HomePageCollectionPreview $homePageCollectionPreview): self
+    {
+        // set the owning side of the relation if necessary
+        if ($homePageCollectionPreview->getCategory() !== $this) {
+            $homePageCollectionPreview->setCategory($this);
+        }
+
+        $this->homePageCollectionPreview = $homePageCollectionPreview;
 
         return $this;
     }

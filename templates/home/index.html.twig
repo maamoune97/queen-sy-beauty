@@ -81,201 +81,65 @@
         </div>
     </div>
 
-    <!-- Femme Categories Section -->
-    <section class="women-categories ">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="women-categories-product caroussel-baground" data-bgcaroussel="{{asset('media/images/static/products/women-large.jpg')}}">
-                        <h2>Femme</h2>
-                        <a href="#">Voir Plus</a>
-                    </div>
-                </div>
-                <div class="col-lg-8 offset-lg-1">
-                    <div class="categories-control">
-                        <ul>
-                            <li class="active">Chaussures</li>
-                            <li>Vetement</li>
-                            <li>Accesoires</li>
-                            <li>Sac</li>
-                        </ul>
-                    </div>
-                    <div class="product-slider owl-carousel">
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/women-1.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
+    {% for collection in collectionsPreview %}
+       {% if loop.first %}
+            <!-- Femme Categories Section -->
+            <section class="women-categories">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="women-categories-product caroussel-baground" data-bgcaroussel="{{asset(collection.image)}}">
+                                <h2>{{collection.category.name}}</h2>
+                                <a href="{{path('shop_category', {'slug': collection.category.slug})}}">Voir Plus</a>
                             </div>
                         </div>
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/women-2.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
+                        <div class="col-lg-8 offset-lg-1">
+                            <div class="categories-control">
+                                <ul>
+                                    {% for subCategory in collection.subCategories %}
+                                        <li class="{{loop.first ? 'active'}}">{{subCategory.name}}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/women-3.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/women-4.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
+                            <div class="product-slider owl-carousel">
+                                {% for product in collection.products %}
+                                    {% include "partials/_box_product_cart.html.twig" with {'product' : product} %}  
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Homme Categories Section -->
-    <section class="man-categories">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="categories-control">
-                        <ul>
-                            <li class="active">Chaussures</li>
-                            <li>Vetement</li>
-                            <li>Accesoires</li>
-                            <li>Sac</li>
-                        </ul>
-                    </div>
-                    <div class="product-slider owl-carousel">
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/man-1.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
+            </section>
+        {% else %}
+            <!-- Homme Categories Section -->
+            <section class="man-categories">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="categories-control">
+                                <ul>
+                                    {% for subCategory in collection.subCategories %}
+                                        <li class="{{loop.first ? 'active'}}">{{subCategory.name}}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
+                            <div class="product-slider owl-carousel">
+                                {% for product in collection.products %}
+                                    {% include "partials/_box_product_cart.html.twig" with {'product' : product} %}  
+                                {% endfor %}
                             </div>
                         </div>
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/man-2.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/man-3.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
-                            </div>
-                        </div>
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="{{asset('media/images/static/products/man-4.jpg')}}" alt="">
-                                <div class="overlay">
-                                    <a href="#" class="buy-btn">
-                                        Acheter Maintenant
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <span class="article-name" href="">Rabbed Cardigan</span>
-                                    <span>Noe Arrival</span>
-                                </div>
-                                <span class="price">5000 KMF</span>
+                        <div class="col-lg-3 offset-lg-1">
+                            <div class="women-categories-product caroussel-baground m-large" data-bgcaroussel="{{asset(collection.image)}}">
+                                <h2>{{collection.category.name}}</h2>
+                                <a href="{{path('shop_category', {'slug': collection.category.slug})}}">Voir Plus</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 offset-lg-1">
-                    <div class="women-categories-product caroussel-baground m-large" data-bgcaroussel="{{asset('media/images/static/products/man-large.jpg')}}">
-                        <h2>Homme</h2>
-                        <a href="#">Voir Plus</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
+       {% endif %} 
+    {% endfor %}
 
     <!-- Avantage -->
     <section style="padding: 50px 0; background: #282828;">

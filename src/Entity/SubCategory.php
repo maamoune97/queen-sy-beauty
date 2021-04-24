@@ -43,6 +43,11 @@ class SubCategory
      */
     private $products;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=HomePageCollectionPreview::class, inversedBy="subCategories")
+     */
+    private $homePageCollectionPreview;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -132,6 +137,18 @@ class SubCategory
                 $product->setSubCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHomePageCollectionPreview(): ?HomePageCollectionPreview
+    {
+        return $this->homePageCollectionPreview;
+    }
+
+    public function setHomePageCollectionPreview(?HomePageCollectionPreview $homePageCollectionPreview): self
+    {
+        $this->homePageCollectionPreview = $homePageCollectionPreview;
 
         return $this;
     }

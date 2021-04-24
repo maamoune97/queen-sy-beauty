@@ -7,6 +7,7 @@ use App\Form\SubCategoryType;
 use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminSubCategoryController extends AbstractController
 {
+    private $subCategoryRepository;
+
+    public function __construct(SubCategoryRepository $subCategoryRepository)
+    {
+        $this->subCategoryRepository = $subCategoryRepository;
+    }
+
     /**
      * @Route("/", name="index")
      */
@@ -57,5 +65,30 @@ class AdminSubCategoryController extends AbstractController
         return $this->render('admin/sub_category/show.html.twig', [
             'subCategory' => $subCategory,
         ]);
+    }
+
+    /**
+     * find subCategories by category id for AJAX
+     * 
+     * @Route("/find-by-category", name="find_by_category", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function AJAX_findByCatagory(Request $request): JsonResponse
+    {
+        $category = json_decode($request->getContent())->category;
+
+        $subCategories = $this->subCategoryRepository->findBy(['category' => $category]);
+        if ($subCategories)
+        {
+            $data = [];
+            foreach ($subCategories as $subCategory)
+            {
+                $data[] = ['id' => $subCategory->getId(), 'name' => $subCategory->getName()];
+            }
+            return new JsonResponse($data);
+        }
+        return new JsonResponse(false);
     }
 }

@@ -71,7 +71,8 @@ class AppFixtures extends Fixture
             $order->setPrice($faker->randomElement($prices))
                   ->setStatus($faker->randomElement([0,1,2]))
                   ->setCreatedAt($faker->dateTimeBetween('-8 days'))
-                  ->setOrderNumber(uniqid('qsb-'));
+                  ->setOrderNumber(uniqid('qsb-'))
+                  ->setPaymentMode($faker->randomElement([1,2]))
                   ;
 
             

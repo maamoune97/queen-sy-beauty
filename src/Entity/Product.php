@@ -74,6 +74,11 @@ class Product
     private $options;
 
     /**
+     * @ORM\ManyToOne(targetEntity=HomePageCollectionPreview::class, inversedBy="products")
+     */
+    private $homePageCollectionPreview;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      *
@@ -271,6 +276,18 @@ class Product
                 $option->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHomePageCollectionPreview(): ?HomePageCollectionPreview
+    {
+        return $this->homePageCollectionPreview;
+    }
+
+    public function setHomePageCollectionPreview(?HomePageCollectionPreview $homePageCollectionPreview): self
+    {
+        $this->homePageCollectionPreview = $homePageCollectionPreview;
 
         return $this;
     }

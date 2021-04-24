@@ -1,0 +1,94 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Créer une collection vitrine | {% endblock %}
+
+{% block styles %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Créer une collection</h1>
+        {{form_start(form)}}
+        <div class="row">
+            <div class="col-12">
+                {{form_row(form.image)}}
+            </div>
+            <div class="col-12">
+                {{form_row(form.category)}}
+            </div>
+            <div class="col-12">
+                {{form_row(form.subCategories)}}
+            </div>
+            <div class="col-12">
+                {{form_row(form.products)}}
+            </div>
+            <div class="col-12 form-group">
+                <input type="submit" value="Créer la collection" class="btn btn-primary">
+            </div>
+        </div>
+        {{form_end(form)}}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+    $('#collection_preview_subCategories option').remove();
+    $('#collection_preview_products option').remove();
+
+    //get subCategories
+    $('#collection_preview_category').on('change', function() {
+        const category = +this.value;
+        const path = `/admin/subcategory/find-by-category`;
+        axios.post(path, {
+            category: category,
+        })
+        .then(function (response) {
+            $('#collection_preview_subCategories option').remove();
+            response.data.forEach(subCategory => {
+                let option = document.createElement("option")
+                $(option).text(subCategory.name).attr('value', subCategory.id);
+                $('#collection_preview_subCategories').append(option);
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    });
+
+    //get Products
+    var selectedSubCategories = null;
+    $('#collection_preview_subCategories').change(function() {
+        selectedSubCategories = $(this).find('option:selected').map(function() {
+        return this.value;
+    }).get();
+    
+    // console.log(selectedSubCategories);     
+    });
+
+    $('#collection_preview_subCategories').on('change', function() {
+        const category = +this.value;
+        const path = `/admin/product/find-by-sub-categories`;
+        axios.post(path, {
+            subCategories: selectedSubCategories,
+        })
+        .then(function (response) {
+            $('#collection_preview_products option').remove();
+            response.data.forEach(subCategory => {
+                let option = document.createElement("option")
+                $(option).text(subCategory.name).attr('value', subCategory.id);
+                $('#collection_preview_products').append(option);
+            })
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    });
+});
+</script>
+{% endblock %}

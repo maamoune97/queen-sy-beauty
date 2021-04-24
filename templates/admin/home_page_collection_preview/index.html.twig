@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin collection vitrine | {% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>collections vitrine {{collectionsPreview | length}}/2</h1>
+    {% if collectionsPreview | length < 2 %}
+        <a href="{{path('admin_home_page_collection_preview_create')}}" class="btn btn-primary float-right"><i class="fas fa-plus fa-lg"></i> Ajouter une collection</a>
+    {% endif %}
+    <div class="row mt-5">
+        {% for collection in collectionsPreview %}
+            <div class="col-sm-6 col-md-6">
+
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="{{asset(collection.image)}}" alt="{{collection.category.name}}" style="max-height:250px; max-width:179px;" >
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{collection.category.name}}</h5>
+                                <p class="card-text"><span class="font-weight-bold h5" >Sous-categories:</span> {% for subCategory in collection.subCategories %}
+                                    {{subCategory.name}}{% if not loop.last %}, {% endif %}
+                                {% endfor %}</p>
+                                <p class="card-text"><span class="font-weight-bold h5" >Artilces:</span> {% for product in collection.products %}
+                                    {{product.name}}{% if not loop.last %}, {% endif %}
+                                {% endfor %}</p>
+                                {# <a href="#" class="btn btn-primary">editer</a> #}
+                                <a href="{{path('admin_home_page_collection_preview_delete', {'id' : collection.id})}}" class="btn btn-danger" onclick="return confirm('Etes-vous sur de vouloir supprimer la collection?')">supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% else %}
+            <div class="col">
+                <p>Aucune collection vitrine disponible</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

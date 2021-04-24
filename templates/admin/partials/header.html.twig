@@ -15,17 +15,14 @@
                 <li class="nav-item {{active_by_controller(controller)}}">
                     <a class="nav-link" href="{{path('admin_category_index')}}">Catalogue</a>
                 </li>
-                {# <li class="nav-item ">
-                    <a class="nav-link" href="{{path('admin_sub_category_index')}}">Sous-categories</a>
-                </li> #}
-                {# <li class="nav-item ">
-                    <a class="nav-link" href="{{path('admin_product_index')}}">Articles</a>
-                </li> #}
                 <li class="nav-item {{active_by_route('admin_order_index')}}">
                     <a class="nav-link" href="{{path('admin_order_index')}}">Commandes</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item {{active_by_route('admin_home_page_collection_preview_index')}}">
+                    <a href="{{path('admin_home_page_collection_preview_index')}}" class="nav-link">Page d'acceuil</a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Parametrès</a>
                 </li>

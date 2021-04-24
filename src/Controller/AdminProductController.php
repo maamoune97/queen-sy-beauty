@@ -9,6 +9,7 @@ use App\Repository\ProductRepository;
 use App\Service\FileUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,5 +72,30 @@ class AdminProductController extends AbstractController
         return $this->render('admin/product/show.html.twig', [
             'product' => $product
         ]);
+    }
+
+    /**
+     * find subCategories by category id for AJAX
+     * 
+     * @Route("/find-by-sub-categories", name="find_by_sub_categories", methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function AJAX_findBySubCatagories(Request $request, ProductRepository $productRepository): JsonResponse
+    {
+        $products = json_decode($request->getContent())->subCategories;
+
+        $products = $productRepository->findBy(['subCategory' => $products]);
+        if ($products)
+        {
+            $data = [];
+            foreach ($products as $products)
+            {
+                $data[] = ['id' => $products->getId(), 'name' => $products->getName(), 'subCategory' => $products->getSubCategory()->getName()];
+            }
+            return new JsonResponse($data);
+        }
+        return new JsonResponse(false);
     }
 }
