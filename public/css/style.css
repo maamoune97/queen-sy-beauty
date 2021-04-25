@@ -984,7 +984,7 @@ Banner Section
     margin-right: 0;
 }
 
-.product-slider .owl-nav button[type=button] {
+.product-slider .owl-nav button[type=button], .related-product-slider .owl-nav button[type=button] {
     font-size: 30px;
     position: absolute;
     left: -62px;
@@ -993,19 +993,19 @@ Banner Section
     opacity: 0.3;
 }
 
-.product-slider .owl-nav button[type=button].owl-next {
+.product-slider .owl-nav button[type=button].owl-next, .related-product-slider .owl-nav button[type=button].owl-next {
     left: auto;
     right: -62px;
     color: #171717;
     opacity: 1;
 }
 
-.product-slider .owl-dots {
+.product-slider .owl-dots, .related-product-slider .owl-dots {
     text-align: center;
     margin-top: 27px;
 }
 
-.product-slider .owl-dots button {
+.product-slider .owl-dots button, .related-product-slider .owl-dots button {
     width: 6px;
     height: 6px;
     background: #D8D9DA;
@@ -1016,15 +1016,15 @@ Banner Section
     transition: all 0.3s;
 }
 
-.product-slider.owl-carousel .owl-item {
+.product-slider.owl-carousel .owl-item, .related-product-slider.owl-carousel .owl-item {
     padding: 0 10px
 }
 
-.product-slider .owl-dots button:last-child {
+.product-slider .owl-dots button:last-child, .related-product-slider .owl-dots button:last-child {
     margin-right: 0;
 }
 
-.product-slider .owl-dots button.active {
+.product-slider .owl-dots button.active, .related-product-slider .owl-dots button.active {
     width: 30px;
     background: #252525;
     border-radius: 50px;
@@ -2032,36 +2032,56 @@ Burger Mobile Menu
     height: 290px
 }
 
-
-.loading-more {
-    text-align: center;
-    padding-top: 10px;
+.pagination-div {
+    margin-top: 35px;
 }
 
-.loading-more i {
-    font-size: 22px;
-    color: #663333;
-    margin-right: 6px;
-    position: relative;
-    top: 7px;
+.pagination-div nav {
+    display: flex;
+    justify-content: center
 }
 
-.loading-more a {
-    font-size: 18px;
-    font-weight: 700;
-    color: #252525;
+.pagination .page-item {
+    cursor: pointer
+}
+
+.pagination .page-item .page-link {
+    font-size: 16px;
+    color: #212529;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    -webkit-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+}
+
+.waves-effect {
     position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pagination.pg-blue .page-item.active .page-link {
+    background-color: #ff5736;
+}
+
+.pagination .page-item.active .page-link {
+    color: #fff;
+    background-color: #ff5736;
+    border-radius: .125rem;
+    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+a.waves-effect, a.waves-light {
     display: inline-block;
-}
-
-.loading-more a:before {
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 100%;
-    height: 2px;
-    background: #ff5736;
-    content: "";
 }
 
 
@@ -2168,6 +2188,10 @@ Burger Mobile Menu
     color: #fff;
     border-radius: 4px;
     border: 0
+}
+
+.site-btn:hover, .site-btn:focus {
+    background-color: #f3411e
 }
 
 /**********************
@@ -2509,7 +2533,8 @@ Burger Mobile Menu
 }
 
 .pr-details-container .quantity .primary-btn.pd-cart {
-    padding: 14px 70px 10px;
+    padding: 10px 70px 10px;
+    text-transform: uppercase;
 }
 
 .pr-details-container .pr-detail-tags {
@@ -2827,8 +2852,8 @@ Burger Mobile Menu
     display: none;
 }
 
-.related-pr .container .row .box {
-    margin: 0 !important;
+.related-product-slider .owl-item .box {
+    margin: 10px 0 !important;
 }
 
 /*---------------------
@@ -3114,7 +3139,7 @@ Burger Mobile Menu
     width: 100%;
     height: 46px;
     border: 2px solid #ebebeb;
-    /* margin-bottom: 25px; */
+    margin-bottom: 25px;
     padding-left: 15px;
 }
 
@@ -3506,6 +3531,36 @@ Responsive Search Bar
     align-items: center;
     justify-content: center;
 }
+
+/*************************
+    Account Page
+*************************/
+
+.account-page {
+    padding: 60px 0;
+}
+
+.account-page input {
+    color: #575353;
+    font-size: 16px;
+    border: 2px solid #ebebeb;
+    padding: 14px 20px;
+    display: block;
+}
+
+.btn-acouunt-submit {
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.btn-acouunt-submit .site-btn {
+    text-transform: uppercase !important;
+    font-size: 15px !important;
+}
+
+
 
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
@@ -4024,12 +4079,6 @@ Responsive Search Bar
         padding-left: 15px;
         padding-right: 15px;
     }
-}
-
-.errors {
-    font-size: 14px;
-    line-height: 2px;
-    /* margin-bottom: 10px; */
 }
 
 /** Fin Css */

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/show/{slug}/{id}", name="product_show")
+     * @Route("/article/{slug}/{id}", name="product_show")
      */
     public function show(Product $product, $slug, ProductRepository $productRepository): Response
     {

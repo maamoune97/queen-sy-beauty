@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\SubCategory;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\SubCategoryRepository;
-use DateTime;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,28 +17,59 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ShopController extends AbstractController
 {
+    private $productRepo;
+    private $categoryRepo;
+    private $subCategoryRepo;
+    private $paginator;
+
+    /**
+     *
+     * @param ProductRepository $productRepo
+     * @param CategoryRepository $categoryRepo
+     * @param SubCategoryRepository $subCategoryRepo
+     * @param PaginatorInterface $paginator
+     */
+    public function __construct(ProductRepository $productRepo, CategoryRepository $categoryRepo, SubCategoryRepository $subCategoryRepo, PaginatorInterface $paginator)
+    {
+        $this->productRepo = $productRepo;
+        $this->subCategoryRepo = $subCategoryRepo;
+        $this->categoryRepo = $categoryRepo;
+        $this->paginator = $paginator;
+    }
     /**
      * @Route("/", name="index")
      */
-    public function index(ProductRepository $pr): Response
+    public function index(Request $request): Response
     {
+
+        $products = $this->paginator->paginate(
+            $this->productRepo->findAllVisibleQuery(), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/
+        );
+
         return $this->render('shop/index.html.twig', [
-            'products' => $pr->findAll(),
+            'products' => $products,
         ]);
     }
 
     /**
      * @Route("/{slug}", name="category")
      */
-    public function category(Category $category): Response
+    public function category(Category $category, Request $request): Response
     {
-        $products = [];
+        $subCategoriesId = [];
         foreach ($category->getSubCategories() as $subCategory)
         {
-            foreach ($subCategory->getProducts() as $product) {
-                $products[] = $product;
-            }
+            $subCategoriesId[] = $subCategory->getId();
         }
+
+        $products = $this->paginator->paginate(
+            $this->productRepo->findAllVisibleByCategoryQuery($subCategoriesId), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/
+        );
+
         return $this->render('shop/index.html.twig', [
             'products' => $products,
             'category' => $category,
@@ -48,19 +79,18 @@ class ShopController extends AbstractController
     /**
      * @Route("/{category_slug}/{slug}", name="sub_category")
      */
-    public function subCategory(CategoryRepository $categoryRepository, SubCategoryRepository $subCategoryRepository, $category_slug, $slug): Response
-    {
-        $products = [];
-        $subCategory = null;
-        
+    public function subCategory($category_slug, $slug, Request $request): Response
+    {        
         try
         {
-            $category = $categoryRepository->findOneBySlug($category_slug);
-            $subCategory = $subCategoryRepository->findOneBy(['category' => $category->getId(), 'slug' => $slug]);
-            foreach ($subCategory->getProducts() as $product)
-            {
-                $products[] = $product;
-            }
+            $category = $this->categoryRepo->findOneBySlug($category_slug);
+            $subCategory = $this->subCategoryRepo->findOneBy(['category' => $category->getId(), 'slug' => $slug]);
+
+            $products = $this->paginator->paginate(
+                $this->productRepo->findAllVisibleBySubCategoryQuery($subCategory->getId()), /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                12 /*limit per page*/
+            );
         }
         catch (\Throwable $th)
         {

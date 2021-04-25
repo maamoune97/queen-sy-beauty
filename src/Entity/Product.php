@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProductRepository;
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -79,6 +80,11 @@ class Product
     private $homePageCollectionPreview;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      *
@@ -91,6 +97,19 @@ class Product
         if (!$this->getSlug() || $this->getSlug() !== $slug)
         {
             $this->setSlug($slug);
+        }
+    } 
+
+    /**
+     * @ORM\PrePersist
+     *
+     * @return void
+     */
+    public function initializeCreatedAt()
+    {
+        if (!$this->getCreatedAt())
+        {
+            $this->setCreatedAt(new DateTime());
         }
     }    
 
@@ -288,6 +307,18 @@ class Product
     public function setHomePageCollectionPreview(?HomePageCollectionPreview $homePageCollectionPreview): self
     {
         $this->homePageCollectionPreview = $homePageCollectionPreview;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,57 @@ class ProductRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Product::class);
+    }
+
+    /**
+     * @return Query Returns a Query of visible products
+     */
+    public function findAllVisibleQuery(): Query
+    {
+        return $this->findVisibleQuery()
+                    ->getQuery()
+                    ;
+    }
+
+    /**
+     *
+     * @param integer $subCategory
+     * @return Query
+     */
+    public function findAllVisibleBySubCategoryQuery(int $subCategory): Query
+    {
+        return $this->findVisibleQuery()
+                    ->where('p.subCategory = :subcategory')
+                    ->setParameter('subcategory', $subCategory)
+                    ->getQuery()
+                    ;
+    }
+
+    /**
+     *
+     * @param array $subCategories
+     * @return Query
+     */
+    public function findAllVisibleByCategoryQuery(array $subCategories): Query
+    {
+        return $this->findVisibleQuery()
+                    ->andWhere('p.subCategory in (:subcategories)')
+                    ->setParameter('subcategories', $subCategories)
+                    ->getQuery()
+                    ;
+    }
+
+
+    /**
+     * Returns a QueryBuilder of Product objects
+     *
+     * @return QueryBuilder
+     */
+    private function findVisibleQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+                    ->where('p.visible = true')
+                    ;
     }
 
     // /**

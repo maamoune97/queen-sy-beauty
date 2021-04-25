@@ -166,6 +166,11 @@
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="pagination-div">
+                        <nav aria-label="Page navigation example">
+                            {{ knp_pagination_render(products) }}
+                        </nav>
+                    </div>
                     {# <div class="loading-more">
                         <i class="icon_loading"></i>
                         <a href="#">
@@ -178,3 +183,4 @@
     </section>
     <!-- Product Shop Section End -->
 {% endblock body %}
+
