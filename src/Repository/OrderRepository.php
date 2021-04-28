@@ -33,17 +33,17 @@ class OrderRepository extends ServiceEntityRepository
             if ($orderSearch->getWaitingStatus())
             {
                 $query->orWhere('o.status = :waitingStatus')
-                      ->setParameter('waitingStatus', '0');
+                      ->setParameter('waitingStatus', '1');
             }
             if ($orderSearch->getPaidStatus())
             {
                 $query->orWhere('o.status = :paidStatus')
-                      ->setParameter('paidStatus', '1');
+                      ->setParameter('paidStatus', '2');
             }
             if ($orderSearch->getReceivedStatus())
             {
                 $query->orWhere('o.status = :receivedStatus')
-                      ->setParameter('receivedStatus', '2');
+                      ->setParameter('receivedStatus', '3');
             }
         }
 
@@ -87,9 +87,11 @@ class OrderRepository extends ServiceEntityRepository
                 ->leftJoin('o.registeredCustomer', 'r')
                 ->leftJoin('o.unregisteredCustomer', 'u')
                 ->andWhere('u.fName LIKE :client OR u.lName LIKE :client OR u.phoneNumber = :phone OR
-                            r.fName LIKE :client OR r.lName LIKE :client OR r.phoneNumber = :phone')
+                            r.fName LIKE :client OR r.lName LIKE :client OR r.phoneNumber = :phone OR
+                            o.orderNumber = :orderNum')
                 ->setParameter('client', '%'.$orderSearch->getClient().'%')
                 ->setParameter('phone', $orderSearch->getClient())
+                ->setParameter('orderNum', $orderSearch->getClient())
                 ;
         }
 

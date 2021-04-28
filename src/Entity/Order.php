@@ -19,9 +19,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Order
 {
     const STATUS = [
-        0 => 'en attente',
-        1 => 'Paiment confirmé',
-        2 => 'Delivrée'
+        0 => 'Annulée',
+        1 => 'en attente',
+        2 => 'Paiment confirmée',
+        3 => 'Delivrée'
     ];
 
     /**

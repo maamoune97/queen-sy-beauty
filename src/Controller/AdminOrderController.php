@@ -9,6 +9,7 @@ use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +48,7 @@ class AdminOrderController extends AbstractController
                             ]
                         ]
                     );
-            $orders = $or->findBy(['status' => 0], ['createdAt' => 'ASC']);
+            $orders = $or->findBy(['status' => 1], ['createdAt' => 'ASC']);
         }
         
         return $this->render('admin/order/index.html.twig', [
@@ -64,24 +65,95 @@ class AdminOrderController extends AbstractController
      */
     public function show(Order $order): Response
     {
+        switch ($order->getStatus())
+        {
+            case 1:
+                $toStatus = 2;
+                break;
+
+            case 2:
+                $toStatus = 3;
+                break;
+            
+            default:
+                $toStatus = 0;
+                break;
+        }
+
+        $formData = [
+                    'orderNumber' => $order->getOrderNumber(),    
+                    'fromStatus' => $order->getStatus(),    
+                    'toStatus' => $toStatus,    
+                ];
+
+        $form = $this->createFormBuilder($formData)
+                    ->setAction($this->generateUrl('admin_order_handle_status'))
+                    ->add('orderNumber', HiddenType::class)
+                    ->add('fromStatus', HiddenType::class)
+                    ->add('toStatus', HiddenType::class)
+                    ->getForm()
+                    ;
+
+        $cancellationForm = $this->createFormBuilder($formData)
+                    ->setAction($this->generateUrl('admin_order_cancellation'))
+                    ->add('orderNumber', HiddenType::class)
+                    ->getForm()
+                    ;
+
         return $this->render("admin/order/show.html.twig", [
-            'order' => $order
+            'order' => $order,
+            'form' => $form->createView(),
+            'cancellationForm' => $cancellationForm->createView(),
+            'toStatus' => $toStatus,
         ]);
     }
 
     /**
-     * @Route("/confirm-payment/{id}", name="confirm_payment")
+     * @Route("/cancellation", name="cancellation")
      *
-     * @param Order $order
      * @return Response
      */
-    public function ConfirmPayment(Order $order, EntityManagerInterface $manager): Response
+    public function cancellation(EntityManagerInterface $manager, Request $request, OrderRepository $or): Response
     {
-        $order->setStatus(1);
+        try
+        {
+            $form = $request->request->get('form');
+            $order = $or->findOneByOrderNumber($form['orderNumber']);
 
-        $manager->persist($order);
-        $manager->flush();
+            $order->setStatus(0);
+            $manager->persist($order);
+            $manager->flush();
+            return $this->redirectToRoute("admin_order_index");
+        } 
+        catch (\Throwable $th)
+        {
+            throw $this->createAccessDeniedException();
+        }
 
-        return $this->redirectToRoute("admin_order_index");
+    }
+
+    /**
+     * @Route("/handle-status", name="handle_status")
+     *
+     * @return Response
+     */
+    public function handleStatus(EntityManagerInterface $manager, Request $request, OrderRepository $or): Response
+    {
+        try
+        {
+            $form = $request->request->get('form');
+    
+            $order = $or->findOneByOrderNumber($form['orderNumber']);
+
+            $order->setStatus($form['toStatus']);
+            $manager->persist($order);
+            $manager->flush();
+            return $this->redirectToRoute("admin_order_index");
+        } 
+        catch (\Throwable $th)
+        {
+            throw $this->createAccessDeniedException();
+        }
+
     }
 }

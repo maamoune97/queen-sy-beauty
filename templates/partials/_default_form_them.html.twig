@@ -12,6 +12,10 @@
     <input type="email" name="{{full_name}}" id="{{id}}" value="{{value}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }}>
 {% endblock email_widget %}
 
+{% block textarea_widget %}
+    <textarea name="{{full_name}}" id="{{id}}" placeholder="{{ attr.placeholder ? attr.placeholder : '' }}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }}>{{value}}</textarea>
+{% endblock textarea_widget %}
+
 {% block password_widget %}
     <input type="password" name="{{full_name}}" id="{{id}}" placeholder="{{ attr.placeholder is defined ? attr.placeholder : '' }}" {{disabled ? 'disabled' }} {{ required ? "required='required'" : "" }}>
 {% endblock password_widget %}

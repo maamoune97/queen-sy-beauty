@@ -48,8 +48,13 @@ class OrderController extends AbstractController
      *
      * @return void
      */
-    public function finalize(CartService $cart, Request $request, EntityManagerInterface $manager, ProductOptionFieldRepository $productOptionFieldRepository, UserPasswordEncoderInterface $encoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator) : Response
+    public function finalize(CartService $cart, Request $request, EntityManagerInterface $manager, ProductOptionFieldRepository $productOptionFieldRepository, UserPasswordEncoderInterface $encoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator, \Swift_Mailer  $mailer) : Response
     {
+        if (!$cart->getProductCount() > 0)
+        {
+            return $this->redirectToRoute('home');
+        }
+        
         $placeOrder = new PlaceOrder();
 
         //préremplir le formulaire si l'utilisateur est authenttifié (connecté)
@@ -91,7 +96,7 @@ class OrderController extends AbstractController
         {
             $order = new Order();
             $order->setPrice($cart->getSubtotalPrice())
-                 ->setStatus(0)
+                 ->setStatus(1)
                  ->setDeliveryAddress($placeOrder->getDeliveryAddress())
                  ->setPaymentMode($placeOrder->getPaymentMode())
                  ;
@@ -165,6 +170,27 @@ class OrderController extends AbstractController
             $manager->persist($order);
             $manager->flush();
             $cart->empty();
+
+            //envoyer un email pour informer l'admin
+            $message = (new \Swift_Message("Une commande vient d'être passée #".$order->getOrderNumber()))
+            ->setFrom('martincarlos00497@gmail.com')
+            ->setTo('maamoune97bv@gmail.com')
+            ->setBody(
+                $this->renderView(
+                    // templates/emails/registration.html.twig
+                    'partials/emails/_order_placed.html.twig',
+                    [
+                        'order_number' => $order->getOrderNumber(),
+                        'client' => $order->getCustomer(),
+                        'total_price' => number_format($order->getPrice(), 0, ',', ' '). ' KMF',
+                    ]
+                ),
+                'text/html'
+            )
+            ;
+            
+            $mailer->send($message);
+
             dump('commande passé');
             // inseré un message pour que dire la commande est passé
         }

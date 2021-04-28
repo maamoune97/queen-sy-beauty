@@ -55,9 +55,9 @@ class OrderSearchType extends AbstractType
                     // 'required' => false
                 ])
             ->add('client', TextType::class, [
-                'label' => 'Client',
+                'label' => 'Client ou Commande',
                 'attr' => [
-                    'placeholder' => 'nom, prénom ou téléphone'
+                    'placeholder' => 'num cmd, nom, prénom ou téléphone'
                 ],
                 'required' => false
             ])
