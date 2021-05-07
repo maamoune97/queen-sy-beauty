@@ -5,16 +5,15 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1 class="h3">Créer un article</h1>
-        {% include "admin/product/_form.html.twig" with {'submitValue': 'Créer l\'article'} %}
+        <h1 class="h3">Modifier un article</h1>
+        {% include "admin/product/_form.html.twig" with {'submitValue': 'Modifier l\'article'} %}
     </div>    
 {% endblock %}
 
 {% block javascripts %}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-$(document).ready(function()
-{
+$(document).ready(function() {
     $('.js-example-basic-single').select2();
 });
 </script>
@@ -22,8 +21,7 @@ $(document).ready(function()
 <script src="{{ asset('assets/js/ckeditor/adapters/jquery.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-    $(function()
-    {
+    $(function() {
         $('textarea.ckeditor').ckeditor();
     });
 </script>

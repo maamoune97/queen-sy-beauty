@@ -1,0 +1,8 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="h3">modifier une sous-catégorie</h1>
+    {% include "admin/sub_category/_form.html.twig" with {'submitValue': 'modifier la sous-catégorie'} %}
+</div>
+{% endblock %}

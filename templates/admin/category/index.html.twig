@@ -17,7 +17,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{category.name}}</h5>
                                 <p class="card-text">Sous-categories: <span class="badge badge-info">{{category.subCategories | length}}</span></p>
-                                <p class="card-text">Visible: Non </p>
+                                {# <p class="card-text">Visible: Non </p> #}
                                 <a href="{{path('admin_category_show', {'id': category.id} )}}" class="btn btn-primary">Parcourir</a>
                             </div>
                         </div>

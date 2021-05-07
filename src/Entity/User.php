@@ -85,10 +85,11 @@ class User implements UserInterface, CustomerInterface
     private $createdAt;
 
     /**
-     * @Assert\NotBlank(message = "Confirmer votre mot de passe")
+     * @Assert\NotBlank(message = "Confirmer votre mot de passe", groups={"Registration"})
      * @Assert\IdenticalTo(
      *      propertyPath="password",
-     *      message="Le mot de passe ne correspond pas"
+     *      message="Le mot de passe ne correspond pas",
+     *      groups={"Registration"}
      * )
      */
     public $passwordConfirmation;

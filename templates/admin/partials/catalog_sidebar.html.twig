@@ -3,21 +3,21 @@
         {{active_by_route('admin_category_index')}}">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">Categories</h5>
-            <small>3</small>
+            <small>{{globalRender.getCategoryCount}}</small>
         </div>
     </a>
     <a href="{{path('admin_sub_category_index')}}" class="list-group-item list-group-item-action flex-column align-items-start 
         {{active_by_route('admin_sub_category_index')}}">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Sous-categories</h5>
-            <small>15</small>
+            <h5 class="mb-1">Sous-Categories</h5>
+            <small>{{globalRender.getSubCategoryCount}}</small>
         </div>
     </a>
     <a href="{{path('admin_product_index')}}" class="list-group-item list-group-item-action flex-column align-items-start 
         {{active_by_route('admin_product_index')}}">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">Articles</h5>
-            <small>52</small>
+            <small>{{globalRender.getProductCount}}</small>
         </div>
     </a>
 </div>

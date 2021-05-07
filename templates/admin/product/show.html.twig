@@ -1,136 +1,128 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}{{product.name}} | {% endblock %}
+{% block title %}
+	{{product.name}}
+	|
+{% endblock %}
 
 {% block body %}
 	<div class="container mt-3">
-        {% if product.images | length > 0 %}
-            <div class="row">
-                <div class="col-6">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            {% for image in product.images %}
-                                <li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index0}}" class="{% if loop.first %}active{% endif %}"></li>
-                            {% endfor %}
-                        </ol>
-                        <div class="carousel-inner">
-                            {% for image in product.images %}
-                                <div class="carousel-item {% if loop.first %}active{% endif %} ">
-                                    <img src="{{image.url}}" class="d-block w-100" alt="image: {{image.caption}} ">
-                                    <div
-                                        class="carousel-caption d-none d-md-block">
-                                        {# <h5>{{product.name}}</h5> #}
-                                        <p>
-                                            <small>{{image.caption}}</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" carouselexampleindicatorsaria-hidden="true"></span>
-                            <span class="sr-only">Suivant</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Précédant</span>
-                        </a>
-                    </div>
-                </div>
+		<div class="row">
+			<div class="col-6">
+				<img src="{{ asset(product.coverImage)}}" alt="{{product.name}}" class="img-fluid img-thumbnail" style="max-width: 555px;" srcset="">
+			</div>
+			<div class="col">
+				<h1 class="display-6">{{product.name}}</h1>
+				<p class="h1 font-weight-bold">{{product.price | price}}</p>
+				<span class="h4">
+                    Sous-categorie: <a class="card-text" href="{{path('admin_sub_category_show', {'id': product.subCategory.id} )}}">
+                        {{product.subCategory.name}}
+                    </a>
+                </span> <br>
+				<span class="h4">Visible: {{product.visible ? 'Oui' : "Non"}}</span> <br>
+				<a href="{{path('admin_product_edit', {'id': product.id})}}" class="btn btn-primary float-right mb-2 ml-2">Editer</a>
+				{# <a href="#" class="btn btn-secondary float-right mb-2 ml-2">Mettre hors ligne</a> #}
+				{{form_start(visibilityForm)}}
+				<input type="hidden" name="_token" value="{{ csrf_token('visibility' ~ product.id) }}">
+                    {% if product.visible == true %}
+				        <button type="submit" class="btn btn-outline-warning float-right ml-2 mb-2" onclick="return confirm('Etes-vous sur de vouloir masquer cette article?')">Masquer</button>
+                    {% else %}
+				        <button type="submit" class="btn btn-primary float-right ml-2 mb-2" onclick="return confirm('Etes-vous sur de vouloir Afficher cette article?')">Afficher</button>
+                    {% endif %}
+				{{form_end(visibilityForm)}}
+				{{form_start(deleteForm)}}
+				<input type="hidden" name="_method" value="DELETE">
+				<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+				<button type="submit" class="btn btn-outline-danger float-right ml-2 mb-2" onclick="return confirm('Etes-vous sur de vouloir supprimer cette article?')">Supprimer</button>
+				{{form_end(deleteForm)}}
+				{# <a href="#" class="btn btn-outline-danger">Supprimer</a> #}
+			</div>
+		</div>
+		<section class="mt-3">
+			<h1 class="h3">Options</h1>
+			<div class="row">
+				{% for option in product.options %}
+					<div class="col-12 col-md-4 mb-2">
+						<div class="card" style="width: 18rem;">
+							<div class="card-header">
+								{{option.name}}
+								({{option.frenchType}})
+							</div>
+							<ul class="list-group list-group-flush">
+								{% for optionField in option.productOptionFields %}
+									<li class="list-group-item">{{optionField.name}}
+										<span class="float-right">{{optionField.addedPrice | price}}</span>
+									</li>
+								{% endfor %}
+							</ul>
+							<div class="card-footer">
+								<a href="{{path('admin_product_option_edit', {'id': option.id})}}" class="btn btn-primary btn-sm">Editer</a>
+								<a href="#" class="btn btn-danger float-right btn-sm">Supprimer</a>
+							</div>
+						</div>
+					</div>
+				{% else %}
+					<div class="col-12">
+						<p>Aucune option disponible pour cet article</p>
+					</div>
+				{% endfor %}
+				<div class="row">
+					<div class="col">
+						<a href="{{path('admin_product_option_create', {'product' : product.id})}}" class="">
+							<i class="fas fa-plus mr-2"></i>Ajouter une option
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="mt-3">
+			<div class="row">
+				<div class="col-12 col-md-6">
+					<h1 class="h3">Images</h1>
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							{% for image in product.images %}
+								<li data-target="#carouselExampleIndicators" data-slide-to="{{loop.index0}}" class="{% if loop.first %}active{% endif %}"></li>
+							{% endfor %}
+						</ol>
+						<div class="carousel-inner">
+							{% for image in product.images %}
+								<div class="carousel-item {% if loop.first %}active{% endif %} ">
+									<img src="{{image.url}}" class="d-block w-100" alt="image: {{image.caption}} ">
+									<div
+										class="carousel-caption d-none d-md-block">
+										{# <h5>{{product.name}}</h5> #}
+										<p>
+											<small>{{image.caption}}</small>
+										</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+							<span class="carousel-control-prev-icon" carouselexampleindicatorsaria-hidden="true"></span>
+							<span class="sr-only">Suivant</span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Précédant</span>
+						</a>
+					</div>
+				</div>
                 <div class="col">
-                    <h1 class="display-6">{{product.name}}</h1>
-                    <p class="h1 font-weight-bold">{{product.price | price}}</p>
-                        <a class="card-text" href="{{path('admin_sub_category_show', {'id': product.subCategory.id} )}}">
-                            <span class="badge badge-danger">{{product.subCategory.name}}</span> 
-                        </a>
-                    <h2 class="h4">{{product.visible ? 'En ligne' : "N'est pas en ligne"}}</h2>
-                    <a href="#" class="btn btn-primary">Editer</a>
-                    <a href="#" class="btn btn-secondary">Mettre hors ligne</a>
-                    <a href="#" class="btn btn-outline-danger">Supprimer</a>
+                    <h1 class="h3">Description</h1>
+                    {{product.description | raw}}
                 </div>
-            </div>
-        {% else %}
-            <div class="row mb-2">
-                <div class="col-12 col-md-7">
-                    <img src="{{ asset(product.coverImage) }}"
-                        alt="bannière du {{product.name}}" class="img-fluid img-thumbnail" style="max-width: 555px;"
-                        srcset="">
-                </div>
-                <div class="col-12 col-md-5">
-                    <h1 class="h2">{{product.name}}</h1>
-                    <p class="h3 font-weight-bold">{{product.price | price}}</p>
-                    {% for subCategory in product.subCategories %}
-                        <a class="card-text" href="{{path('admin_sub_category_show', {'id': subCategory.id} )}}">
-                            <span class="badge badge-danger">{{subCategory.name}}</span> 
-                        </a>
-                    {% endfor %}
-                    <h2 class="h5">En ligne: {{product.visible ? 'Oui' : "Non"}}</h2>
-                    <a href="#" class="btn btn-primary">Editer</a>
-                    <a href="#" class="btn btn-secondary">Mettre hors ligne</a>
-                    <a href="#" class="btn btn-outline-danger">Supprimer</a>
-                    <h2 class="h3">Description</h2>
-                    {{product.description | raw }}
-                </div>
-        </div>
-        {% endif %}
-        {# <div class="row my-4">
-            <div class="col">
-                <h1 class="h3">CARACTERISTIQUE PRINCIPALES</h1>
-                <ul>
-                    <li class="lead">Batterie: 5200mAh</li>
-                    <li class="lead">Ram: 6Gb</li>
-                    <li class="lead">Stockage: 128Gb</li>
-                    <li class="lead">Appareil photo: 48MP + 8MP + 5MP + 2MP/16MP</li>
-                </ul>
-            </div>
-        </div> #}
-        {# <div class="row">
-            <div class="col">
-                <h1 class="h3">Description</h1>
-                {{product.description | raw }}
-            </div>
-        </div> #}
-        <section class="mt-3">
-            <h1 class="h3">Options</h1>
-            <div class="row">
-                {% for option in product.options %}
-                    <div class="col-12 col-md-4 mb-2">
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-header">
-                                {{option.name}} ({{option.frenchType}})
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                {% for optionField in option.productOptionFields %}
-                                    <li class="list-group-item">{{optionField.name}} <span class="float-right" >{{optionField.addedPrice | price}}</span> </li>
-                                {% endfor %}
-                            </ul>
-                            <div class="card-footer">
-                                <a href="{{path('admin_product_option_edit', {'id': option.id})}}" class="btn btn-primary btn-sm">Editer</a>
-                                <a href="#" class="btn btn-danger float-right btn-sm">Supprimer</a>
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <div class="col-12">
-                        <p>Aucune option disponible pour cet article</p>
-                    </div>
-                {% endfor %}
-                <div class="row">
-                    <div class="col">
-                        <a href="{{path('admin_product_option_create', {'product' : product.id})}}" class="">
-                            <i class="fas fa-plus mr-2"></i>Ajouter une option
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+			</div>
+		</div>
+	</section>
 
-        <section>
-            <h1 class="h3">Descrption</h1>
-            <div class="row">
-                <div class="col">{{product.description | raw}}</div>
-            </div>
-        </section>
+	{# <section class="mt-3">
+	            <h1 class="h3">Descrption</h1>
+	            <div class="row">
+	                <div class="col">{{product.description | raw}}</div>
+	            </div>
+	        </section> #}
 
-	</div>
-{% endblock %}
+</div>{% endblock %}

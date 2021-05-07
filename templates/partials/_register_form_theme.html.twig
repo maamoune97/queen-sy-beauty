@@ -31,5 +31,5 @@
 {% endblock form_errors %}
 
 {% block form_label %}
-    <label for="{{id}}">{{label}}</label>
+    <label for="{{id}}">{{label}}{{required ? "<span>*</span>"}}</label>
 {% endblock form_label %}

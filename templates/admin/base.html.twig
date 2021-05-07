@@ -9,17 +9,12 @@
         <link rel="stylesheet" href="/assets/css/bootstrap_flaty.min.css">
         <link rel="stylesheet" href="/assets/css/app_admin.css">
         <link rel="stylesheet" href="/assets/fontawesome-5.15.1/css/all.css">
+        <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
 
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block styles %}
             {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/js/popper.min.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
     </head>
     <body>
@@ -32,5 +27,14 @@
         <footer>
 
         </footer>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/popper.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery.js"></script>
+        <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+        {% block javascripts %}
+            {#{{ encore_entry_script_tags('app') }}#}
+        {% endblock %}
+        {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     </body>
 </html>

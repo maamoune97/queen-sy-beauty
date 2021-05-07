@@ -2,10 +2,15 @@
 
 {% block body %}
     <div class="container my-4">
-        <a href="#"><button class="btn btn-primary float-right mb-2">Editer la categorie</button></a>
+        {{form_start(deleteForm)}}
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+            <button type="submit" class="btn btn-outline-danger float-right ml-3 mb-2" onclick="return confirm('Etes-vous sur de vouloir supprimer la categorie?')">Supprimer</button>
+        {{form_end(deleteForm)}}
+        <a href="{{path('admin_category_edit', {'id': category.id})}}"><button class="btn btn-primary float-right mb-2">Editer la categorie</button></a>
         <h1 class="h2">{{category.name}}</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam illo minima similique in distinctio voluptatibus ab, obcaecati animi rerum possimus a impedit, eaque tenetur aperiam quibusdam delectus alias corporis sunt?</p>
-        <h2 class="h2" >Les sous-categories</h2>
+        <h2 class="h3" >Les sous-categories</h2>
         <a href="{{path('admin_sub_category_create', {'category' : category.id})}}" id="addPart">
             <i class="fas fa-plus mr-2"></i>Ajouter une sous-categorie
         </a>

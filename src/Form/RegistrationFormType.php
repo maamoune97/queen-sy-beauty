@@ -11,10 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IdenticalTo;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
 {
@@ -36,13 +32,13 @@ class RegistrationFormType extends AbstractType
             ->add('phoneNumber', TelType::class, [
                 'label' => 'Numéro de téléphone',
                 'attr' => [
-                    'placeholder' => 'ex: 3216849'
+                    'placeholder' => 'ex: 3218694'
                 ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email',
                 'attr' => [
-                    'placeholder' => 'ex: maamoune@qsb.com'
+                    'placeholder' => 'ex: maamoune@exemple.com'
                 ]
             ])
             // ->add('agreeTerms', CheckboxType::class, [
@@ -78,6 +74,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['Default', 'Registration']
         ]);
     }
 }

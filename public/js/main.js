@@ -63,19 +63,18 @@
     });
 
     /*------------------
-        Product Slider
+        Product relatif
     --------------------*/
-    $(".related-pr-slider").owlCarousel({
+    $(".related-product-slider").owlCarousel({
         loop: true,
-        margin: 30,
+        margin: 10,
         nav: true,
-        //autoWidth: true,
-        items: 4,
-        dots: true,
+        items: 5,
+        dots: false,
         navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
         smartSpeed: 1200,
         autoHeight: true,
-        autoplay: true,
+        responsiveClass:true,
         responsive: {
             0: {
                 items: 1,
@@ -84,10 +83,10 @@
                 items: 2,
             },
             992: {
-                items: 2,
+                items: 3,
             },
             1200: {
-                items: 3,
+                items: 4,
             }
         }
     });
@@ -109,51 +108,40 @@
 
     /*-------------------
         Range Slider
-    --------------------- */
-    var rangeSlider = $(".filter-price-range"),
-        minamount = $("#minamount"),
-        maxamount = $("#maxamount"),
-        minPrice = rangeSlider.data('min'),
-        maxPrice = rangeSlider.data('max');
-    rangeSlider.slider({
-        range: true,
-        min: minPrice,
-        max: maxPrice,
-        values: [minPrice, maxPrice],
-        slide: function (event, ui) {
-            minamount.val('$' + ui.values[0]);
-            maxamount.val('$' + ui.values[1]);
-        }
-    });
-    minamount.val('$' + rangeSlider.slider("values", 0));
-    maxamount.val('$' + rangeSlider.slider("values", 1));
+    ------------------- */
 
-    /*-------------------
-        Range Slider Mobile
-    --------------------- */
-    var rangeSlider = $(".filter-price-range"),
-        minamountmobile = $("#minamountmobile"),
-        maxamountmobile = $("#maxamountmobile"),
-        minPricemobile = rangeSlider.data('min'),
-        maxPricemobile = rangeSlider.data('max');
-    rangeSlider.slider({
+
+    var minprice = 2500, maxprice = 90000, step =500
+    $(".slider-range").slider({
         range: true,
-        min: minPricemobile,
-        max: maxPricemobile,
-        values: [minPricemobile, maxPricemobile],
-        slide: function (event, ui) {
-            minamountmobile.val('$' + ui.values[0]);
-            maxamountmobile.val('$' + ui.values[1]);
+        min: minprice,
+        max: maxprice,
+        step: step,
+        values: [minprice, maxprice],
+        slide: function(e, ui) {
+            var min = Math.floor(ui.values[0]);
+            $('#minamount, #minamountmobile').val(min + ' KMF');
+    
+            var max = Math.floor(ui.values[1]);
+            
+            $('#maxamount, #maxamountmobile').val(max + ' KMF');
+
+    
         }
     });
-    minamountmobile.val('$' + rangeSlider.slider("values", 0));
-    maxamountmobile.val('$' + rangeSlider.slider("values", 1));
+    $('#minamount, #minamountmobile').val(minprice + ' KMF');
+    $('#maxamount, #maxamountmobile').val(maxprice + ' KMF');
 
     /*-------------------
         Radio Btn
     --------------------- */
-    $(".fw-size .size-item-container label, .pd-size-choose .size-item-container label, .pd-color .pd-color-choose .color-item-container label").on('click', function () {
-        $(".fw-size .size-item-container label, .pd-color .pd-color-choose .color-item-container label, .pd-size-choose .size-item-container label").removeClass('active');
+    $(".fw-size .size-item-container label, .pd-size-choose .size-item-container label").on('click', function () {
+        $(".fw-size .size-item-container label, .pd-size-choose .size-item-container label").removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(".pd-color .pd-color-choose .color-item-container label").on('click', function () {
+        $(".pd-color .pd-color-choose .color-item-container label").removeClass('active');
         $(this).addClass('active');
     });
 
@@ -179,20 +167,7 @@
     /*-------------------
         Quantity change
     --------------------- */
-    // handle-cart.js
-
-    var body = $("body");
-    var wrap = $("#showSticky");
-
-    body.on("scroll", function (e) {
-
-        if (this.scrollTop > 250) {
-            wrap.addClass("sticky");
-        } else {
-            wrap.removeClass("sticky");
-        }
-
-    });
+   //handle-cart.js
 
     /********************************
      *      Fermer Filtre
@@ -215,22 +190,6 @@
      *      Afficher Searchbar Mobile
     ********************************/
 
-    /* $("#btnSearchMobile").on('click', function () {
-        $("#displaySearchMobile").addClass('display-search-mobile')
-    });
-
-    $(window).on('click',function(event){
-        if(!$(event.target).is('.nav-mobile')){
-          $("#displaySearchMobile").removeClass("display-search-mobile");
-        }
-     }); 
-
-     $(document).on({
-        click: function(){
-           $("body").removeClass("display-search-mobile")
-        }
-     },":not(#displaySearchMobile)"); */
-
     const $menu = $('#displaySearchMobile');
 
     $(document).mouseup(e => {
@@ -244,6 +203,15 @@
     $('#btnSearchMobile').on('click', () => {
         $menu.toggleClass('display-search-mobile');
     });
+
+
+    /*********************************
+     *  PAGINATION
+    **********************************/
+
+     $('.pagination li').click(function() {
+        $(this).addClass('active').siblings().removeClass('active');
+      });
 
 
 })(jQuery);

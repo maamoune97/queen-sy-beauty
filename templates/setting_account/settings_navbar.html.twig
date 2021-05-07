@@ -1,0 +1,29 @@
+<div class="optionContainer">
+	<div class="optionlist-container">
+		<div class="">
+			<div class="option-myaccount">
+				<i class="ti-user"></i>
+				<span class="ml-2">Mon Compte</span>
+			</div>
+		</div>
+		<ul>
+			<li>
+				<a href="{{path('setting_account_general')}}" class="{{active_by_route('setting_account_general')}}">Parametre de Compte</a>
+			</li>
+			<li>
+				<a href="{{path('setting_account_security')}}" class="{{active_by_route('setting_account_security')}}">Parametre de Sécurité</a>
+			</li>
+			<li>
+				<a href="#">Mes Commandes</a>
+			</li>
+			<li>
+				<a href="#">Besoin d'aide</a>
+			</li>
+		</ul>
+		<div class="disconnect-div">
+			<a href="{{path('app_logout')}}" class="disconnect-btn">
+				Deconnexion
+			</a>
+		</div>
+	</div>
+</div>

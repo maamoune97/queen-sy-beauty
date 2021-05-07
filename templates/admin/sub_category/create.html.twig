@@ -2,18 +2,7 @@
 
 {% block body %}
 <div class="container mt-4">
-    {{form_start(form)}}
-    <div class="row">
-        <div class="col-12 col-md-6 form-group">
-            {{form_row(form.name)}}
-        </div>
-        <div class="col-12 col-md-3 form-group">
-            {{form_row(form.category)}}
-        </div>
-        <div class="col-12 col-md-3 form-group">
-            <input type="submit" class="btn btn-primary" value="Créer la sous-catégorie">
-        </div>
-    </div>
-    {{form_end(form)}}
+    <h1 class="h3">Créer une sous-catégori</h1>
+    {% include "admin/sub_category/_form.html.twig" with {'submitValue': 'Créer la sous-catégorie'} %}
 </div>
 {% endblock %}

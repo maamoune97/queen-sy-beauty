@@ -6,6 +6,7 @@ use App\Entity\SubCategory;
 use App\Form\SubCategoryType;
 use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,7 @@ class AdminSubCategoryController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-    public function create(Request $request, EntityManagerInterface $manager): Response
+    public function create(Request $request, EntityManagerInterface $manager, FlashyNotifier $flashy): Response
     {
         $subCategory = new SubCategory();
 
@@ -49,6 +50,7 @@ class AdminSubCategoryController extends AbstractController
         {
             $manager->persist($subCategory);
             $manager->flush();
+            $flashy->success('Nouvelle sous-categorie ajouté avec succèes');
             return $this->redirectToRoute("admin_sub_category_index");
         }
 
@@ -58,13 +60,64 @@ class AdminSubCategoryController extends AbstractController
     }
 
     /**
+     * @Route("/edit/{id}", name="edit")
+     */
+    public function edit(SubCategory $subCategory, Request $request, EntityManagerInterface $manager, FlashyNotifier $flashy): Response
+    {
+        $form = $this->createForm(SubCategoryType::class, $subCategory);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $manager->persist($subCategory);
+            $manager->flush();
+            $flashy->success('Sous-categorie modifié avec succèes');
+            return $this->redirectToRoute("admin_sub_category_index");
+        }
+
+        return $this->render('admin/sub_category/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/show/{id}", name="show")
      */
     public function show(SubCategory $subCategory): Response
     {
+        $deleteForm = $this->createFormBuilder(['id' => $subCategory->getId()])
+                            ->setAction($this->generateUrl('admin_sub_category_delete', ['id' => $subCategory->getId()]))
+                            ->getForm();
+        
         return $this->render('admin/sub_category/show.html.twig', [
             'subCategory' => $subCategory,
+            'deleteForm' => $deleteForm->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete", methods={"DELETE"})
+     */
+    public function delete(SubCategory $subCategory, Request $request, EntityManagerInterface $manager, FlashyNotifier $flashy): Response
+    {
+        $submittedToken = $request->request->get('_token');
+        if ($this->isCsrfTokenValid('delete'.$subCategory->getId(), $submittedToken))
+        {
+            if (!count($subCategory->getProducts()) > 0)
+            {
+                $manager->remove($subCategory);
+                $manager->flush();
+                $flashy->success('Sous-categorie supprimée avec succèes');
+                return $this->redirectToRoute("admin_sub_category_index");
+            }
+            else
+            {
+                $flashy->error('Impossible de supprimer une sous-categorie avec des articles');
+                return $this->redirectToRoute("admin_sub_category_show", ['id' => $subCategory->getId()]);
+            }
+        }
+        throw $this->createAccessDeniedException();
     }
 
     /**

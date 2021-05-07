@@ -1,0 +1,31 @@
+{{form_start(form)}}
+<div class="row">
+	<div class="col-12 col-md-6 form-group">
+		{{form_row(form.name)}}
+	</div>
+	<div class="col-12 col-md-6 form-group">
+		{{form_row(form.subCategory)}}
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 col-md-9 form-group">
+		{{form_row(form.coverImage)}}
+	</div>
+	<div class="col-12 col-md-3 form-group">
+		{{form_row(form.price)}}
+	</div>
+</div>
+<div class="row">
+	<div class="col form-group">
+		{{form_row(form.description)}}
+	</div>
+</div>
+<div class="row">
+	<div class="col form-group">
+		{{form_row(form.visible)}}
+	</div>
+</div>
+<div class="form-group">
+	<input type="submit" class="btn btn-primary" value="{{submitValue}}">
+</div>
+{{form_end(form)}}
