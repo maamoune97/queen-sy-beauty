@@ -98,7 +98,7 @@ class AppExtension extends AbstractExtension
      */
     public function colorId(string $color): string
     {
-        return self::COLOR_ID[strtolower($color)];
+        return isset(self::COLOR_ID[strtolower($color)]) ? self::COLOR_ID[strtolower($color)] : self::COLOR_ID['noir'];
     }
 
     /**

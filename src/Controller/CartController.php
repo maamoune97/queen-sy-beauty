@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductOptionFieldRepository;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
@@ -31,17 +32,17 @@ class CartController extends AbstractController
     }
 
     /**
-     * @Route("/cart/add", name="cart_add", methods={"POST"})
+     * @Route("/cart/add/{id} ", name="cart_add", methods={"POST"})
      */
-    public function add(Request $request, ProductRepository $productRepository, ProductOptionFieldRepository $productOptionFieldRepository): Response
+    public function add(Product $product, Request $request, ProductOptionFieldRepository $productOptionFieldRepository): Response
     {
-        $productId = $request->get("product") ?? null;
+        // $productId = $request->get("product") ?? null;
         $quantity = $request->get("quantity") ?? null;
-        if ($productId && $quantity)
+        if ($quantity)
         {
             try
             {
-                $product = $productRepository->find($productId);
+                // $product = $productRepository->find($productId);
                 $options = [];
                 foreach ($product->getOptions() as $option)
                 {
@@ -57,7 +58,7 @@ class CartController extends AbstractController
                         // $options[$option->getName()] = $request->get( $option->getName() );
                     }
                 }
-                $this->cart->addProduct($productId, $quantity, $options);
+                $this->cart->addProduct($product->getId(), $quantity, $options);
             }
             catch (\Throwable $th)
             {

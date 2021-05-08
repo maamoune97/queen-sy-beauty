@@ -42,6 +42,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-6">
                             <div class="pr-details-container">
                                 <div class="pr-detail-title">
@@ -58,85 +59,50 @@
                                     <span>(5)</span>
                                 </div> #}
                                 <div class="pr-detail-overview">
-                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor sit amet, consectetur adipisicing elit, sed do mod tempor</p>
-                                    <h4>{{product.price | price}}
-									{# <span>629.99</span> #}
-									</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor
+                                        sit amet, consectetur adipisicing elit, sed do mod tempor</p>
+                                    <h4>{{product.price | price}}<span>629.99</span></h4>
                                 </div>
-                                <form action="{{path('cart_add')}}" method="post">
-                                <input name="product" type="hidden" value="{{product.id}}">
-                                {% for option in product.options %}
-                                    {% if option.type == "required" %}
-                                        <div class="fw-size pd-size-choose">
-                                            {% if option.name | lower == "couleur" %}
-                                                <div class="pd-color">
-                                                    <h6>Couleur</h6>
-                                                    <div class="pd-color-choose">
-                                                        {% for optionField in option.productOptionFields %}
-                                                            <div class="color-item-container">
-                                                                <input type="radio" id="{{optionField.name | color_id}}" name="{{option.name}}" value="{{optionField.name}}" required>
-                                                                <label for="{{optionField.name | color_id}}" class="{{optionField.name | color_id}}" title="{{optionField.name}}"></label>
-                                                            </div>
-                                                        {% endfor %}
+                                
+                                <form action="{{path('cart_add', {'id': product.id})}}" method="post">
+                                    {% for option in product.options %}
+                                        {% if option.name | lower == "couleur" %}
+                                            <div class="pd-color">
+                                                <h6>Couleur</h6>
+                                                <div class="pd-color-choose">
+                                                    {% for optionField in option.productOptionFields %}
+                                                        <div class="color-item-container">
+                                                            <input type="radio" id="{{optionField.name | color_id}}" name="{{option.name}}" value="{{optionField.name}}" required>
+                                                            <label for="{{optionField.name | color_id}}" class="{{optionField.name | color_id}} {{loop.first ? 'active'}}" title="{{optionField.name}}">
+                                                                <span>
+                                                                    <i class="ti-check"></i>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+
+                                        {% elseif option.name | lower == 'taille' %}
+
+                                            <div class="fw-size pd-size-choose">
+                                                {% for optionField in option.productOptionFields %}
+                                                    <div class="size-item-container">
+                                                        <input type="radio" id="size-{{optionField.id}}" value="{{optionField.name}}" name="{{option.name}}" required>
+                                                        <label for="size-{{optionField.id}}" class="{{loop.first ? 'active'}}">{{optionField.name | upper }}</label>
                                                     </div>
-                                                </div>
-                                            {% else %}
-                                            <h6>{{option.name}}</h6>
-                                            {% for optionField in option.productOptionFields %}
-                                                <div class="size-item-container">
-                                                    <input type="radio" id="sm-size" value="{{optionField.name}}" name="{{option.name}}" required>
-                                                    <label for="sm-size">{{optionField.name}} </label>
-                                                </div>
-                                            {% endfor %}
-                                            {% endif %}
-                                            
+                                                {% endfor %}
+                                            </div>
+                                                
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1" name="quantity">
                                         </div>
-                                    {% elseif option.type == "optional" %}
-                                        
-                                    {% endif %}
-                                    
-                                {% endfor %}
-                                {# <div class="pd-color">
-                                    <h6>Color</h6>
-                                    <div class="pd-color-choose">
-                                        <div class="color-item-container">
-                                            <input type="radio" id="choose-black">
-                                            <label for="choose-black"></label>
-                                        </div>
-                                        <div class="color-item-container">
-                                            <input type="radio" id="choose-yellow">
-                                            <label for="choose-yellow" class="choose-yellow"></label>
-                                        </div>
-                                        <div class="color-item-container">
-                                            <input type="radio" id="choose-violet">
-                                            <label for="choose-violet" class="choose-violet"></label>
-                                        </div>
+                                        <button type="submit" class="site-btn primary-btn pd-cart ">Ajouter au panier</button>
                                     </div>
-                                </div> #}
-                                {# <div class="fw-size pd-size-choose">
-                                    <div class="size-item-container">
-                                        <input type="radio" id="sm-size">
-                                        <label for="sm-size">s</label>
-                                    </div>
-                                    <div class="size-item-container">
-                                        <input type="radio" id="md-size">
-                                        <label for="md-size">m</label>
-                                    </div>
-                                    <div class="size-item-container">
-                                        <input type="radio" id="lg-size">
-                                        <label for="lg-size">l</label>
-                                    </div>
-                                    <div class="size-item-container">
-                                        <input type="radio" id="xl-size">
-                                        <label for="xl-size">xs</label>
-                                    </div>
-                                </div> #}
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input name="quantity" type="text" value="1">
-                                    </div>
-                                    <input type="submit" class="primary-btn site-btn pd-cart" value="Ajouter au panier" name="addToCartForm"/>
-                                </div>
                                 </form>
                                 <ul class="pr-detail-tags">
                                     <li><span>CATEGORIES</span>: {{category.name ~ ' - ' ~ subCategory.name}}</li>
@@ -152,6 +118,7 @@
                                 </div> #}
                             </div>
                         </div>
+
                     </div>
                     <div class="pr-specification-tab">
                         <div class="pr-sp-tab-item">
@@ -309,44 +276,44 @@
     </section>
     <!-- Product Shop Section End -->
 
-    <!-- Related Products Section End -->
+
+    <!-- Related Products Section -->
     <div class="related-pr">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Articles similaires</h2>
+                <div class="col-md-12">
+                    <h2 class="mb-4">Articles similaires</h2>
+                    <div class="related-product-slider owl-carousel">
+                        {% for product in sameProducts %}
+                            <div class="box">
+                                <div class="slide-img">
+                                    <img src="{{asset(product.coverImage)}}" alt="{{product.name}}">
+                                    <div class="overlay">
+                                        <a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}" class="buy-btn">
+                                            Acheter Maintenant
+                                        </a>
+                                    </div>
+                                </div>
+        
+                                <div class="detail-box">
+                                    <a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}">
+                                        <div class="type">
+                                            <span class="article-name" href="">{{product.name | trunc_it(28, '...')}}</span>
+                                        </div>
+                                        <div class="price">{{product.price | price}}</div>
+                                        <div class="marketing-price">
+                                            <span class="line-trought-price">7500 KMF</span>
+                                            <span class="percentage-promo">-15%</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
-            <div class="related-pr-slider owl-carousel">
-
-                {% for product in sameProducts %}
-                    <div class="box">
-                        <div class="slide-img">
-                            <img src="{{asset(product.coverImage)}}" alt="{{product.name}}">
-                            <div class="overlay">
-                                <a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}" class="buy-btn">
-                                    Acheter Maintenant
-                                </a>
-                            </div>
-                        </div>
-                        <div class="detail-box">
-                            <a href="{{path('product_show', {'slug': product.slug, 'id': product.id})}}">
-                                <div class="type">
-                                    <span class="article-name">{{product.name | trunc_it(28, '...')}}</span>
-                                </div>
-                                <div class="price">{{product.price | price}}</div>
-                                <div class="marketing-price">
-                                    <span class="line-trought-price">7500 KMF</span>
-                                    <span class="percentage-promo">-15%</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
             </div>
         </div>
     </div>
     <!-- Related Products Section End -->
+
 {% endblock %}

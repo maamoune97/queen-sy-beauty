@@ -36,9 +36,9 @@ class ProductController extends AbstractController
             }
         }
         shuffle($sameProducts);
-        $sameProducts = array_slice($sameProducts,0,4);
+        $sameProducts = array_slice($sameProducts,0,6);
         // end find similar products
-
+        
         return $this->render('product/show.html.twig', [
             'product' => $product,
             'sameProducts' => $sameProducts,
