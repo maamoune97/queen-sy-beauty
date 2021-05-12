@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\ProductFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -24,11 +25,13 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Query Returns a Query of visible products
      */
-    public function findAllVisibleQuery(): Query
+    public function findAllVisibleQuery(?ProductFilter $filter = null): Query
     {
-        return $this->findVisibleQuery()
-                    ->getQuery()
-                    ;
+        $query = $this->findVisibleQuery();
+        
+        $query = $this->queryFilter($query, $filter);
+
+        return $query->getQuery();
     }
 
     /**
@@ -36,13 +39,16 @@ class ProductRepository extends ServiceEntityRepository
      * @param integer $subCategory
      * @return Query
      */
-    public function findAllVisibleBySubCategoryQuery(int $subCategory): Query
+    public function findAllVisibleBySubCategoryQuery(int $subCategory, ?ProductFilter $filter = null): Query
     {
-        return $this->findVisibleQuery()
-                    ->where('p.subCategory = :subcategory')
-                    ->setParameter('subcategory', $subCategory)
-                    ->getQuery()
-                    ;
+        $queryBuilder = $this->findVisibleQuery()
+                            ->where('p.subCategory = :subcategory')
+                            ->setParameter('subcategory', $subCategory)
+                            ;
+        
+        $queryBuilder = $this->queryFilter($queryBuilder, $filter);
+        
+        return $queryBuilder->getQuery();
     }
 
     /**
@@ -50,16 +56,115 @@ class ProductRepository extends ServiceEntityRepository
      * @param array $subCategories
      * @return Query
      */
-    public function findAllVisibleByCategoryQuery(array $subCategories): Query
+    public function findAllVisibleByCategoryQuery(array $subCategories, ?ProductFilter $filter = null): Query
     {
-        return $this->findVisibleQuery()
-                    ->andWhere('p.subCategory in (:subcategories)')
-                    ->setParameter('subcategories', $subCategories)
-                    ->getQuery()
-                    ;
+        $queryBuilder = $this->findVisibleQuery()
+                            ->andWhere('p.subCategory in (:subcategories)')
+                            ->setParameter('subcategories', $subCategories);
+        
+        $queryBuilder = $this->queryFilter($queryBuilder, $filter);
+                    
+        return $queryBuilder->getQuery();
     }
 
+    private function queryFilter(QueryBuilder $query, ?ProductFilter $filter = null): QueryBuilder
+    {
+        if ($filter)
+        {
+            $query->leftJoin('p.options', 'o')
+                    ->leftJoin('o.productOptionFields', 'ofield');
 
+            if ($filter->getSizes() || $filter->getColors())
+            {
+                $condition = "";
+
+                // les taille
+                foreach ($filter->getSizes() as $key => $size)
+                {
+                    $param = 'size'.$key;
+                    if ($key == 0)
+                    {
+                        $condition .= "ofield.name = :$param ";
+                    }
+                    else
+                    {
+                        $condition .= "OR ofield.name = :$param ";
+                    }
+                }
+
+                // les couleurs
+                foreach ($filter->getColors() as $key => $color)
+                {
+                    $param = 'color'.$key;
+
+                    if ($condition == "")
+                    {
+                        $condition .= "ofield.name LIKE :$param ";
+                    }
+                    else
+                    {
+                        $condition .= "OR ofield.name LIKE :$param ";
+                    }
+                }
+
+                $query->andWhere($condition);
+
+                foreach ($filter->getSizes() as $key => $size)
+                {
+                    $param = 'size'.$key;
+                    $query->setParameter($param, $size);
+                }
+
+                foreach ($filter->getColors() as $key => $color)
+                {
+                    $param = 'color'.$key;
+                    $query->setParameter($param, $color.'%');
+                }
+                
+            }
+
+            if ($filter->getMinPrice())
+            {
+                $query->andWhere("p.price > :min")
+                      ->setParameter('min', $filter->getMinPrice());
+            }
+
+            if ($filter->getMaxPrice())
+            {
+                $query->andWhere("p.price < :max")
+                      ->setParameter('max', $filter->getMaxPrice());
+            }
+
+            // les couleurs
+            // if ($filter->getColors())
+            // {
+            //     $condition = "";
+            //     foreach ($filter->getColors() as $key => $color)
+            //     {
+            //         $param = 'color'.$key;
+            //         if ($key == 0)
+            //         {
+            //             $condition .= "ofield.name = :$param ";
+            //         }
+            //         else
+            //         {
+            //             $condition .= "OR ofield.name = :$param ";
+            //         }
+            //     }
+            //     $query->andWhere($condition);
+
+            //     foreach ($filter->getColors() as $key => $color)
+            //     {
+            //         $param = 'color'.$key;
+            //         $query->setParameter($param, $color);
+            //     }
+                
+            // }
+
+        }
+
+        return $query;
+    }
     /**
      * Returns a QueryBuilder of Product objects
      *

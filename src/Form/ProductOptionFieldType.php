@@ -15,19 +15,14 @@ class ProductOptionFieldType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom du champ',
+                'label' => 'Nom',
                 'attr' => [
-                    'placeholder' => 'Ex: XL'
+                    'placeholder' => 'Ex: blanc, blanche, S, XL, ...'
                 ]
             ])
-            ->add('addedPrice', MoneyType::class, [
-                'label' => 'supplement',
-                'currency' => 'KMF',
-                'empty_data' => '0',
+            ->add('value', TextType::class, [
+                'label' => 'valeur',
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Ex: 1500'
-                ]
             ])
         ;
     }

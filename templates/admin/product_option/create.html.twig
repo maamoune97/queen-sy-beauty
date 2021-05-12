@@ -1,10 +1,10 @@
 {% extends "admin/base.html.twig" %}
 {% form_theme form 'admin/product_option/_formThemeCollectionType.html.twig' %}
-{% block title %}créer une option{% endblock %}
+{% block title %}ajouter une option{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Ajouter une option</h1>
+        <h1 class="h3">Ajouter des {{type}}</h1>
         {% include "admin/product_option//_form.html.twig" with {'submitBtnLabel' : 'Creer l\'option'} %}
     </div>
 {% endblock %}

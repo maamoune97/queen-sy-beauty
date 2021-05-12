@@ -81,4 +81,46 @@ class AdminProductOptionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/add/{type}/in-product/{id}", name="add")
+     *
+     * @param Type $var
+     * @return void
+     */
+    public function add(string $type,Product $product, Request $request, EntityManagerInterface $manger)
+    {
+        if (!in_array($type, ['color', 'size']))
+        {
+            throw $this->createNotFoundException();
+        }
+
+        $productOption = new ProductOption();
+        $productOption->setType($type);
+
+        $form = $this->createForm(ProductOptionType::class, $productOption);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            foreach ($productOption->getProductOptionFields() as $optionField)
+            {
+                $optionField->setProductOption($productOption);
+                $manger->persist($optionField);
+            }
+            $productOption->setProduct($product);
+            $manger->persist($productOption);
+            $manger->flush();
+
+            return $this->redirectToRoute('admin_product_show', ['id' => $product->getId()]);
+        }
+
+        return $this->render('admin/product_option/create.html.twig', [
+            'form' => $form->createView(),
+            'product' => $product,
+            'type' => $type == 'color' ? 'Couleur' : 'Taille',
+        ]);
+
+    }
+
 }

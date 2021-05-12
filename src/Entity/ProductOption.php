@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductOption
 {
     const FRENCHTYPE = [
-        'required' => 'obligatoire',
-        'optional' => 'Facultative'
+        'color' => 'Couleur',
+        'size' => 'Taille'
     ];
     
     /**
@@ -23,11 +23,6 @@ class ProductOption
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $name;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
@@ -53,18 +48,6 @@ class ProductOption
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getType(): ?string

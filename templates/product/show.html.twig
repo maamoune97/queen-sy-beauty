@@ -66,13 +66,13 @@
                                 
                                 <form action="{{path('cart_add', {'id': product.id})}}" method="post">
                                     {% for option in product.options %}
-                                        {% if option.name | lower == "couleur" %}
+                                        {% if option.type == "color" %}
                                             <div class="pd-color">
                                                 <h6>Couleur</h6>
                                                 <div class="pd-color-choose">
                                                     {% for optionField in option.productOptionFields %}
                                                         <div class="color-item-container">
-                                                            <input type="radio" id="{{optionField.name | color_id}}" name="{{option.name}}" value="{{optionField.name}}" required>
+                                                            <input type="radio" id="{{optionField.name | color_id}}" name="{{option.type}}" value="{{optionField.name}}" required>
                                                             <label for="{{optionField.name | color_id}}" class="{{optionField.name | color_id}} {{loop.first ? 'active'}}" title="{{optionField.name}}">
                                                                 <span>
                                                                     <i class="ti-check"></i>
@@ -83,12 +83,12 @@
                                                 </div>
                                             </div>
 
-                                        {% elseif option.name | lower == 'taille' %}
+                                        {% elseif option.type == 'size' %}
 
                                             <div class="fw-size pd-size-choose">
                                                 {% for optionField in option.productOptionFields %}
                                                     <div class="size-item-container">
-                                                        <input type="radio" id="size-{{optionField.id}}" value="{{optionField.name}}" name="{{option.name}}" required>
+                                                        <input type="radio" id="size-{{optionField.id}}" value="{{optionField.name}}" name="{{option.type}}" required>
                                                         <label for="size-{{optionField.id}}" class="{{loop.first ? 'active'}}">{{optionField.name | upper }}</label>
                                                     </div>
                                                 {% endfor %}

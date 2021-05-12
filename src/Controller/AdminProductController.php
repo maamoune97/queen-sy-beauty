@@ -117,10 +117,18 @@ class AdminProductController extends AbstractController
                             ->setAction($this->generateUrl('admin_product_change_visibility', ['id' => $product->getId()]))
                             ->getForm();
 
+        $optionsType = [];
+
+        foreach ($product->getOptions() as $option)
+        {
+            $optionsType[] = $option->getType();
+        }
+
         return $this->render('admin/product/show.html.twig', [
             'product' => $product,
             'deleteForm' => $deleteForm->createView(),
             'visibilityForm' => $visibilityForm->createView(),
+            'options_type' => $optionsType,
         ]);
     }
 

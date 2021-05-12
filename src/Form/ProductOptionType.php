@@ -6,6 +6,7 @@ use App\Entity\ProductOption;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,27 +16,21 @@ class ProductOptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('name', TextType::class, [
-            'label' => "Nom de l'option",
-            'attr' => [
-                'placeholder' => 'Ex: Taille, Couleur, ...'
-            ],
-        ])
-        ->add('type', ChoiceType::class, [
-            'label' => "Type de l'option",
-            'choices'  => [
-                'Obligatoire' => 'required',
-                'Facultative' => 'optional',
-            ],
+        // ->add('type', ChoiceType::class, [
+        //     'label' => "Type d'option",
+        //     'choices'  => [
+        //         'Couleur' => 'color',
+        //         'Taille' => 'size',
+        //     ],
+        // ])
+        ->add('type', HiddenType::class, [
+            
         ])
         ->add('productOptionFields', CollectionType::class, [
             'entry_type' => ProductOptionFieldType::class,
             'allow_add' => true,
             'allow_delete' => true,
-            'label' => 'Champs d\'option',
-            'attr' => [
-                
-            ]
+            'label' => 'Propriétés de l\'option',
         ])
         ;
     }

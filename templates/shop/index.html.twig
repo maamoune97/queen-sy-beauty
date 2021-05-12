@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme form _self %}
 
 {% block title %}Boutique | {% endblock %}
 
@@ -20,45 +21,11 @@
                         </div>
                     {% endif %}
 
-                    <form method="get">
+                    {{form_start(form)}}
                         <div class="filter-block">
                             <h4 class="title-ftblock">Taille</h4>
                             <div class="fw-mark">
-                                <div class="mark-item-container">
-                                    <label for="s">
-                                        S
-                                        <input type="checkbox" id="s">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="m">
-                                        M
-                                        <input type="checkbox" id="m">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="l">
-                                        L
-                                        <input type="checkbox" id="l">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="xl">
-                                        XL
-                                        <input type="checkbox" id="xl">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="xxl">
-                                        XXL
-                                        <input type="checkbox" id="xxl">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
+                                {{form_widget(form.sizes)}}
                             </div>
                         </div>
                         <div class="filter-block">
@@ -66,8 +33,10 @@
                         <div class="filter-range-wrap">
                             <div class="filter-range-slider">
                                 <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                    {# <input type="text" id="minamount"> #}
+                                    {{form_widget(form.minPrice, {'id': 'minamount'})}}
+                                    {{form_widget(form.maxPrice, {'id': 'maxamount'})}}
+                                    {# <input type="text" id="maxamount"> #}
                                 </div>
                             </div>
                             <div class="sliders_step1">
@@ -78,61 +47,14 @@
                         <div class="filter-block">
                             <h4 class="title-ftblock">Couleur</h4>
                             <div class="fw-mark">
-                                <div class="mark-item-container">
-                                    <label for="noir">
-                                        Noir
-                                        <input type="checkbox" id="noir">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="rouge">
-                                        Rouge
-                                        <input type="checkbox" id="rouge">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="bleu">
-                                        Bleu
-                                        <input type="checkbox" id="bleu">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="vert">
-                                        Vert
-                                        <input type="checkbox" id="vert">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="blanc">
-                                        Blanc
-                                        <input type="checkbox" id="blanc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="jaune">
-                                        Jaune
-                                        <input type="checkbox" id="jaune">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="mark-item-container">
-                                    <label for="violet">
-                                        Violet
-                                        <input type="checkbox" id="violet">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
+                                {{form_widget(form.colors)}}
                             </div>
                         </div>
                         <div class="filter-block">
                             <button type="submit" class="filter-btn btn-block mt-1">Filtrer</button>
                         </div>
                     </form>
+                    {{form_end(form)}}
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="product-show-option">
@@ -181,3 +103,16 @@
     <!-- Product Shop Section End -->
 {% endblock body %}
 
+{% block checkbox_widget %}
+    <div class="mark-item-container">
+        <label for="{{id}}">
+            {{label}}
+            <input type="checkbox" id="{{id}}" value="{{value}}" name="{{full_name}}" {{checked ? 'checked'}}>
+            <span class="checkmark"></span>
+        </label>
+    </div>
+{% endblock checkbox_widget %}
+
+{% block text_widget %}
+    <input type="text" id="{{id}}" value="{{value}}" name="{{full_name}}" {{required ? 'required'}}>
+{% endblock text_widget %}

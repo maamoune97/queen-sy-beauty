@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\ProductFilter;
+use App\Form\ProductFilterType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\SubCategoryRepository;
@@ -42,14 +44,32 @@ class ShopController extends AbstractController
     public function index(Request $request): Response
     {
 
-        $products = $this->paginator->paginate(
-            $this->productRepo->findAllVisibleQuery(), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            12 /*limit per page*/
-        );
+        $productFilter = new ProductFilter();
+        $form = $this->createForm(ProductFilterType::class, $productFilter);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted())
+        {
+            $products = $this->paginator->paginate(
+                $this->productRepo->findAllVisibleQuery($productFilter), /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                12 /*limit per page*/
+            );
+        }
+        else
+        {
+            $products = $this->paginator->paginate(
+                $this->productRepo->findAllVisibleQuery(), /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                12 /*limit per page*/
+            );
+        }
+
 
         return $this->render('shop/index.html.twig', [
             'products' => $products,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -58,21 +78,42 @@ class ShopController extends AbstractController
      */
     public function category(Category $category, Request $request): Response
     {
+
         $subCategoriesId = [];
         foreach ($category->getSubCategories() as $subCategory)
         {
             $subCategoriesId[] = $subCategory->getId();
         }
 
-        $products = $this->paginator->paginate(
-            $this->productRepo->findAllVisibleByCategoryQuery($subCategoriesId), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            12 /*limit per page*/
-        );
+        $productFilter = new ProductFilter();
+        $form = $this->createForm(ProductFilterType::class, $productFilter);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted())
+        {
+            $products = $this->paginator->paginate(
+                $this->productRepo->findAllVisibleByCategoryQuery($subCategoriesId, $productFilter), /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                12 /*limit per page*/
+            );
+        }
+        else
+        {
+            
+            $products = $this->paginator->paginate(
+                $this->productRepo->findAllVisibleByCategoryQuery($subCategoriesId), /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                12 /*limit per page*/
+            );
+        }
+        
+
 
         return $this->render('shop/index.html.twig', [
             'products' => $products,
             'category' => $category,
+            'form' => $form->createView()
         ]);
     }
 
@@ -86,11 +127,29 @@ class ShopController extends AbstractController
             $category = $this->categoryRepo->findOneBySlug($category_slug);
             $subCategory = $this->subCategoryRepo->findOneBy(['category' => $category->getId(), 'slug' => $slug]);
 
-            $products = $this->paginator->paginate(
-                $this->productRepo->findAllVisibleBySubCategoryQuery($subCategory->getId()), /* query NOT result */
-                $request->query->getInt('page', 1), /*page number*/
-                12 /*limit per page*/
-            );
+
+            $productFilter = new ProductFilter();
+            $form = $this->createForm(ProductFilterType::class, $productFilter);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted())
+            {
+                $products = $this->paginator->paginate(
+                    $this->productRepo->findAllVisibleBySubCategoryQuery($subCategory->getId(), $productFilter), /* query NOT result */
+                    $request->query->getInt('page', 1), /*page number*/
+                    12 /*limit per page*/
+                );
+            }
+            else
+            {
+                $products = $this->paginator->paginate(
+                    $this->productRepo->findAllVisibleBySubCategoryQuery($subCategory->getId()), /* query NOT result */
+                    $request->query->getInt('page', 1), /*page number*/
+                    12 /*limit per page*/
+                );
+            }
+
         }
         catch (\Throwable $th)
         {
@@ -100,6 +159,7 @@ class ShopController extends AbstractController
         return $this->render('shop/index.html.twig', [
             'products' => $products,
             'subCategory' => $subCategory,
+            'form' => $form->createView()
         ]);
     }
 }

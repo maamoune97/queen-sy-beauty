@@ -5,12 +5,10 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use App\Repository\ProductOptionFieldRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ProductOptionFieldRepository::class)
- * @HasLifecycleCallbacks
  */
 class ProductOptionField
 {
@@ -27,11 +25,6 @@ class ProductOptionField
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $addedPrice;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ProductOption::class, inversedBy="productOptionFields")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -42,24 +35,15 @@ class ProductOptionField
      */
     private $productPacks;
 
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $value;
+
     public function __construct()
     {
         $this->productPacks = new ArrayCollection();
     }
-
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     *
-     * @return void
-     */
-    public function initializeAddedPrice()
-    {
-        if (!$this->getAddedPrice())
-        {
-            $this->setAddedPrice(0);
-        }
-    } 
 
     public function getId(): ?int
     {
@@ -74,18 +58,6 @@ class ProductOptionField
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getAddedPrice(): ?int
-    {
-        return $this->addedPrice;
-    }
-
-    public function setAddedPrice(int $addedPrice): self
-    {
-        $this->addedPrice = $addedPrice;
 
         return $this;
     }
@@ -125,6 +97,18 @@ class ProductOptionField
         if ($this->productPacks->removeElement($productPack)) {
             $productPack->removeOptionField($this);
         }
+
+        return $this;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(?string $value): self
+    {
+        $this->value = $value;
 
         return $this;
     }
