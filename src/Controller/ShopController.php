@@ -38,12 +38,14 @@ class ShopController extends AbstractController
         $this->categoryRepo = $categoryRepo;
         $this->paginator = $paginator;
     }
+
     /**
      * @Route("/", name="index")
      */
     public function index(Request $request): Response
     {
 
+        
         $productFilter = new ProductFilter();
         $form = $this->createForm(ProductFilterType::class, $productFilter);
 
@@ -59,13 +61,24 @@ class ShopController extends AbstractController
         }
         else
         {
-            $products = $this->paginator->paginate(
-                $this->productRepo->findAllVisibleQuery(), /* query NOT result */
-                $request->query->getInt('page', 1), /*page number*/
-                12 /*limit per page*/
-            );
+            //si le formulaire de recherche est soumis
+            if ($request->query->get('search'))
+            {
+                $products = $this->paginator->paginate(
+                    $this->productRepo->search($request->query->get('search')), /* query NOT result */
+                    $request->query->getInt('page', 1), /*page number*/
+                    12 /*limit per page*/
+                );
+            }
+            else
+            {
+                $products = $this->paginator->paginate(
+                    $this->productRepo->findAllVisibleQuery(), /* query NOT result */
+                    $request->query->getInt('page', 1), /*page number*/
+                    12 /*limit per page*/
+                );
+            }
         }
-
 
         return $this->render('shop/index.html.twig', [
             'products' => $products,
@@ -161,5 +174,5 @@ class ShopController extends AbstractController
             'subCategory' => $subCategory,
             'form' => $form->createView()
         ]);
-    }
+    }  
 }

@@ -25,6 +25,18 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Query Returns a Query of visible products
      */
+    public function search(string $word): Query
+    {
+        return $this->findVisibleQuery()
+                    ->where('p.name LIKE :word')
+                    ->setParameter('word', '%'.$word.'%')
+                    ->getQuery()
+                    ;
+    }
+
+    /**
+     * @return Query Returns a Query of visible products
+     */
     public function findAllVisibleQuery(?ProductFilter $filter = null): Query
     {
         $query = $this->findVisibleQuery();
